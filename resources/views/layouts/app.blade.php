@@ -16,6 +16,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/extra.css') }}" rel="stylesheet">
+
+    @stack('styles')
 </head>
 <body class="fix-header fix-sidebar card-no-border">
     <div id="app">
@@ -84,5 +86,6 @@
     <!-- ============================================================== -->
 
 </div>
+@stack('scripts')
 </body>
 </html>
