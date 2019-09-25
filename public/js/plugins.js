@@ -343,6 +343,7 @@ File: js
     return AdminMenu;
   }(jQuery);
 });
+
 $(function() {
     "use strict";
     $(function() {
