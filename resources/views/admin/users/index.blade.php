@@ -23,12 +23,15 @@
                                 <td>{{$usuario->email}}</td>
                                 <td>{{$usuario->getRoleNames()->implode(', ')}}</td>
                                 <td>
-                                    <button class="btn btn-primary">
+                                    <a class="btn btn-default btn-xs" href="{{ route('admin.usuarios.show', $usuario)}}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.usuarios.edit', $usuario)}}">
                                         <i class="fa fa-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger">
+                                    </a>
+                                    <a class="btn btn-danger btn-xs" href="{{ route('admin.usuarios.destroy', $usuario)}}">
                                         <i class="fa fa-trash"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach

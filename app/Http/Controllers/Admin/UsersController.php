@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 use App\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class UsersController extends Controller
@@ -43,14 +44,15 @@ class UsersController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Muestra el usuario especifico.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -61,7 +63,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -73,7 +76,17 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($user->id)
+            ]
+        ]);
+
+        $user->update($data);
+        return back()->withFlash('Usuario actualizado');
     }
 
     /**
