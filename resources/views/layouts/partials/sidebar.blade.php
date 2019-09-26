@@ -20,7 +20,7 @@
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">Usuarios <span class="label label-rouded label-themecolor pull-right">4</span></span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
-                                    <a href="{{ route('admin.usuarios')}}">Listado Usuarios </a>
+                                    <a href="{{ route('admin.usuarios.index')}}">Listado Usuarios </a>
                                 </li>
                                 <li><a href="#">Ingresar Usuario</a></li>
                             </ul>

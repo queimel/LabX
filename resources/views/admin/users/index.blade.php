@@ -21,7 +21,7 @@
                             <tr>
                                 <td>{{$usuario->name}}</td>
                                 <td>{{$usuario->email}}</td>
-                                <td>-</td>
+                                <td>{{$usuario->getRoleNames()->implode(', ')}}</td>
                                 <td>
                                     <button class="btn btn-primary">
                                         <i class="fa fa-pencil"></i>
