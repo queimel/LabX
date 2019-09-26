@@ -23,7 +23,7 @@
                         <label for="exampleInputEmail1">Email</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-email"></i></div>
-                            <input type="email" class="form-control @error('email') form-control-danger @enderror" id="email" name="email" value="{{ old('name', optional($user)->email) }}">
+                            <input type="email" class="form-control @error('email') form-control-danger @enderror" id="email" name="email" value="{{ old('email', optional($user)->email) }}">
                         </div>
                         @error('email')
                         <small class="form-control-feedback d-block">{{ $message }}</small>
