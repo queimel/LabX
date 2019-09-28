@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -65,8 +66,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+        $roles = Role::all();
         $user = User::find($id);
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -81,6 +83,7 @@ class UsersController extends Controller
         $user = User::find($id);
 
         $user->update($request->validated());
+        $user->syncRoles($request->roles);
         return back()->withFlash('Usuario actualizado');
     }
 
