@@ -22,7 +22,7 @@
                                 <li>
                                     <a href="{{ route('admin.usuarios.index')}}">Listado Usuarios </a>
                                 </li>
-                                <li><a href="#">Ingresar Usuario</a></li>
+                                <li><a href="{{ route('admin.usuarios.create')}}">Crear Usuario</a></li>
                             </ul>
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Clientes</span></a>

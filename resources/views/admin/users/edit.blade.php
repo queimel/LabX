@@ -2,13 +2,14 @@
 @section('content')
 <!-- Row -->
 <form class="form p-t-20" method="POST" action="{{ route('admin.usuarios.update', $user)}}">
+    @csrf
+    @method('PUT')
     <div class="row">
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Editar Usuario</h4>
-                        @csrf
-                        @method('PUT')
+
                         <div class="form-group  @error('name') has-danger @enderror">
                             <label for="exampleInputuname">Nombre de usuario</label>
                             <div class="input-group">
