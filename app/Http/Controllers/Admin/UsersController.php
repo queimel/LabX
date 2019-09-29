@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\admin;
+
+use App\Events\UsuarioCreado;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -63,6 +65,7 @@ class UsersController extends Controller
         // Asignar roles
         $user->assignRole($request->roles);
         // Enviar email
+        UsuarioCreado::dispatch($user, $data['password'] );
 
         // Regresamos al usuario
 

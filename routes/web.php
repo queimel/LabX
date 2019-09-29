@@ -25,4 +25,5 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['auth
     // Route::get('usuarios', 'UserController@index')->name('admin.usuarios');
 
     Route::resource('usuarios', 'UsersController', ['as' => 'admin']);
+    Route::resource('clientes', 'ClientsController', ['as' => 'admin']);
 });
