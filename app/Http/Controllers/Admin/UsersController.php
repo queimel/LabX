@@ -129,6 +129,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $this->authorize('delete', $user);
+        $user->delete();
+
+        return redirect()->route('admin.usuarios.index')->withFlash('Usuario eliminado');
     }
 }

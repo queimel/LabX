@@ -53,9 +53,6 @@
                             <small class="form-control-feedback d-block">{{ $message }}</small>
                             @enderror
                         </div>
-
-                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Actualizar Usuario</button>
-                        <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -65,15 +62,10 @@
                     <h4 class="card-title">Roles y permisos</h4>
                     <hr>
                     <div class="form-group">
-                        <label class="control-label">Roles</label>
 
                         <div class="d-flex justify-content-between">
                             @foreach ($roles as $rol)
                                 <div>
-                                    {{-- <input name="roles" type="radio" id="radio_{{$rol->id}}"  "
-                                        {{ $user->roles->contains($rol->id) ? 'checked' : ''}}/>
-                                    <label for="radio_{{$rol->id}}">{{$rol->name}}</label> --}}
-
                                     <input
                                         type="checkbox"
                                         id="basic_checkbox_{{$rol->id}}"
@@ -81,11 +73,17 @@
                                         {{ $user->roles->contains($rol->id) ? 'checked' : ''}}
                                         value="{{$rol->id}}"
                                         name="roles[]"
+                                        @unlessrole('Admin') disabled @endunlessrole
                                     >
                                     <label for="basic_checkbox_{{$rol->id}}">{{$rol->name}}</label>
                                 </div>
                             @endforeach
                         </div>
+                    </div>
+                    <hr>
+                    <div class="form-group d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Actualizar Usuario</button>
+                        <button class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                     </div>
                 </div>
             </div>
