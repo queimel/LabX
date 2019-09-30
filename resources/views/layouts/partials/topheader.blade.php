@@ -43,32 +43,28 @@
                         <!-- Profile -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('images/users/1.jpg') }}" alt="user" class="profile-pic" /></a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('images/avatar.png') }}" alt="user" class="profile-pic" /></a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <ul class="dropdown-user">
                                     <li>
                                         <div class="dw-user-box">
-                                            <div class="u-img"><img src="{{ asset('images/users/1.jpg') }}" alt="user"></div>
+                                            <div class="u-img"><img src="{{ asset('images/avatar.png') }}" alt="user"></div>
                                             <div class="u-text">
-                                                <h4>Jorge Nitales</h4>
-                                                <p class="text-muted">varun@gmail.com</p><a href="pages-profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                                <h4>{{ auth()->user()->name }} </h4>
+                                                <p class="text-muted">{{ auth()->user()->mail }} </p><a href="{{ route('admin.usuarios.show', auth()->user())}}" class="btn btn-rounded btn-danger btn-sm">Ver Perfil</a></div>
                                         </div>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
-                                    <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
-                                    <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
-                                    <li role="separator" class="divider"></li>
                                     <li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" >
-                                            <i class="fa fa-power-off"></i> Logout
-                                        </button>
-                                    </form>
-                                </li>
+                                        <div class="m-2">
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-info btn-block">
+                                                    <i class="fa fa-power-off"></i> Logout
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

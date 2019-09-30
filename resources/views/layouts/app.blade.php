@@ -45,6 +45,11 @@
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid r-aside">
+                @if(session()->has('flash'))
+                <div class="alert alert-success"> {{ session('flash')}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                </div>
+                @endif
                 <!-- ============================================================== -->
                 <!-- Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->

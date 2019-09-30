@@ -16,11 +16,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('email', function () {
+//     return new App\Mail\CredencialesLogin(App\User::first(), 'asd123');
+// });
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['auth']], function () {
     Route::get('/', 'AdminController@index')->name('dashboard');
-    Route::get('usuarios', 'UserController@index')->name('admin.usuarios');
+    // Route::get('usuarios', 'UserController@index')->name('admin.usuarios');
+
+    Route::resource('usuarios', 'UsersController', ['as' => 'admin']);
+    Route::resource('clientes', 'ClientsController', ['as' => 'admin']);
 });
