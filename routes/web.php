@@ -24,10 +24,21 @@ Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => ['auth']], function () {
-    Route::get('/', 'AdminController@index')->name('dashboard');
-    // Route::get('usuarios', 'UserController@index')->name('admin.usuarios');
 
-    Route::resource('usuarios', 'UsersController', ['as' => 'admin']);
-    Route::resource('clientes', 'ClientsController', ['as' => 'admin']);
+Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
+
+
+    Route::middleware(['password_change'])->group(function () {
+        Route::get('/', 'Admin\AdminController@index')->name('dashboard');
+        Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
+        Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
+    });
+
+    Route::get('password/change', 'Auth\ChangePasswordController@change')
+    ->name('password.change');
+
+    Route::post('password/post_change', 'Auth\ChangePasswordController@postChange')
+    ->name('password.post_change');
+
+
 });
