@@ -13,6 +13,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
+use Illuminate\Support\Facades\Hash;
+
 class UsersController extends Controller
 {
     /**
@@ -22,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $usuarios = User::all();
+        $usuarios = User::allowed()->get();
 
         // cuando llegue a la url /usuarios, retorna la vista correspondiente
         return view('admin.users.index', compact('usuarios'));
@@ -35,6 +37,7 @@ class UsersController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', new User);
         $roles = Role::all();
         return view('admin.users.create', compact('roles'));
     }
@@ -47,6 +50,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', new User);
         // validar formulario
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -82,6 +86,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $this->authorize('view', $user);
         return view('admin.users.show', compact('user'));
     }
 
@@ -93,8 +98,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $roles = Role::all();
         $user = User::find($id);
+        $this->authorize('update', $user);
+        $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
@@ -108,6 +114,7 @@ class UsersController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $user = User::find($id);
+        $this->authorize('update', $user);
 
         $user->update($request->validated());
         $user->syncRoles($request->roles);

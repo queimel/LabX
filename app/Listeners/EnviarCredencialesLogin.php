@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\UsuarioCreado;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CredencialesLogin;
 
 class EnviarCredencialesLogin
 {
@@ -26,6 +26,8 @@ class EnviarCredencialesLogin
      */
     public function handle(UsuarioCreado $event)
     {
-        //
+        Mail::to($event->user)->queue(
+            new CredencialesLogin($event->user, $event->password)
+        );
     }
 }

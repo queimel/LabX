@@ -16,6 +16,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('email', function () {
+//     return new App\Mail\CredencialesLogin(App\User::first(), 'asd123');
+// });
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
