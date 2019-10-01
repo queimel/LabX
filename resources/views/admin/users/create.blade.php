@@ -20,7 +20,7 @@
 <form class="form p-t-20" method="POST" action="{{ route('admin.usuarios.store')}}">
     @csrf
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6 col-xs-12">
             <div class="card">
                 <div class="card-body">
                         <div class="form-group  @error('name') has-danger @enderror">
@@ -46,13 +46,10 @@
                         <div class="form-group">
                             <small>La contraseña se generará de forma automatica</small>
                         </div>
-
-                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Usuario</button>
-                        <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-xs-12">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Roles y permisos</h4>
@@ -77,6 +74,11 @@
                         @error('roles')
                         <small class="form-control-feedback d-block">{{ $message }}</small>
                         @enderror
+                    </div>
+                    <hr>
+                    <div class="form-group d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Usuario</button>
+                        <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                     </div>
                 </div>
             </div>

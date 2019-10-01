@@ -90,7 +90,28 @@
     <script src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js')}}" defer></script>
     <script>
         $(document).ready(function() {
-            $('#usersTable').DataTable();
+            $('#usersTable').DataTable({
+                language: {
+                    decimal:        "",
+                    emptyTable:     "Tabla sin datos.",
+                    info:           "Mostrando  _END_ de _TOTAL_ filas",
+                    infoEmpty:      "Mostrando 0 de 0 de 0 filas",
+                    infoFiltered:   "(Filtrado por _MAX_ total filas)",
+                    infoPostFix:    "",
+                    thousands:      ",",
+                    lengthMenu:     "Mostrando _MENU_ filas",
+                    loadingRecords: "Cargando...",
+                    processing:     "Procesando...",
+                    search:         "Buscar:",
+                    zeroRecords:    "No se encontró nada relacionado con la búsqueda",
+                    paginate: {
+                        first:      "Primera",
+                        last:       "Ultima",
+                        next:       "Siguiente",
+                        previous:   "Anterior"
+                    }
+                }
+            });
         });
 
     </script>
