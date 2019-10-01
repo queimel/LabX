@@ -1,4 +1,20 @@
 @extends('layouts.app')
+
+
+@push('head-page')
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Crear usuario</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.usuarios.index')}}">Usuarios</a></li>
+            <li class="breadcrumb-item active">Crear usuario</li>
+        </ol>
+    </div>
+</div>
+@endpush
+
 @section('content')
 <!-- Row -->
 <form class="form p-t-20" method="POST" action="{{ route('admin.usuarios.store')}}">
@@ -7,7 +23,6 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Crear Usuario</h4>
                         <div class="form-group  @error('name') has-danger @enderror">
                             <label for="exampleInputuname">Nombre de usuario</label>
                             <div class="input-group">

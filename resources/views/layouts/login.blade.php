@@ -32,8 +32,11 @@
             <!-- Main wrapper - style you can find in pages.scss -->
             <!-- ============================================================== -->
             <section id="wrapper">
-                <div class="login-register" style="background-image:url({{ asset('images/background/login-register.jpg')}});">
+                <div class="login-register" style="background-image:url({{ asset('images/background/laboratory.jpg')}});">
                     <div class="login-box card">
+                        <div class="card-header">
+                            LabX
+                        </div>
                         <div class="card-body">
                             @yield('content')
                         </div>

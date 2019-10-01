@@ -1,4 +1,17 @@
 @extends('layouts.app')
+@push('head-page')
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Ver usuario</h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.usuarios.index')}}">Usuarios</a></li>
+            <li class="breadcrumb-item active">Ver usuario</li>
+        </ol>
+    </div>
+</div>
+@endpush
 @section('content')
 <!-- ============================================================== -->
 <!-- Start Page Content -->
