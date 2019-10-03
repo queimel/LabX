@@ -39,11 +39,11 @@
                                     <a class="btn btn-primary btn-xs" href="{{ route('admin.roles.edit', $rol)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    {{-- @if (auth()->user()->id !== $usuario->id)
+                                    @if($rol->name !== 'Admin')
                                         <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
                                             <i class="fa fa-trash"></i>
                                         </button>
-                                    @endif --}}
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -61,24 +61,24 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Usuario</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Rol</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar este usuario?</h5>
+                <h5>¿Estas Seguro de querer eliminar este rol?</h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
-                {{-- <form method="POST" action="{{ route('admin.usuarios.destroy', $usuario)}}" class="d-inline">
+                <form method="POST" action="{{ route('admin.roles.destroy', $rol)}}" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">
                         Eliminar
                     </button>
-                </form> --}}
+                </form>
             </div>
         </div>
     </div>
