@@ -36,12 +36,9 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    {{-- <a class="btn btn-default btn-xs" href="{{ route('admin.roles.show', $rol)}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
                                     <a class="btn btn-primary btn-xs" href="{{ route('admin.roles.edit', $rol)}}">
                                         <i class="fa fa-pencil"></i>
-                                    </a> --}}
+                                    </a>
                                     {{-- @if (auth()->user()->id !== $usuario->id)
                                         <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
                                             <i class="fa fa-trash"></i>
