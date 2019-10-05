@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 
 use App\Http\Controllers\Controller;
+use App\RegistroEstado;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
@@ -62,6 +64,10 @@ class UsersController extends Controller
 
         $data['password'] = Str::random(8);
 
+        // setear estado por defecto a active
+
+        $data['active'] = 1;
+
         // Crear el usuario
 
         $user = User::create($data);
@@ -70,6 +76,14 @@ class UsersController extends Controller
         $user->assignRole($request->roles);
         // Enviar email
         UsuarioCreado::dispatch($user, $data['password'] );
+
+        // registrar Activacion
+        $activationData = [
+            'fecha_estado' => Carbon::now(),
+            'estado' => 1
+        ];
+
+        $user->registroEstados()->create($activationData);
 
         // Regresamos al usuario
 
@@ -116,8 +130,23 @@ class UsersController extends Controller
         $user = User::find($id);
         $this->authorize('update', $user);
 
-        $user->update($request->validated());
+
+
+        $data = $request->validated();
+        $data['active'] = $data['active'] == 'true' ? 1 : 0;
+
+        $user->update($data);
         $user->syncRoles($request->roles);
+
+
+        // registrar Activacion
+        $activationData = [
+            'fecha_estado' => Carbon::now(),
+            'estado' => $data['active']
+        ];
+
+        $user->registroEstados()->create($activationData);
+
         return back()->withFlash('Usuario actualizado');
     }
 

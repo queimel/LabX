@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
     Route::middleware(['password_change'])->group(function () {
         Route::get('/', 'Admin\AdminController@index')->name('dashboard');
+        Route::resource('roles', 'Admin\RolesController', ['as' => 'admin']);
         Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
         Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
         Route::resource('equipos', 'Admin\ClientsController', ['as' => 'admin']);

@@ -30,7 +30,8 @@ class UpdateUserRequest extends FormRequest
                 'required',
                 'string', 'email', 'max:255',
                 Rule::unique('users')->ignore($this->route('usuario'))
-            ]
+            ],
+            'active' => 'required'
         ];
 
         if( $this->filled('password'))

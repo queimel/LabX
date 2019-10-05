@@ -93,6 +93,16 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="">Estado</label>
+                        <div class="demo-radio-button">
+                            <input name="active" type="radio" id="radio_1" value="true" {{ $user->active === 1 ? 'checked' : ''}}/>
+                            <label for="radio_1">Habilitado</label>
+                            <input name="active" type="radio" id="radio_2" value="false" {{ $user->active === 0 ? 'checked' : ''}}/>
+                            <label for="radio_2">Deshabilitado</label>
+                        </div>
+                    </div>
                     <hr>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Actualizar Usuario</button>
