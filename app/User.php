@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'password_changed_at'
+        'name', 'email', 'password', 'password_changed_at', 'active'
     ];
 
     /**
@@ -53,6 +53,11 @@ class User extends Authenticatable
             return $query;
         }
         return $query->where('id', auth()->id());
+    }
+
+    public function registroEstados()
+    {
+        return $this->hasMany('App\RegistroEstado');
     }
 
 }

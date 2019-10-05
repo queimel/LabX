@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 
 use App\Http\Controllers\Controller;
+use App\RegistroEstado;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
@@ -75,6 +77,14 @@ class UsersController extends Controller
         // Enviar email
         UsuarioCreado::dispatch($user, $data['password'] );
 
+        // registrar Activacion
+        $activationData = [
+            'fecha_estado' => Carbon::now(),
+            'estado' => 1
+        ];
+
+        $user->registroEstados()->create($activationData);
+
         // Regresamos al usuario
 
         return redirect()->route('admin.usuarios.index')->withFlash('El usuario ha sido creado');
@@ -127,6 +137,16 @@ class UsersController extends Controller
 
         $user->update($data);
         $user->syncRoles($request->roles);
+
+
+        // registrar Activacion
+        $activationData = [
+            'fecha_estado' => Carbon::now(),
+            'estado' => $data['active']
+        ];
+
+        $user->registroEstados()->create($activationData);
+
         return back()->withFlash('Usuario actualizado');
     }
 
