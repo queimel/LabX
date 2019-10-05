@@ -62,6 +62,10 @@ class UsersController extends Controller
 
         $data['password'] = Str::random(8);
 
+        // setear estado por defecto a active
+
+        $data['active'] = 1;
+
         // Crear el usuario
 
         $user = User::create($data);
@@ -116,7 +120,12 @@ class UsersController extends Controller
         $user = User::find($id);
         $this->authorize('update', $user);
 
-        $user->update($request->validated());
+
+
+        $data = $request->validated();
+        $data['active'] = $data['active'] == 'true' ? 1 : 0;
+
+        $user->update($data);
         $user->syncRoles($request->roles);
         return back()->withFlash('Usuario actualizado');
     }

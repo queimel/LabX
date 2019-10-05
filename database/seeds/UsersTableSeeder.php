@@ -34,6 +34,7 @@ class UsersTableSeeder extends Seeder
         $admin->name = "Usuario Admin";
         $admin->email = "admin@labx.cl";
         $admin->password = '12345678';
+        $admin->active = true;
         $admin->save();
 
         $admin->assignRole($adminRole);
@@ -43,6 +44,7 @@ class UsersTableSeeder extends Seeder
         $supervisor->name = "Usuario Supervisor";
         $supervisor->email = "supervisor@labx.cl";
         $supervisor->password = '12345678';
+        $supervisor->active = true;
         $supervisor->save();
 
         $supervisor->assignRole($supervisorRole);
@@ -51,6 +53,7 @@ class UsersTableSeeder extends Seeder
         $operativo->name = "Usuario Operativo";
         $operativo->email = "operativo@labx.cl";
         $operativo->password = '12345678';
+        $operativo->active = true;
         $operativo->save();
 
         $operativo->assignRole($operativeRole);
