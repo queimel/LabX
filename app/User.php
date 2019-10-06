@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\CustomResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -58,6 +59,12 @@ class User extends Authenticatable
     public function registroEstados()
     {
         return $this->hasMany('App\RegistroEstado');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+
+        $this->notify(new CustomResetPasswordNotification($token));
     }
 
 }

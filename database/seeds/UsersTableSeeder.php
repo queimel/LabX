@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
 
         $admin = new User;
         $admin->name = "Usuario Admin";
-        $admin->email = "admin@labx.cl";
+        $admin->email = "ccampos.aviles@gmail.com";
         $admin->password = '12345678';
         $admin->active = true;
         $admin->save();

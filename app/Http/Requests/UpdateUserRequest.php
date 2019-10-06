@@ -36,7 +36,7 @@ class UpdateUserRequest extends FormRequest
 
         if( $this->filled('password'))
         {
-            $rules['password'] = ['confirmed', 'min:8'];
+            $rules['password'] = ['required|string|min:8|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'];
         }
         return $rules;
     }
