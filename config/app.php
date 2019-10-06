@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
     ],
+    'PASSWORD_HISTORY_NUM' => 3,
 
     /*
     |--------------------------------------------------------------------------
@@ -227,5 +228,4 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
 ];

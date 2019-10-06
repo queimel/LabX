@@ -24,16 +24,22 @@ Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/no-autorizado', 'Auth\UserActiveFilter@blocked')->name('no-autorizado');
 
 Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
+    Route::middleware(['user_active'])->group(function () {
+        Route::middleware(['password_change'])->group(function () {
 
-    Route::middleware(['password_change'])->group(function () {
-        Route::get('/', 'Admin\AdminController@index')->name('dashboard');
-        Route::resource('roles', 'Admin\RolesController', ['as' => 'admin']);
-        Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
-        Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
-        Route::resource('equipos', 'Admin\ClientsController', ['as' => 'admin']);
+            Route::middleware(['password_expired'])->group(function () {
+                Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
+                Route::get('/', 'Admin\AdminController@index')->name('dashboard');
+                Route::resource('roles', 'Admin\RolesController', ['as' => 'admin']);
+                Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
+                Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
+                Route::resource('equipos', 'Admin\ClientsController', ['as' => 'admin']);
+            });
+        });
     });
 
     Route::get('password/change', 'Auth\ChangePasswordController@change')

@@ -35,9 +35,10 @@ class UsersTableSeeder extends Seeder
 
         $admin = new User;
         $admin->name = "Usuario Admin";
-        $admin->email = "admin@labx.cl";
+        $admin->email = "ccampos.aviles@gmail.com";
         $admin->password = '12345678';
         $admin->active = true;
+        $admin->password_changed_at = Carbon::create('2019-01-31');
         $admin->save();
 
         $admin->assignRole($adminRole);

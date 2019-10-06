@@ -17,6 +17,8 @@ use Spatie\Permission\Models\Role;
 
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Validation\ValidationException;
+
 class UsersController extends Controller
 {
     /**
@@ -85,8 +87,15 @@ class UsersController extends Controller
 
         $user->registroEstados()->create($activationData);
 
-        // Regresamos al usuario
+        // registrar en historico contraseña
+        $historicoContrasena = [
+            'user_id' => $user->id,
+            'password' => $data['password']
+        ];
 
+        $user->historicoContrasena()->create($historicoContrasena);
+
+        // Regresamos al index
         return redirect()->route('admin.usuarios.index')->withFlash('El usuario ha sido creado');
 
     }
@@ -130,10 +139,22 @@ class UsersController extends Controller
         $user = User::find($id);
         $this->authorize('update', $user);
 
-
-
         $data = $request->validated();
         $data['active'] = $data['active'] == 'true' ? 1 : 0;
+
+        if( $request->filled('password')){
+            //Chequea historico contraseña
+            $passwordHistories = $user->historicoContrasena()->take(config('PASSWORD_HISTORY_NUM'))->get();
+            foreach($passwordHistories as $passwordHistory){
+                echo $passwordHistory->password;
+                if (Hash::check($data['password'], $passwordHistory->password)) {
+                    // la contraseña coincide
+                    $validator = validator([], []); // Empty data and rules fields
+                    $validator->errors()->add('password', 'Esta contraseña ya fue usada anteriormente. Por favor ingresa otra password');
+                    throw new ValidationException($validator);
+                }
+            }
+        }
 
         $user->update($data);
         $user->syncRoles($request->roles);
@@ -146,6 +167,19 @@ class UsersController extends Controller
         ];
 
         $user->registroEstados()->create($activationData);
+
+
+        if( $request->filled('password')){
+
+            // registrar en historico contraseña
+            $historicoContrasena = [
+                'user_id' => $user->id,
+                'password' => $user->password
+            ];
+
+            $user->historicoContrasena()->create($historicoContrasena);
+        }
+
 
         return back()->withFlash('Usuario actualizado');
     }
