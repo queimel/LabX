@@ -25,7 +25,7 @@ class PasswordChangeRequest extends FormRequest
     {
         return [
             'current_password' => 'required',
-            'password' => 'required|confirmed|min:6',
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
         ];
     }
 }

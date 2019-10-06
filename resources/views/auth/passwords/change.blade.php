@@ -1,7 +1,13 @@
 @extends('layouts.login')
 
 @section('content')
-<h3 class="box-title m-b-20">Cambia tu contraseña</h3>
+@if ($expired)
+    <h3 class="box-title m-b-10">Tu contraseña ha expirado</h3>
+    <h6 class="m-b-20">Debes cambiar tu contraseña</h6>
+@else
+    <h3 class="box-title m-b-20">Cambia tu contraseña</h3>
+@endif
+
 @if (session('status'))
 <div class="alert alert-success">
     {{ session('status') }}
@@ -12,6 +18,7 @@
     @csrf
     <div class="form-group">
         <div class="col-xs-12">
+
             <input id="current_password" type="password"
                 class="form-control @error('current_password') is-invalid @enderror" name="current_password"
                 placeholder="Contraseña Actual">

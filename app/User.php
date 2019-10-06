@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany('App\RegistroEstado');
     }
 
+    public function historicoContrasena()
+    {
+        return $this->hasMany('App\HistoricoContrasena');
+    }
+
     public function sendPasswordResetNotification($token)
     {
 
