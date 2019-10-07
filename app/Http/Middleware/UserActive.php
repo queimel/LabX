@@ -19,5 +19,6 @@ class UserActive
         if ( $user->active === 0 )  {
             return redirect()->route('no-autorizado');
         }
+        return $next($request);
     }
 }

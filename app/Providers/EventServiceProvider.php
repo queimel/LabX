@@ -20,7 +20,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\UsuarioCreado' => [
             'App\Listeners\EnviarCredencialesLogin',
-            'App\Listeners\ResetPasswordListener'
+            // 'App\Listeners\ResetPasswordListener'
         ],
     ];
 

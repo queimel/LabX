@@ -32,21 +32,20 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
         Route::middleware(['password_change'])->group(function () {
 
             Route::middleware(['password_expired'])->group(function () {
-                Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
                 Route::get('/', 'Admin\AdminController@index')->name('dashboard');
                 Route::resource('roles', 'Admin\RolesController', ['as' => 'admin']);
                 Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
                 Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
                 Route::resource('equipos', 'Admin\ClientsController', ['as' => 'admin']);
             });
+
+            Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
         });
+        Route::get('password/change', 'Auth\ChangePasswordController@change')
+        ->name('password.change');
+
+        Route::post('password/post_change', 'Auth\ChangePasswordController@postChange')
+        ->name('password.post_change');
     });
-
-    Route::get('password/change', 'Auth\ChangePasswordController@change')
-    ->name('password.change');
-
-    Route::post('password/post_change', 'Auth\ChangePasswordController@postChange')
-    ->name('password.post_change');
-
 
 });
