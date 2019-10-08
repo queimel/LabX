@@ -13,13 +13,7 @@ class CreateCiudadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ciudads', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_region');
-            $table->string('nombre_ciudad');
-            $table->foreign('id_region')->references('id')->on('regions');
-            $table->timestamps();
-        });
+
     }
 
     /**

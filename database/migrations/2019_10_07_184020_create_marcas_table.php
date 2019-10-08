@@ -13,12 +13,7 @@ class CreateMarcasTable extends Migration
      */
     public function up()
     {
-        Schema::create('marcas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('nombre_marca');
-            $table->string('origen_marca');
-            $table->timestamps();
-        });
+
     }
 
     /**
