@@ -40,9 +40,10 @@ class CreateClientesTable extends Migration
 
 
         Schema::create('clientes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_sucursal')->nullable();
-            $table->unsignedBigInteger('id_seccion')->nullable();
+            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id_sucursal');
+            $table->unsignedBigInteger('id_seccion');
+            $table->primary(['id', 'id_sucursal', 'id_seccion']);
             $table->string('rut_cliente');
             $table->string('nombre_cliente');
             $table->text('descripcion_cliente')->nullable();
@@ -60,8 +61,9 @@ class CreateClientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clientes');
         Schema::dropIfExists('regions');
         Schema::dropIfExists('provincias');
+        Schema::dropIfExists('clientes');
+
     }
 }

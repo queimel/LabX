@@ -28,43 +28,31 @@
                             </tr>
                         </thead>
                         <tbody>
+
+                            @foreach ($clientes as $cliente)
                             <tr>
-                                <td>CLinica Davila</td>
-                                <td>77.789.123-4</td>
-                                <td>Avenida Recoleta 5567</td>
+                                <td>{{$cliente->nombre_cliente}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    {{$cliente->rut_cliente}}
+                                </td>
+                                <td>
+                                    {{$cliente->direccion_cliente}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.show', $cliente)}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.edit', $cliente)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
                                     <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
                                         <i class="fa fa-trash"></i>
                                     </button>
+
                                 </td>
                             </tr>
-                            {{-- @foreach ($roles as $rol)
-                            <tr>
-                                <td>{{$rol->name}}</td>
-                                <td>
-                                    @foreach ($rol->getAllPermissions() as $permission)
-                                        <span class="badge badge-info">{{$permission->name}}</span>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.roles.edit', $rol)}}">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    @if($rol->name !== 'Admin')
-                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -90,7 +78,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
-                {{-- <form method="POST" action="{{ route('admin.roles.destroy', $rol)}}" class="d-inline">
+                {{-- <form method="POST" action="{{ route('admin.clientes.destroy', $cliente)}}" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">
