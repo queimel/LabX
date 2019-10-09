@@ -58,6 +58,30 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
+                    <div class="form-group">
+                        <select class="custom-select">
+                            <option selected>Comuna</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="custom-select">
+                            <option selected>Ciudad</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="custom-select">
+                            <option selected>Region</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Cliente</button>
                         <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
