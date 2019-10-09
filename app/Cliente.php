@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
+
+    protected $fillable = [
+        'id', 'id_sucursal', 'id_seccion', 'nombre_cliente', 'rut_cliente', 'descripcion_cliente', 'direccion_cliente', 'id_comuna'
+    ];
+
     public function comuna()
     {
         return $this->belongsTo('App\Comuna');

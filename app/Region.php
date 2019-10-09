@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
-    public function ciudades()
+    public function provincias()
     {
-        return $this->hasMany('App\Ciudad');
+        return $this->hasMany('App\Provincia', 'id_region');
     }
+
 }

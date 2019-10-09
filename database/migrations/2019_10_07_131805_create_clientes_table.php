@@ -16,33 +16,34 @@ class CreateClientesTable extends Migration
 
         Schema::create('regions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_region');
             $table->string('nombre_region');
+            $table->unsignedInteger('orden_real');
             $table->timestamps();
         });
 
-        Schema::create('ciudads', function (Blueprint $table) {
+        Schema::create('provincias', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_region');
-            $table->string('nombre_ciudad');
+            $table->string('nombre_provincia');
             $table->foreign('id_region')->references('id')->on('regions');
             $table->timestamps();
         });
 
         Schema::create('comunas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_ciudad');
+            $table->unsignedBigInteger('id_provincia');
             $table->string('nombre_comuna');
-            $table->foreign('id_ciudad')->references('id')->on('ciudads');
+            $table->foreign('id_provincia')->references('id')->on('provincias');
             $table->timestamps();
         });
 
 
 
         Schema::create('clientes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_sucursal')->nullable();
-            $table->unsignedBigInteger('id_seccion')->nullable();
+            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id_sucursal');
+            $table->unsignedBigInteger('id_seccion');
+            $table->primary(['id', 'id_sucursal', 'id_seccion']);
             $table->string('rut_cliente');
             $table->string('nombre_cliente');
             $table->text('descripcion_cliente')->nullable();
@@ -60,6 +61,9 @@ class CreateClientesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('regions');
+        Schema::dropIfExists('provincias');
         Schema::dropIfExists('clientes');
+
     }
 }
