@@ -8,10 +8,10 @@ class Comuna extends Model
 {
     public function clientes()
     {
-        return $this->hasMany('App\Cliente');
+        return $this->hasMany('App\Cliente', 'id_comuna');
     }
 
-    public function ciudad()
+    public function provincia()
     {
         return $this->belongsTo('App\Provincia');
     }

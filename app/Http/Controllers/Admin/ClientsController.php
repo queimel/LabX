@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Cliente;
+use App\Comuna;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Provincia;
 use App\Region;
 use Illuminate\Support\Facades\DB;
 
@@ -63,7 +65,7 @@ class ClientsController extends Controller
 
            $cliente->save();
 
-            return redirect()->route('admin.clientes.create')->withFlash('El rol ha sido creado');
+            return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido creado');
     }
 
     /**
@@ -74,9 +76,9 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        //$user = User::find($id);
         $cliente = Cliente::find($id);
         $sucursales = Cliente::where('id', $id)->where('id_sucursal','<>', 0)->where('id_seccion', 0)->get();
+
         return view('admin.clients.show', compact('cliente', 'sucursales'));
     }
 
@@ -88,7 +90,19 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cliente = Cliente::find($id);
+        $comuna = Comuna::find($cliente->id_comuna);
+        $provincia = Provincia::find($comuna->id_provincia);
+        $region = Region::find($provincia->id_region);
+
+        $regiones = Region::all();
+
+        $provinciasSeleccionadas = Provincia::where('id_region', $region->id)->get();
+        $comunasSeleccionadas = Comuna::where('id', $provincia->id)->get();
+
+
+
+        return view('admin.clients.edit', compact('cliente', 'regiones', 'region', 'provinciasSeleccionadas', 'comuna', 'provincia', 'comunasSeleccionadas'));
     }
 
     /**
@@ -100,7 +114,17 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cliente = Cliente::find($id);
+        $data = $request->validate([
+            'nombre_cliente' => ['required', 'string', 'max:255'],
+            'rut_cliente' => ['required', 'cl_rut'],
+            'descripcion_cliente' => 'string',
+            'direccion_cliente' => ['required', 'string', 'max:255'],
+            'id_comuna' => 'required'
+        ]);
+
+        $cliente->update($data);
+        return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido modificado');
     }
 
     /**
