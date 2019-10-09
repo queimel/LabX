@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.usuarios.index')}}">Usuarios</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.usuarios.index')}}">Cliente</a></li>
             <li class="breadcrumb-item active"> Ver cliente</li>
         </ol>
     </div>
@@ -22,19 +22,19 @@
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title m-t-10">Clinica Davila</h4>
+                <h4 class="card-title m-t-10">{{$cliente->nombre_cliente}}</h4>
             </div>
             <div>
                 <hr>
             </div>
             <div class="card-body">
                 <small class="text-muted">Dirección </small>
-                <h6>Avenida recoleta 6666</h6>
+                <h6>{{$cliente->direccion_cliente}}</h6>
             </div>
             <div class="card-body">
                 <small class="text-muted">Descripcion </small>
                 <h6>
-                    Lorea El Ipsum Tení puro frío ranazo readi te tirita la pera oe si de corte querí ser leyenda washas te tiraste, detonao chantar odio gila soplamoco gila pasa paca coshino ql, brocacochi calmao asikalao washas te tirita la pera washas paquepo. Jato de corte soplamoco la legal hechiza zarpao truco caracho ascurrio, de finales asikalao puro gile conotao pasa paca coshino ql calzar washas zarpao truco, abrazo pa lo amigo balazo pa lo enemigo puro gile quieee andai con la pera machucao jato caracho.
+                        {{$cliente->descripcion}}
                 </h6>
             </div>
             <div>
@@ -47,12 +47,12 @@
     </div>
     <!-- Column -->
 
-<div class="col-lg-6 col-xlg-9 col-md-7">
+<div class="col-lg-8 col-xlg-9 col-md-7">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title m-t-10">Sucursales Clinica Davila</h4>
+                        <h4 class="card-title m-t-10">Sucursales {{$cliente->nombre_cliente}}</h4>
                     </div>
                     <div>
                         <a href="" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
@@ -68,9 +68,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($sucursales as $sucursal)
+
+                            @endforeach
                             <tr>
-                                <td>Sucursal 1</td>
-                                <td>Avenida Recoleta 5567</td>
+                                <td>{{$sucursal->nombre_cliente}}</td>
+                                <td>{{$sucursal->direccion_cliente}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
                                         <i class="fa fa-eye"></i>

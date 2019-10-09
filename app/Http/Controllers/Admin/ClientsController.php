@@ -72,9 +72,12 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        return view('admin.clients.show');
+        //$user = User::find($id);
+        $cliente = Cliente::find($id);
+        $sucursales = Cliente::where('id', $id)->where('id_seccion', 0)->get();
+        return view('admin.clients.show', compact('cliente', 'sucursales'));
     }
 
     /**
