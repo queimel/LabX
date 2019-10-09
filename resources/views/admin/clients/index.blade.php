@@ -78,13 +78,13 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
-                {{-- <form method="POST" action="{{ route('admin.clientes.destroy', $cliente)}}" class="d-inline">
+                <form method="POST" action="{{ route('admin.clientes.destroy', $cliente)}}" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">
                         Eliminar
                     </button>
-                </form> --}}
+                </form>
             </div>
         </div>
     </div>

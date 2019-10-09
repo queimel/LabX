@@ -135,6 +135,8 @@ class ClientsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // buscar todos los clientes (clientes sucursales y secciones) con el $id cliente y eliminarlos
+        $clientes = Cliente::where('id',$id)->delete();
+        return redirect()->route('admin.clientes.index')->withFlash('Cliente eliminado');
     }
 }

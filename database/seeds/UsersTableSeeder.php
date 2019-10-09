@@ -38,7 +38,7 @@ class UsersTableSeeder extends Seeder
         $admin->email = "ccampos.aviles@gmail.com";
         $admin->password = '12345678';
         $admin->active = true;
-        $admin->password_changed_at = Carbon::create('2019-01-31');
+        $admin->password_changed_at = Carbon::create('2019-10-01');
         $admin->save();
 
         $admin->assignRole($adminRole);
