@@ -76,7 +76,7 @@ class ClientsController extends Controller
     {
         //$user = User::find($id);
         $cliente = Cliente::find($id);
-        $sucursales = Cliente::where('id', $id)->where('id_seccion', 0)->get();
+        $sucursales = Cliente::where('id', $id)->where('id_sucursal','<>', 0)->where('id_seccion', 0)->get();
         return view('admin.clients.show', compact('cliente', 'sucursales'));
     }
 

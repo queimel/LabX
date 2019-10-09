@@ -69,24 +69,24 @@
                         </thead>
                         <tbody>
                             @foreach ($sucursales as $sucursal)
-
-                            @endforeach
                             <tr>
-                                <td>{{$sucursal->nombre_cliente}}</td>
-                                <td>{{$sucursal->direccion_cliente}}</td>
-                                <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.index')}}">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
+                                    <td>{{$sucursal->nombre_cliente}}</td>
+                                    <td>{{$sucursal->direccion_cliente}}</td>
+                                    <td>
+                                        <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.index')}}">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
