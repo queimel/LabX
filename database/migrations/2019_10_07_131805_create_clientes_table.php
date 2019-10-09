@@ -33,7 +33,7 @@ class CreateClientesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_provincia');
             $table->string('nombre_comuna');
-            $table->foreign('id_provincia')->references('id')->on('provincia');
+            $table->foreign('id_provincia')->references('id')->on('provincias');
             $table->timestamps();
         });
 
@@ -61,5 +61,7 @@ class CreateClientesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('clientes');
+        Schema::dropIfExists('regions');
+        Schema::dropIfExists('provincias');
     }
 }
