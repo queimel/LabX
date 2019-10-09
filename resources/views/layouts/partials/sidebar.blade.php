@@ -44,7 +44,7 @@
                         @endrole
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Clientes</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{ route('admin.clientes.create')}}">Listado clientes</a></li>
+                                <li><a href="{{ route('admin.clientes.index')}}">Listado clientes</a></li>
                                 <li><a href="{{ route('admin.clientes.create')}}">Crear clientes</a></li>
                             </ul>
                         </li>

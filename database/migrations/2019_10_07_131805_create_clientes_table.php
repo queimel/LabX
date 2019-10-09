@@ -16,24 +16,24 @@ class CreateClientesTable extends Migration
 
         Schema::create('regions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_region');
             $table->string('nombre_region');
+            $table->unsignedInteger('orden_real');
             $table->timestamps();
         });
 
-        Schema::create('ciudads', function (Blueprint $table) {
+        Schema::create('provincias', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_region');
-            $table->string('nombre_ciudad');
+            $table->string('nombre_provincia');
             $table->foreign('id_region')->references('id')->on('regions');
             $table->timestamps();
         });
 
         Schema::create('comunas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('id_ciudad');
+            $table->unsignedBigInteger('id_provincia');
             $table->string('nombre_comuna');
-            $table->foreign('id_ciudad')->references('id')->on('ciudads');
+            $table->foreign('id_provincia')->references('id')->on('provincia');
             $table->timestamps();
         });
 
