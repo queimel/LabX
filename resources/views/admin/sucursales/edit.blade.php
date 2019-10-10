@@ -2,42 +2,43 @@
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Crear Sucursal</h3>
+        <h3 class="text-themecolor">Editar Sucursal</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.clientes.index')}}">Clientes</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.clientes.show', $cliente)}}">{{$cliente->nombre_cliente}}</a></li>
-            <li class="breadcrumb-item active">Crear sucursal</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.clientes.show', $sucursal)}}">{{$sucursal->nombre_cliente}}</a></li>
+            <li class="breadcrumb-item active">Editar sucursal</li>
         </ol>
     </div>
 </div>
 @endpush
 @section('content')
 <!-- Row -->
-<form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.store')}}">
+<form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.update')}}">
         @csrf
+        @method('PUT')
         <div class="row">
             <div class="col-6">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Ingresa los datos de la nueva Sucursal</h4>
                         <hr>
-                        <input type="hidden" id="id" name="id" value="{{$cliente->id}}">
+                        <input type="hidden" id="id" name="id" value="{{$sucursal->id}}">
                         <div class="form-group  @error('nombre_cliente') has-danger @enderror">
                             <label>Nombre de Sucursal</label>
-                            <input type="text" class="form-control  @error('nombre_cliente') form-control-danger @enderror" id="nombre_cliente" name="nombre_cliente" value="{{ old('nombre_cliente')}}">
+                            <input type="text" class="form-control  @error('nombre_cliente') form-control-danger @enderror" id="nombre_cliente" name="nombre_cliente" value="{{ old('nombre_cliente', optional($sucursal)->nombre_cliente) }}">
                             @error('nombre_cliente')
                             <small class="form-control-feedback">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <input type="hidden" id="rut_cliente" name="rut_cliente" value="{{$cliente->rut_cliente}}">
+                        <input type="hidden" id="rut_cliente" name="rut_cliente" value="{{ old('rut_cliente', optional($sucursal)->rut_cliente)}}">
 
                         <div class="form-group  @error('descripcion_cliente') has-danger @enderror">
                             <label>Descripcion</label>
                             <textarea class="form-control  @error('descripcion_cliente') form-control-danger @enderror" id="descripcion_cliente" name="descripcion_cliente" >
-                                    {{ old('descripcion_cliente')}}
+                                {{ old('descripcion_cliente', optional($sucursal)->descripcion_cliente)}}
                             </textarea>
                             @error('descripcion')
                             <small class="form-control-feedback">{{ $message }}</small>
@@ -45,7 +46,7 @@
                         </div>
                         <div class="form-group  @error('direccion_cliente') has-danger @enderror">
                             <label>Dirección</label>
-                            <input type="text" class="form-control  @error('direccion_cliente') form-control-danger @enderror" id="direccion_cliente" name="direccion_cliente" value="{{ old('direccion_cliente')}}">
+                            <input type="text" class="form-control  @error('direccion_cliente') form-control-danger @enderror" id="direccion_cliente" name="direccion_cliente" value="{{ old('direccion_cliente',  optional($sucursal)->direccion_cliente)}}">
                             @error('direccion_cliente')
                             <small class="form-control-feedback">{{ $message }}</small>
                             @enderror

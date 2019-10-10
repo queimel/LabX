@@ -55,7 +55,7 @@
                         <h4 class="card-title m-t-10">Sucursales {{$cliente->nombre_cliente}}</h4>
                     </div>
                     <div>
-                        <a href="" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
+                    <a href="{{route('admin.sucursales.create', ['id' => $cliente->id])}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
@@ -76,7 +76,7 @@
                                     <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.sucursales.edit', $sucursal)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
