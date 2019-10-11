@@ -55,7 +55,7 @@
                         <h4 class="card-title m-t-10">Sucursales {{$cliente->nombre_cliente}}</h4>
                     </div>
                     <div>
-                    <a href="{{route('admin.sucursales.create', ['id' => $cliente->id])}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
+                    <a href="{{route('admin.sucursales.create',  $cliente)}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
@@ -82,7 +82,7 @@
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}}, {{$sucursal->id_sucursal}})">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                 </td>
@@ -100,6 +100,38 @@
 <!-- ============================================================== -->
 <!-- End PAge Content -->
 <!-- ============================================================== -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sucursal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Estas Seguro de querer eliminar esta sucursal?</h5>
+            </div>
+            <div class="modal-footer">
+
+
+                <form method="POST" action="" class="d-inline" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -131,5 +163,19 @@
             });
         });
 
+    </script>
+    <script type="text/javascript">
+        function deleteData(id, id_sucursal)
+        {
+            var id = id;
+            var url = "/admin/sucursales/"+id+"/"+id_sucursal;
+            console.log(url);
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
     </script>
 @endpush

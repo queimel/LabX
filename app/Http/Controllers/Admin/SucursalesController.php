@@ -139,8 +139,12 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $id_sucursal)
     {
-        //
+        $cliente = Cliente::find($id);
+        $deleteSucursal = DB::delete('DELETE from `clientes` WHERE `id`=? AND `id_sucursal`=? AND id_seccion= 0',[$id, $id_sucursal]);
+        if($deleteSucursal){
+            return redirect()->route('admin.clientes.show', $cliente)->withFlash('La sucursal ha sido eliminada');
+        }
     }
 }
