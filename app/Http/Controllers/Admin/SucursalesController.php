@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Cliente;
+use App\Comuna;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Provincia;
 use App\Region;
 use Illuminate\Support\Facades\DB;
 
@@ -50,7 +52,7 @@ class SucursalesController extends Controller
             'id_comuna' => 'required'
         ]);
 
-        $ultimoRegistro = DB::table('clientes')->latest()->first();
+        $ultimoRegistro = DB::table('clientes')->where('id', $data['id'])->latest('id_sucursal')->first();
 
         $data['id_sucursal'] = $ultimoRegistro->id_sucursal + 1;
         $data['id_seccion'] = 0;
@@ -82,22 +84,19 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $id_sucursal)
     {
-        //
-        $sucursal = Cliente::find($id);
-        $comuna = Comuna::find($cliente->id_comuna);
+        $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
+        $comuna = Comuna::find($sucursal->id_comuna);
         $provincia = Provincia::find($comuna->id_provincia);
         $region = Region::find($provincia->id_region);
 
         $regiones = Region::all();
 
         $provinciasSeleccionadas = Provincia::where('id_region', $region->id)->get();
-        $comunasSeleccionadas = Comuna::where('id', $provincia->id)->get();
+        $comunasSeleccionadas = Comuna::where('id_provincia', $provincia->id)->get();
 
-
-
-        return view('admin.clients.edit', compact('cliente', 'regiones', 'region', 'provinciasSeleccionadas', 'comuna', 'provincia', 'comunasSeleccionadas'));
+        return view('admin.sucursales.edit', compact('sucursal', 'regiones', 'region', 'provinciasSeleccionadas', 'comuna', 'provincia', 'comunasSeleccionadas'));
     }
 
     /**
@@ -107,9 +106,31 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $id_sucursal)
     {
-        //
+        $cliente = Cliente::find($id);
+        $data = $request->validate([
+            'id' => ['required'],
+            'nombre_cliente' => ['required', 'string', 'max:255'],
+            'rut_cliente' => ['required', 'cl_rut'],
+            'descripcion_cliente' => 'string',
+            'direccion_cliente' => ['required', 'string', 'max:255'],
+            'id_comuna' => 'required'
+        ]);
+
+        $nombre_cliente = $data['nombre_cliente'];
+        $descripcion_cliente = $data['descripcion_cliente'];
+        $direccion_cliente = $data['direccion_cliente'];
+        $id_comuna = $data['id_comuna'];
+
+        $updateSucursal = DB::update('UPDATE `clientes` SET `nombre_cliente` = ?, `descripcion_cliente`=  ?, `direccion_cliente`= ?, `id_comuna` = ? WHERE `id`= ? AND id_sucursal= ? AND id_seccion= 0' , [$nombre_cliente,  $descripcion_cliente,$direccion_cliente, $id_comuna, $id, $id_sucursal ]);
+
+        if($updateSucursal){
+            return redirect()->route('admin.clientes.show', $cliente)->withFlash('La sucursal ha sido modificada');
+        }else {
+            echo 'falla la wea';
+        }
+
     }
 
     /**

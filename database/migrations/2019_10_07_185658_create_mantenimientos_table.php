@@ -44,7 +44,10 @@ class CreateMantenimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('telefonos');
+
         Schema::dropIfExists('mantenimientos');
+        Schema::dropIfExists('tecnico_telefono');
+        Schema::dropIfExists('tecnicos');
+        Schema::dropIfExists('telefonos');
     }
 }

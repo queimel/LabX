@@ -84,8 +84,8 @@
                     <div class="form-group">
                         <label for="">Comuna</label>
                         <select class="custom-select" id="comuna" name="id_comuna"  required>
-                                @foreach ($comunasSeleccionadas as $comunasel)
-                                <option value="{{$provincia->id}}"
+                            @foreach ($comunasSeleccionadas as $comunasel)
+                            <option value="{{$provincia->id}}"
                                 {{ $comuna->id == $comunasel->id ? 'selected' : ''}}
                                 >
                                 {{$comunasel->nombre_comuna}}

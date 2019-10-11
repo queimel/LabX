@@ -15,7 +15,7 @@
 @endpush
 @section('content')
 <!-- Row -->
-<form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.update')}}">
+<form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.update', ['cliente'=>$sucursal->id,'sucursal'=>$sucursal->id_sucursal])}}">
         @csrf
         @method('PUT')
         <div class="row">
@@ -61,20 +61,33 @@
                             <label for="">Region</label>
                             <select class="custom-select" id="region" name="region_cliente" required>
                                 <option selected>Region</option>
-                                @foreach ($regiones as $region)
-                                <option value="{{$region->id}}">{{$region->nombre_region}}</option>
+                                @foreach ($regiones as $regionsel)
+                                <option value="{{$regionsel->id}}"
+                                    {{ $region->id == $regionsel->id ? 'selected' : ''}}
+                                    >{{$regionsel->nombre_region}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Provincia</label>
-                            <select class="custom-select" id="provincia" name="provincia_cliente" disabled required>
-
+                            <select class="custom-select" id="provincia" name="provincia_cliente"  required>
+                                @foreach ($provinciasSeleccionadas as $provinciasel)
+                                <option value="{{$provincia->id}}"
+                                {{ $provincia->id == $provinciasel->id ? 'selected' : ''}}
+                                >{{$provinciasel->nombre_provincia}}</option>
+                            @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Comuna</label>
-                            <select class="custom-select" id="comuna" name="id_comuna" disabled required>
+                            <select class="custom-select" id="comuna" name="id_comuna"  required>
+                                @foreach ($comunasSeleccionadas as $comunasel)
+                                <option value="{{$provincia->id}}"
+                                    {{ $comuna->id == $comunasel->id ? 'selected' : ''}}
+                                    >
+                                    {{$comunasel->nombre_comuna}}
+                                </option>
+                                @endforeach
                             </select>
                         </div>
 

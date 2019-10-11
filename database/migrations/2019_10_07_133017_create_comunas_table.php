@@ -23,6 +23,6 @@ class CreateComunasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comunas');
+
     }
 }

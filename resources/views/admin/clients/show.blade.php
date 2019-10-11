@@ -41,7 +41,7 @@
                 <hr>
             </div>
             <div class="card-body">
-                <a href="#" class="button btn btn-primary btn-block">Editar</a>
+                <a href="{{ route('admin.clientes.edit', $cliente)}}" class="button btn btn-primary btn-block">Editar</a>
             </div>
         </div>
     </div>
@@ -62,6 +62,7 @@
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Nombre Sucursal</th>
                                 <th>Direccion</th>
                                 <th>Acciones</th>
@@ -70,19 +71,20 @@
                         <tbody>
                             @foreach ($sucursales as $sucursal)
                             <tr>
+                                <td>{{$sucursal->id_sucursal}}</td>
                                 <td>{{$sucursal->nombre_cliente}}</td>
                                 <td>{{$sucursal->direccion_cliente}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.sucursales.edit', $sucursal)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.sucursales.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                 </td>
                             </tr>
                             @endforeach
