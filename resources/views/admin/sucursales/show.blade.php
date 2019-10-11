@@ -2,12 +2,12 @@
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Ver cliente</h3>
+        <h3 class="text-themecolor">Ver sucursal</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.usuarios.index')}}">Usuarios</a></li>
-            <li class="breadcrumb-item active"> Ver cliente</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.usuarios.index')}}">Cliente</a></li>
+            <li class="breadcrumb-item active"> Ver sucursal</li>
         </ol>
     </div>
 </div>
@@ -22,68 +22,81 @@
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title m-t-10">Clinica Davila</h4>
+                <h4 class="card-title m-t-10">{{$cliente->nombre_cliente}} </h4>
+            </div>
+            <div>
+                <hr>
+            </div>
+            <div class="card-body">
+                <h5>{{$sucursal->nombre_cliente}}</h5>
             </div>
             <div>
                 <hr>
             </div>
             <div class="card-body">
                 <small class="text-muted">Dirección </small>
-                <h6>Avenida recoleta 6666</h6>
+                <h6>{{$sucursal->direccion_cliente}}</h6>
             </div>
             <div class="card-body">
                 <small class="text-muted">Descripcion </small>
                 <h6>
-                    Lorea El Ipsum Tení puro frío ranazo readi te tirita la pera oe si de corte querí ser leyenda washas te tiraste, detonao chantar odio gila soplamoco gila pasa paca coshino ql, brocacochi calmao asikalao washas te tirita la pera washas paquepo. Jato de corte soplamoco la legal hechiza zarpao truco caracho ascurrio, de finales asikalao puro gile conotao pasa paca coshino ql calzar washas zarpao truco, abrazo pa lo amigo balazo pa lo enemigo puro gile quieee andai con la pera machucao jato caracho.
+                        {{$sucursal->descripcion}}
                 </h6>
             </div>
             <div>
                 <hr>
             </div>
             <div class="card-body">
-                <a href="#" class="button btn btn-primary btn-block">Editar</a>
+                <a href="{{ route('admin.sucursales.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}" class="button btn btn-primary btn-block">Editar</a>
             </div>
         </div>
     </div>
     <!-- Column -->
 
-<div class="col-lg-6 col-xlg-9 col-md-7">
+<div class="col-lg-8 col-xlg-9 col-md-7">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title m-t-10">Sucursales Clinica Davila</h4>
+                        <h4 class="card-title m-t-10">Secciones {{$sucursal->nombre_cliente}}</h4>
                     </div>
                     <div>
-                        <a href="" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
+                    <a href="{{route('admin.secciones.create',  ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva seccion</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Nombre Sucursal</th>
                                 <th>Direccion</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($secciones as $seccion)
                             <tr>
-                                <td>Sucursal 1</td>
-                                <td>Avenida Recoleta 5567</td>
+                                <td>{{$seccion->id_seccion}}</td>
+                                <td>{{$seccion->nombre_cliente}}</td>
+                                <td>{{$seccion->direccion_cliente}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    <a class="btn btn-default btn-xs" href="{{ route('admin.secciones.show',
+                                    ['cliente'=>$cliente,'sucursal'=>$sucursal, 'seccion'=>$seccion]
+                                    )}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.secciones.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal, 'seccion'=>$seccion])}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
+                                    {{-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}}, {{$sucursal->id_sucursal}})">
                                         <i class="fa fa-trash"></i>
-                                    </button>
+                                    </button> --}}
                                 </td>
                             </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -95,6 +108,38 @@
 <!-- ============================================================== -->
 <!-- End PAge Content -->
 <!-- ============================================================== -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sucursal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Estas Seguro de querer eliminar esta sucursal?</h5>
+            </div>
+            <div class="modal-footer">
+
+
+                <form method="POST" action="" class="d-inline" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -126,5 +171,19 @@
             });
         });
 
+    </script>
+    <script type="text/javascript">
+        function deleteData(id, id_sucursal)
+        {
+            var id = id;
+            var url = "/admin/sucursales/"+id+"/"+id_sucursal;
+            console.log(url);
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
     </script>
 @endpush
