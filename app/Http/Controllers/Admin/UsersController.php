@@ -194,6 +194,7 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $this->authorize('delete', $user);
+        $user->registroEstados()->where('user_id', $id)->delete();
         $user->delete();
 
         return redirect()->route('admin.usuarios.index')->withFlash('Usuario eliminado');
