@@ -36,7 +36,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 Route::resource('roles', 'Admin\RolesController', ['as' => 'admin']);
                 Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
                 Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
-                // Route::resource('equipos', 'Admin\ClientsController', ['as' => 'admin']);
+
+                // SUCURSALES
+                Route::get('sucursales/create/{cliente}','Admin\SucursalesController@create')->name('admin.sucursales.create');
+                Route::get('sucursales/{cliente}/edit/{sucursal}','Admin\SucursalesController@edit')->name('admin.sucursales.edit');
+                Route::put('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@update')->name('admin.sucursales.update');
+                Route::delete('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@destroy')->name('admin.sucursales.destroy');
+
+                Route::resource('sucursales', 'Admin\SucursalesController',['as' => 'admin', 'except' => ['create', 'edit', 'update', 'destroy']] );
+
                 Route::get('provinciasPorRegion/{id}', 'Admin\RegionsController@GetProvinciasPorRegiones');
                 Route::get('comunasPorProvincia/{id}', 'Admin\RegionsController@GetComunasPorProvincia');
             });

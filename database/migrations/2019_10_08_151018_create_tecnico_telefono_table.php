@@ -30,6 +30,6 @@ class CreateTecnicoTelefonoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tecnico_telefono');
+
     }
 }

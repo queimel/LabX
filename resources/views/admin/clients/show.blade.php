@@ -41,7 +41,7 @@
                 <hr>
             </div>
             <div class="card-body">
-                <a href="#" class="button btn btn-primary btn-block">Editar</a>
+                <a href="{{ route('admin.clientes.edit', $cliente)}}" class="button btn btn-primary btn-block">Editar</a>
             </div>
         </div>
     </div>
@@ -55,13 +55,14 @@
                         <h4 class="card-title m-t-10">Sucursales {{$cliente->nombre_cliente}}</h4>
                     </div>
                     <div>
-                        <a href="" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
+                    <a href="{{route('admin.sucursales.create',  $cliente)}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sucursal</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Nombre Sucursal</th>
                                 <th>Direccion</th>
                                 <th>Acciones</th>
@@ -70,19 +71,20 @@
                         <tbody>
                             @foreach ($sucursales as $sucursal)
                             <tr>
+                                <td>{{$sucursal->id_sucursal}}</td>
                                 <td>{{$sucursal->nombre_cliente}}</td>
                                 <td>{{$sucursal->direccion_cliente}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.sucursales.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}}, {{$sucursal->id_sucursal}})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                 </td>
                             </tr>
                             @endforeach
@@ -98,6 +100,38 @@
 <!-- ============================================================== -->
 <!-- End PAge Content -->
 <!-- ============================================================== -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sucursal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Estas Seguro de querer eliminar esta sucursal?</h5>
+            </div>
+            <div class="modal-footer">
+
+
+                <form method="POST" action="" class="d-inline" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -129,5 +163,19 @@
             });
         });
 
+    </script>
+    <script type="text/javascript">
+        function deleteData(id, id_sucursal)
+        {
+            var id = id;
+            var url = "/admin/sucursales/"+id+"/"+id_sucursal;
+            console.log(url);
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
     </script>
 @endpush

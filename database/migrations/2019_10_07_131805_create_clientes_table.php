@@ -61,9 +61,10 @@ class CreateClientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regions');
-        Schema::dropIfExists('provincias');
         Schema::dropIfExists('clientes');
+        Schema::dropIfExists('comunas');
+        Schema::dropIfExists('provincias');
+        Schema::dropIfExists('regions');
 
     }
 }
