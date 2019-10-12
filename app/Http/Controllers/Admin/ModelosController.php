@@ -75,7 +75,11 @@ class ModelosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $modelo = Modelo::find($id);
+        $marcas = Marca::all();
+
+        return view('admin.equipos.modelos.edit', compact('modelo', 'marcas'));
+
     }
 
     /**
@@ -87,7 +91,19 @@ class ModelosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $modelo = Modelo::find($id);
+        $marca = $modelo->marca;
+
+        $data = $request->validate([
+            'id_marca_modelo' => 'required',
+            'nombre_modelo' => ['required', 'string', 'max:255'],
+            'descripcion_modelo' => ['required', 'string', 'max:255'],
+            'frecuencia_modelo' => ['required', 'numeric']
+        ]);
+
+        $modelo->update($data);
+
+        return redirect()->route('admin.equipos.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido editado");
     }
 
     /**

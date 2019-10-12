@@ -69,10 +69,8 @@
                                 <td>{{$modelo->descripcion_modelo}}</td>
                                 <td>{{$modelo->frecuencia_modelo}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.marcas.show', $modelo)}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.marcas.edit', $modelo)}}">
+
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.modelos.edit', $modelo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
