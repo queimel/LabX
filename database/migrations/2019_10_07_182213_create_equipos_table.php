@@ -13,6 +13,13 @@ class CreateEquiposTable extends Migration
      */
     public function up()
     {
+        Schema::create('countries', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('iso');
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('marcas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre_marca');
@@ -51,7 +58,7 @@ class CreateEquiposTable extends Migration
      */
     public function down()
     {
-
+        Schema::dropIfExists('countries');
         Schema::dropIfExists('equipos');
         Schema::dropIfExists('modelos');
         Schema::dropIfExists('marcas');

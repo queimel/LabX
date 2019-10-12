@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MarcasSeed extends Seeder
+class MarcasSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,14 +13,14 @@ class MarcasSeed extends Seeder
     {
         $now = \Carbon\Carbon::now();
         $marcas = [
-            ['BIO RAD','MEXICO'],
-            ['OLYMPUS','CHILE'],
-            ['BECKMANCOULTER','PERU'],
-            ['ELITECH','ARGENTINA'],
-            ['ARKRAY','BOLIVIA'],
-            ['ERBA','URUGUAY'],
-            ['MECHATRONICS','PARAGUAY'],
-            ['IRIS','VENEZUELA'],
+            ['BIO RAD', 4],
+            ['OLYMPUS',4],
+            ['BECKMANCOULTER',180],
+            ['ELITECH',75],
+            ['ARKRAY',75],
+            ['ERBA',4],
+            ['MECHATRONICS',75],
+            ['IRIS',4],
         ];
 
         $marcas = array_map(function ($marcas) use ($now) {

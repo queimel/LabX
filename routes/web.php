@@ -51,9 +51,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 Route::delete('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@destroy')->name('admin.secciones.destroy');
                 Route::get('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@show')->name('admin.secciones.show');
 
+                // COMBOBOX REGIONES Y PROVINCIAS
                 Route::get('provinciasPorRegion/{id}', 'Admin\RegionsController@GetProvinciasPorRegiones');
                 Route::get('comunasPorProvincia/{id}', 'Admin\RegionsController@GetComunasPorProvincia');
+
+                // EQUIPOS
                 Route::resource('equipos', 'Admin\EquiposController', ['as' => 'admin']);
+
+                // MARCAS
+                Route::resource('equipos/marcas', 'Admin\MarcasController', ['as' => 'admin.equipos']);
             });
 
             Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
