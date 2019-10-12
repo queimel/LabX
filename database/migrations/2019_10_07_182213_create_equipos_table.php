@@ -31,7 +31,7 @@ class CreateEquiposTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_marca_modelo');
             $table->string('nombre_modelo');
-            $table->text('descripcion_modelo');
+            $table->text('descripcion_modelo')->nullable();
             $table->integer('frecuencia_modelo');
             $table->foreign('id_marca_modelo')->references('id')->on('marcas');
             $table->timestamps();
