@@ -70,7 +70,12 @@ class MarcasController extends Controller
      */
     public function show($id)
     {
-        //
+        // SELECT a la marca con el id
+        $marca = Marca::find($id);
+        $modelos = $marca->modelos;
+
+        // redirecciona a la vista con el detalle de la marca, pasandole la marca y los modelos de esta, para que puedan ser impresos en la vista
+        return view('admin.equipos.marcas.show', compact('marca', 'modelos'));
     }
 
     /**

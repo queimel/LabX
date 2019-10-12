@@ -1,46 +1,83 @@
 @extends('layouts.app')
-
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Marcas</h3>
+        <h3 class="text-themecolor">Ver Marca</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Equipos</a></li>
-            <li class="breadcrumb-item active">Marcas</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.equipos.marcas.index')}}">Marcas</a></li>
+            <li class="breadcrumb-item active">{{$marca->nombre_marca}}</li>
         </ol>
     </div>
 </div>
 @endpush
 @section('content')
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<!-- Row -->
 <div class="row">
-    <div class="col-12">
+    <!-- Column -->
+    <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-body">
+                <h2>{{$marca->nombre_marca}}</h2>
+            </div>
+            <div>
+                <hr>
+            </div>
+            <div class="card-body">
+                <small class="text-muted">Origen </small>
+                <h6>{{$marca->pais->name}}</h6>
+            </div>
+            <div>
+                <hr>
+            </div>
+            <div class="card-body">
+                <a href="{{ route('admin.equipos.marcas.edit', $marca)}}" class="button btn btn-primary btn-block">Editar</a>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title m-t-10">Modelos {{$marca->nombre_marca}}</h4>
+                    </div>
+                    <div>
+                    {{-- <a href="{{route('admin.secciones.create',  ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva seccion</a> --}}
+                    </div>
+                </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Nombre Marca</th>
-                                <th>Origen</th>
+                                <th>Nombre Modelo</th>
+                                <th>Descripcion</th>
+                                <th>Frecuencia</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($marcas as $marca)
+                            @foreach ($modelos as $modelo)
                             <tr>
-                                <td>{{$marca->nombre_marca}}</td>
-                                <td>{{$marca->pais->name}}</td>
+                                <td>{{$modelo->nombre_modelo}}</td>
+                                <td>{{$modelo->descripcion_modelo}}</td>
+                                <td>{{$modelo->frecuencia_modelo}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.marcas.show', $marca)}}">
+                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.marcas.show', $modelo)}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.marcas.edit', $marca)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.marcas.edit', $modelo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$marca->id}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal"
+                                        onclick="deleteData({{$modelo->id}})">
                                         <i class="fa fa-trash"></i>
                                     </button>
 
@@ -54,20 +91,25 @@
         </div>
     </div>
 </div>
+<!-- Row -->
+<!-- ============================================================== -->
+<!-- End PAge Content -->
+<!-- ============================================================== -->
+
 
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Marca</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sección</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar esta marca?</h5>
+                <h5>¿Estas Seguro de querer eliminar esta seccion?</h5>
             </div>
             <div class="modal-footer">
 
@@ -75,7 +117,7 @@
                 <form method="POST" action="" class="d-inline" id="deleteForm">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-danger" type="submit">
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
                         Eliminar
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -84,6 +126,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
@@ -117,11 +160,11 @@
 
     </script>
     <script type="text/javascript">
-        function deleteData(id)
+        function deleteData(id, id_sucursal, id_seccion)
         {
             var id = id;
-            var url = '{{ route("admin.equipos.marcas.destroy", ":id") }}';
-            url = url.replace(':id', id);
+            var url = "/admin/secciones/"+id+"/"+id_sucursal+"/"+id_seccion;
+            console.log(url);
             $("#deleteForm").attr('action', url);
         }
 
