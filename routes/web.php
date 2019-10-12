@@ -57,6 +57,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 // MARCAS
                 Route::resource('equipos/marcas', 'Admin\MarcasController', ['as' => 'admin.equipos']);
+
+                // MODELOS
+                Route::resource('equipos/modelos', 'Admin\ModelosController', ['as' => 'admin.equipos']);
             });
 
             Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
