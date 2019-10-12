@@ -82,17 +82,17 @@
                                 <td>{{$seccion->direccion_cliente}}</td>
                                 <td>
                                     <a class="btn btn-default btn-xs" href="{{ route('admin.secciones.show',
-                                    ['cliente'=>$cliente,'sucursal'=>$sucursal, 'seccion'=>$seccion]
+                                    ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal, 'seccion'=>$seccion->id_seccion]
                                     )}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.secciones.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal, 'seccion'=>$seccion])}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.secciones.edit', ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal, 'seccion'=>$seccion->id_seccion])}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    {{-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}}, {{$sucursal->id_sucursal}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}}, {{$sucursal->id_sucursal}} , {{$seccion->id_seccion}})">
                                         <i class="fa fa-trash"></i>
-                                    </button> --}}
+                                    </button>
                                 </td>
                             </tr>
                             @endforeach
@@ -116,13 +116,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sucursal</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sección</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar esta sucursal?</h5>
+                <h5>¿Estas Seguro de querer eliminar esta seccion?</h5>
             </div>
             <div class="modal-footer">
 
@@ -173,10 +173,10 @@
 
     </script>
     <script type="text/javascript">
-        function deleteData(id, id_sucursal)
+        function deleteData(id, id_sucursal, id_seccion)
         {
             var id = id;
-            var url = "/admin/sucursales/"+id+"/"+id_sucursal;
+            var url = "/admin/secciones/"+id+"/"+id_sucursal+"/"+id_seccion;
             console.log(url);
             $("#deleteForm").attr('action', url);
         }
