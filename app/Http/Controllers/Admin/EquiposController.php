@@ -17,6 +17,13 @@ class EquiposController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function GetModeloPorEquipo($id_equipo){
+
+        // return Modelo::find($id_marca_modelo)->modelos;
+        return Equipo::where('id', $id_equipo)->get();
+
+    }
+
     public function GetModeloPorMarca($id_marca_modelo){
 
         // return Modelo::find($id_marca_modelo)->modelos;
@@ -27,7 +34,9 @@ class EquiposController extends Controller
     public function index()
     {
         $equipos = Equipo::all();
-        return view('admin.equipos.index', compact('equipos'));
+        $marcas = Marca::all();
+        $modelos = Modelo::all();
+        return view('admin.equipos.index', compact('equipos','marcas','modelos'));
     }
 
     /**
@@ -72,7 +81,7 @@ class EquiposController extends Controller
 
        $equipo->save();
 
-        return redirect()->route('admin.equipos.create')->withFlash('El equipo ha sido creado e ingresado a bodega');
+        return redirect()->route('admin.equipos.index')->withFlash('El equipo ha sido creado e ingresado a bodega');
     }
 
     /**

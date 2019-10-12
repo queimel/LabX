@@ -23,12 +23,10 @@
                             <tr>
                                 <th>Marca</th>
                                 <th>Modelo</th>
-                                <th>Cliente</th>
                                 <th>Número de serie</th>
-                                <th>Fecha fabricación</th>
-                                <!-- Debe cargar la frecuencia al asignar un equipo nuevo -->
                                 <th>Test</th>
                                 <th>Fecha mantención</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,36 +34,36 @@
                             @foreach ($equipos as $equipo)
                             <tr>
                                 <td>
-                                    {{$equipos->id_cliente_equipo}}
+                                    <script>
+                                        function(){
+                                            var region = $(this).val();
+                                            $.get({{config('url')}}'/admin/modeloPorEquipo/'+equipo, function(data){
+                                                var region = data[i] = nombre_region;
+                                            });
+                                        });
+                                        document.write();
+                                    </script>
+                                </td>
+                                <td></td>
                                 <td>
-                                    {{$equipos->num_serie_equipo}}
+                                    {{$equipo->num_serie_equipo}}
                                 </td>
                                 <td>
-                                    {{$equipos->fecha_fabricacion_equipo}}
+                                    {{$equipo->test_equipo}}
                                 </td>
                                 <td>
-                                    {{$equipos->test_equipo}}
+                                    {{$equipo->fecha_ultima_mantencion_equipo}}
                                 </td>
                                 <td>
-                                    {{$equipos->fecha_ultima_mantencion_equipo}}
-                                </td>
-                                <!-- <td>
-                                    {{$equipos->direccion_cliente}}
-                                </td>
-                                <td>
-                                    {{$equipos->direccion_cliente}}
-                                </td> -->
-                                <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.show', $cliente)}}">
+                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.show', $equipo)}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.edit', $cliente)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.edit', $equipo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal">
+                                    <!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$equipo->id}})">
                                         <i class="fa fa-trash"></i>
-                                    </button>
+                                    </button> -->
 
                                 </td>
                             </tr>
@@ -78,34 +76,6 @@
     </div>
 </div>
 
-<!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Cliente</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar este cliente?</h5>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-
-                <form method="POST" action="{{ route('admin.clientes.destroy', $cliente)}}" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger" type="submit">
-                        Eliminar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> -->
 @endsection
 
 @push('scripts')
@@ -137,5 +107,14 @@
             });
         });
 
+    </script>
+
+    <script>
+        function(){
+            var region = $(this).val();
+            $.get({{config('url')}}'/admin/modeloPorEquipo/'+equipo, function(data){
+                var region = data[i] = nombre_region;
+            });
+        });
     </script>
 @endpush
