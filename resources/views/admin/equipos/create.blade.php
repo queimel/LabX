@@ -23,19 +23,21 @@
                     <h4 class="card-title">Ingresa los datos del nuevo equipo</h4>
                     <hr>
                     <div class="form-group">
-                        <label for="">Modelo equipo</label>
-                        <select class="custom-select" id="modelo" name="modelo_equipo">
-                            <option selected>Modelo</option>
-                                @foreach ($modelos as $modelo)
-                                <option value="{{$modelo->id}}">{{$modelo->nombre_modelo}}</option>
+                        <label for="">Marca equipo</label>
+                        <select class="custom-select" id="marca" name="marca_equipo" required>
+                            <option selected>Marca</option>
+                                @foreach ($marcas as $marca)
+                                <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
                                 @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Nombre de Cliente</label>
-                        <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value="">
+                        <label for="">Modelo equipo</label>
+                        <select class="custom-select" id="modelo" name="modelo_equipo" disabled required>
+
+                        </select>
                     </div>
-                    <div class="form-group  @error('rut_cliente') has-danger @enderror">
+                    <div class="form-group  @error('num_serie') has-danger @enderror">
                         <label>Número de serie equipo</label>
                         <input type="text" class="form-control" id="num_serie" name="num_serie" value="">
 
@@ -43,17 +45,6 @@
                     <div class="form-group">
                         <label>Fecha fabricación</label>
                         <input type="date" class="form-control" id="fecha_fabricacion" name="fecha_fabricacion" value="2019-10-09" min="2000-01-01" max="2019-10-09">
-
-                    </div>
-                    <div class="form-group">
-                        <label>Test equipo</label>
-                        <input type="text" class="form-control" id="test_equipo" name="test_equipo" value="">
-
-                    </div>
-                    <div class="form-group">
-                        <label>Fecha ultima mantención</label>
-                        <input type="date" class="form-control" id="fecha_ultima_modificacion" name="fecha_ultima_modificacion" value="">
-
                     </div>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear equipo</button>
@@ -68,3 +59,19 @@
 
 @endsection
 
+@push('scripts')
+<script src="{{ asset('js/plugins/jquery/jquery.min.js')}}"></script>
+<script>
+    $(document).ready(function(){
+        $("#marca").change(function(){
+            var marca = $(this).val();
+            $.get({{config('url')}}'/admin/modeloPorMarca/'+marca, function(data){
+                var modelos_select = '<option value="">Seleccione Modelo</option>'
+                    for (var i=0; i<data.length;i++)
+                    modelos_select+='<option value="'+data[i].id_marca_modelo+'">'+data[i].nombre_modelo+'</option>';
+
+                    $("#modelo").html(modelos_select).removeAttr('disabled');
+            });
+        });
+</script>
+@endpush

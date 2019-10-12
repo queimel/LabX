@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 Route::get('provinciasPorRegion/{id}', 'Admin\RegionsController@GetProvinciasPorRegiones');
                 Route::get('comunasPorProvincia/{id}', 'Admin\RegionsController@GetComunasPorProvincia');
 
+                Route::get('modeloPorMarca/{id_marca}', 'Admin\EquiposController@GetModeloPorMarca');
                 // EQUIPOS
                 Route::resource('equipos', 'Admin\EquiposController', ['as' => 'admin']);
 

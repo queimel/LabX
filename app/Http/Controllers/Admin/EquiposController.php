@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Modelo;
+use App\Marca;
 
 class EquiposController extends Controller
 {
@@ -13,6 +14,13 @@ class EquiposController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function GetModeloPorMarca($id_marca){
+
+        return Modelo::find($id_marca)->modelos;
+
+    }
+
     public function index()
     {
         return view('admin.equipos.index');
@@ -25,8 +33,10 @@ class EquiposController extends Controller
      */
     public function create()
     {
-        $modelos = Modelo::all();
-        return view('admin.equipos.create', compact('modelos'));
+
+         $marcas = Marca::all();
+         return view('admin.equipos.create', compact('marcas'));
+
 
     }
 
@@ -38,7 +48,24 @@ class EquiposController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar formulario
+        $data = $request->validate([
+            'marca' => 'required',
+            'modelo' => 'required',
+            'num_serie' => 'required',
+            'fecha_fabricacion' => ['required', 'date'],
+        ]);
+
+       $data['id'] = $ultimoRegistro->id + 1;
+       $data['id_sucursal'] = 0;
+       $data['id_seccion'] = 0;
+
+       $cliente = Cliente::create($data);
+
+
+       $cliente->save();
+
+        return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido creado');
     }
 
     /**
