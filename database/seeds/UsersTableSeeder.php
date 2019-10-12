@@ -41,6 +41,7 @@ class UsersTableSeeder extends Seeder
         $admin->password_changed_at = Carbon::create('2019-10-01');
         $admin->save();
 
+
         $admin->assignRole($adminRole);
 
         $adminState = new RegistroEstado;
@@ -50,6 +51,21 @@ class UsersTableSeeder extends Seeder
         $admin->registroEstados()->save($adminState);
 
 
+        $adm1 = new User;
+        $adm1->name = "Usuario Adm1";
+        $adm1->email = "jtorrealbat@gmail.com";
+        $adm1->password = 'Huerfanos.770';
+        $adm1->active = true;
+        $adm1->password_changed_at = Carbon::create('2019-10-1');
+        $adm1->save();
+
+        $adm1->assignRole($adminRole);
+
+        $adminState1 = new RegistroEstado;
+        $adminState1->fecha_estado = Carbon::now();
+        $adminState1->estado = true;
+
+        $adm1->registroEstados()->save($adminState1);
 
         $supervisor = new User;
         $supervisor->name = "Usuario Supervisor";

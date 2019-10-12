@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 // Route::resource('equipos', 'Admin\ClientsController', ['as' => 'admin']);
                 Route::get('provinciasPorRegion/{id}', 'Admin\RegionsController@GetProvinciasPorRegiones');
                 Route::get('comunasPorProvincia/{id}', 'Admin\RegionsController@GetComunasPorProvincia');
+                Route::resource('equipos', 'Admin\EquiposController', ['as' => 'admin']);
             });
 
             Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
