@@ -75,7 +75,7 @@
                                 <td>{{$sucursal->nombre_cliente}}</td>
                                 <td>{{$sucursal->direccion_cliente}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.index')}}">
+                                    <a class="btn btn-default btn-xs" href="{{ route('admin.sucursales.show', ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a class="btn btn-primary btn-xs" href="{{ route('admin.sucursales.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}">

@@ -73,9 +73,13 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $id_sucursal)
     {
-        //
+        $cliente = Cliente::find($id);
+        $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
+        $secciones = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', '<>',0)->get();
+
+        return view('admin.sucursales.show', compact('cliente', 'sucursal', 'secciones'));
     }
 
     /**
