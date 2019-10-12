@@ -8,7 +8,7 @@ class Modelo extends Model
 {
     public function marca()
     {
-        return $this->belongsTo('App\Marca');
+        return $this->belongsTo('App\Marca', 'id_marca_modelo');
     }
 
     public function repuestos()
