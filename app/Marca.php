@@ -14,7 +14,7 @@ class Marca extends Model
 
     public function modelos()
     {
-        return $this->hasMany('App\Modelo');
+        return $this->hasMany('App\Modelo', 'id_marca_modelo');
     }
 
     public function pais()

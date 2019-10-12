@@ -37,7 +37,7 @@
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$marca->id}})">
                                         <i class="fa fa-trash"></i>
                                     </button>
 
@@ -55,7 +55,7 @@
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Eliminar Marca</h5>
@@ -67,14 +67,15 @@
                 <h5>¿Estas Seguro de querer eliminar esta marca?</h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
-                <form method="POST" action="{{ route('admin.roles.destroy', $marca)}}" class="d-inline">
+
+                <form method="POST" action="" class="d-inline" id="deleteForm">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">
                         Eliminar
                     </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </form>
             </div>
         </div>
@@ -111,5 +112,19 @@
             });
         });
 
+    </script>
+    <script type="text/javascript">
+        function deleteData(id)
+        {
+            var id = id;
+            var url = '{{ route("admin.equipos.marcas.destroy", ":id") }}';
+            url = url.replace(':id', id);
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
     </script>
 @endpush

@@ -117,13 +117,23 @@ class MarcasController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * RUTA: admin.equipos.marcas.destroy
+     * Elimina una marca de la BBDD.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        // SELECT a la marca con el $id
+        $marca = Marca::find($id);
+
+        // Elimina modelos que tengan esta marca (en tabla modelos)
+        $marca->modelos()->where('id_marca_modelo', $id)->delete();
+        // DELETE a la marca
+        $marca->delete();
+
+        // Si todo sale bien redirecciona al index de marcas con un mensaje de exito
+        return redirect()->route('admin.equipos.marcas.index')->withFlash("La marca {$marca->nombre_marca} ha sido eliminada");
     }
 }
