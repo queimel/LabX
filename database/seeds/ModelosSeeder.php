@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ModelosSeed extends Seeder
+class ModelosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
