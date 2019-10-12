@@ -114,6 +114,10 @@ class ModelosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $modelo = Modelo::find($id);
+
+        $modelo->delete();
+
+        return redirect()->route('admin.equipos.marcas.show', $modelo->marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido eliminado");
     }
 }

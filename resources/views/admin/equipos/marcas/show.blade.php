@@ -96,18 +96,18 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sección</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Modelo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar esta seccion?</h5>
+                <h5>¿Estas Seguro de querer eliminar este modelo?</h5>
             </div>
             <div class="modal-footer">
 
@@ -158,11 +158,10 @@
 
     </script>
     <script type="text/javascript">
-        function deleteData(id, id_sucursal, id_seccion)
+        function deleteData(id)
         {
             var id = id;
-            var url = "/admin/secciones/"+id+"/"+id_sucursal+"/"+id_seccion;
-            console.log(url);
+            var url = "/admin/equipos/modelos/"+id;
             $("#deleteForm").attr('action', url);
         }
 
