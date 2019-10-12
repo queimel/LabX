@@ -114,7 +114,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cliente = Cliente::find($id);
+
         $data = $request->validate([
             'nombre_cliente' => ['required', 'string', 'max:255'],
             'rut_cliente' => ['required', 'cl_rut'],
@@ -123,8 +123,21 @@ class ClientsController extends Controller
             'id_comuna' => 'required'
         ]);
 
-        $cliente->update($data);
-        return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido modificado');
+        $nombre_cliente = $data['nombre_cliente'];
+        $rut_cliente = $data['rut_cliente'];
+        $descripcion_cliente = $data['descripcion_cliente'];
+        $direccion_cliente = $data['direccion_cliente'];
+        $id_comuna = $data['id_comuna'];
+
+        $updateCliente = DB::update('UPDATE `clientes` SET `nombre_cliente` = ?, `rut_cliente` = ?, `descripcion_cliente`=  ?, `direccion_cliente`= ?, `id_comuna` = ? WHERE `id`= ? AND id_sucursal= 0 AND id_seccion= 0' , [$nombre_cliente, $rut_cliente, $descripcion_cliente,$direccion_cliente, $id_comuna, $id ]);
+
+        if($updateCliente){
+            return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido modificado');
+        }else {
+            echo 'falla la wea';
+        }
+
+
     }
 
     /**
@@ -136,7 +149,11 @@ class ClientsController extends Controller
     public function destroy($id)
     {
         // buscar todos los clientes (clientes sucursales y secciones) con el $id cliente y eliminarlos
-        $clientes = Cliente::where('id',$id)->delete();
-        return redirect()->route('admin.clientes.index')->withFlash('Cliente eliminado');
+        //$clientes = Cliente::where('id',$id)->delete();
+        $deleteCliente = DB::delete('DELETE from `clientes` WHERE `id`=?',[$id]);
+        if($deleteCliente){
+            return redirect()->route('admin.clientes.index')->withFlash('Cliente eliminado');
+        }
+
     }
 }

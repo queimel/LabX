@@ -23,6 +23,6 @@ class CreateTecnicosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tecnicos');
+
     }
 }
