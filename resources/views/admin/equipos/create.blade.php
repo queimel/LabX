@@ -33,18 +33,18 @@
                     </div>
                     <div class="form-group">
                         <label for="">Modelo equipo</label>
-                        <select class="custom-select" id="modelo" name="modelo_equipo" disabled required>
+                        <select class="custom-select" id="id_modelo_equipo" name="id_modelo_equipo" disabled required>
 
                         </select>
                     </div>
                     <div class="form-group  @error('num_serie') has-danger @enderror">
                         <label>Número de serie equipo</label>
-                        <input type="text" class="form-control" id="num_serie" name="num_serie" value="">
+                        <input type="text" class="form-control" id="num_serie_equipo" name="num_serie_equipo" value="">
 
                     </div>
                     <div class="form-group">
                         <label>Fecha fabricación</label>
-                        <input type="date" class="form-control" id="fecha_fabricacion" name="fecha_fabricacion" value="2019-10-09" min="2000-01-01" max="2019-10-09">
+                        <input type="date" class="form-control" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="2019-10-09" min="2000-01-01" max="2019-10-09">
                     </div>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear equipo</button>
@@ -68,10 +68,10 @@
             $.get({{config('url')}}'/admin/modeloPorMarca/'+marca, function(data){
                 var modelos_select = '<option value="">Seleccione Modelo</option>'
                     for (var i=0; i<data.length;i++)
-                    modelos_select+='<option value="'+data[i].id_marca_modelo+'">'+data[i].nombre_modelo+'</option>';
-
-                    $("#modelo").html(modelos_select).removeAttr('disabled');
+                    modelos_select+='<option value="'+data[i].id+'">'+data[i].nombre_modelo+'</option>';
+                    $("#id_modelo_equipo").html(modelos_select).removeAttr('disabled');
             });
         });
+    });
 </script>
 @endpush

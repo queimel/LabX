@@ -48,7 +48,7 @@ class CreateEquiposTable extends Migration
             $table->integer('test_equipo');
             $table->date('fecha_ultima_mantencion_equipo');
             $table->foreign('id_modelo_equipo')->references('id')->on('modelos');
-            $table->foreign('id_cliente_equipo')->references('id')->on('clientes');
+            $table->foreign(['id_cliente','id_sucursal','id_seccion'])->references(['id','id_sucursal','id_seccion'])->on('clientes');
             $table->timestamps();
         });
     }

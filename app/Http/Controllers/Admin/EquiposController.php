@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Modelo;
 use App\Marca;
+use App\Equipo;
+use Illuminate\Support\Carbon;
 
 class EquiposController extends Controller
 {
@@ -15,15 +17,17 @@ class EquiposController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function GetModeloPorMarca($id_marca){
+    public function GetModeloPorMarca($id_marca_modelo){
 
-        return Modelo::find($id_marca)->modelos;
+        // return Modelo::find($id_marca_modelo)->modelos;
+        return Modelo::where('id_marca_modelo', $id_marca_modelo)->get();
 
     }
 
     public function index()
     {
-        return view('admin.equipos.index');
+        $equipos = Equipo::all();
+        return view('admin.equipos.index', compact('equipos'));
     }
 
     /**
@@ -50,22 +54,25 @@ class EquiposController extends Controller
     {
         // validar formulario
         $data = $request->validate([
-            'marca' => 'required',
-            'modelo' => 'required',
-            'num_serie' => 'required',
-            'fecha_fabricacion' => ['required', 'date'],
+            'id_modelo_equipo' => 'required',
+            'num_serie_equipo' => 'required',
+            'fecha_fabricacion_equipo' => ['required', 'date'],
         ]);
 
-       $data['id'] = $ultimoRegistro->id + 1;
-       $data['id_sucursal'] = 0;
-       $data['id_seccion'] = 0;
+        $data['id_cliente'] = 10;
+        $data['id_sucursal'] = 1;
+        $data['id_seccion'] = 1;
+        $data['test_equipo'] = 0;
+        $data['fecha_ultima_mantencion_equipo'] = Carbon::now();
+        $data['fecha_fabricacion_equipo'] = Carbon::parse($data['fecha_fabricacion_equipo']);
+        //dd($data);
 
-       $cliente = Cliente::create($data);
+        $equipo = Equipo::create($data);
 
 
-       $cliente->save();
+       $equipo->save();
 
-        return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido creado');
+        return redirect()->route('admin.equipos.create')->withFlash('El equipo ha sido creado e ingresado a bodega');
     }
 
     /**
