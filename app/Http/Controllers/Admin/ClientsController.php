@@ -54,7 +54,7 @@ class ClientsController extends Controller
             ]);
 
            // $data['direccion_cliente'] = $data['direccion_cliente'].$data['comuna_cliente'];
-           $ultimoRegistro = DB::table('clientes')->latest()->first();
+           $ultimoRegistro = DB::table('clientes')->latest('id')->first();
 
            $data['id'] = $ultimoRegistro->id + 1;
            $data['id_sucursal'] = 0;

@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 // SUCURSALES
                 Route::get('sucursales/create/{cliente}','Admin\SucursalesController@create')->name('admin.sucursales.create');
+                Route::post('sucursales/','Admin\SucursalesController@store')->name('admin.sucursales.store');
                 Route::get('sucursales/{cliente}/edit/{sucursal}','Admin\SucursalesController@edit')->name('admin.sucursales.edit');
                 Route::put('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@update')->name('admin.sucursales.update');
                 Route::delete('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@destroy')->name('admin.sucursales.destroy');

@@ -53,7 +53,16 @@
                             @error('password')
                             <small class="form-control-feedback d-block">{{ $message }}</small>
                             @enderror
-                            <small class="help-block d-block">Dejar en blanco si no quieres cambiar la contraseña</small>
+
+                            <div class="d-flex justify-content-between">
+                                <small class="help-block d-block">Dejar en blanco si no quieres cambiar la contraseña</small>
+                                <small data-toggle="tooltip" class="form-text text-muted text-right" data-placement="right"
+                                    title="Debe contener a lo menos un carácter en minúscula, uno en mayúscula, un numero, un carácter especial y el largo debe ser mayor o igual a 8">
+                                    Formato
+                                    <i class="fa fa-question-circle"></i>
+                                </small>
+                            </div>
+
                         </div>
                         <div class="form-group @error('password_confirmation') has-danger @enderror">
                             <label for="pwd2">Confirmar contraseña</label>
@@ -106,7 +115,7 @@
                     <hr>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Actualizar Usuario</button>
-                        <button class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                        <a class="btn btn-inverse waves-effect waves-light" href="{{ URL::previous() }}">Cancelar</a>
                     </div>
                 </div>
             </div>

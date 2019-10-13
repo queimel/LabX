@@ -98,8 +98,8 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <div class="checkbox checkbox-info pull-left p-t-0">
-                                            <input class="filled-in chk-col-light-blue" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} id="checkbox-signup">
-                                            <label for="checkbox-signup"> Recuerdame </label>
+                                            <input class="filled-in chk-col-light-blue" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                            <label for="remember"> Recuerdame </label>
                                         </div>
                                         @if (Route::has('password.request'))
                                             <a id="to-recover" class="text-dark pull-right" href="{{ route('password.request') }}">
