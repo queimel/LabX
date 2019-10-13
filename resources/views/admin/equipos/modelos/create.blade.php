@@ -61,7 +61,7 @@
                         <hr>
                         <div class="form-group d-flex justify-content-end">
                             <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Modelo</button>
-                            <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                            <a class="btn btn-inverse waves-effect waves-light" href="{{ URL::previous() }}">Cancelar</a>
                         </div>
                     </div>
                 </div>
