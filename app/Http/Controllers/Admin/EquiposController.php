@@ -17,20 +17,6 @@ class EquiposController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function GetModeloPorEquipo($id_equipo){
-
-        // return Modelo::find($id_marca_modelo)->modelos;
-        return Equipo::where('id', $id_equipo)->get();
-
-    }
-
-    public function GetModeloPorMarca($id_marca_modelo){
-
-        // return Modelo::find($id_marca_modelo)->modelos;
-        return Modelo::where('id_marca_modelo', $id_marca_modelo)->get();
-
-    }
-
     public function index()
     {
         $equipos = Equipo::all();
@@ -49,7 +35,6 @@ class EquiposController extends Controller
 
          $marcas = Marca::all();
          return view('admin.equipos.create', compact('marcas'));
-
 
     }
 
@@ -103,7 +88,10 @@ class EquiposController extends Controller
      */
     public function edit($id)
     {
-        //
+        $marcas = Marca::all();
+        $equipo = Equipo::find($id);
+        dd($equipo->marca);
+        return view('admin.equipos.create', compact('marcas', 'equipo'));
     }
 
     /**
@@ -127,5 +115,19 @@ class EquiposController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function GetModeloPorEquipo($id_equipo){
+
+        // return Modelo::find($id_marca_modelo)->modelos;
+        return Equipo::where('id', $id_equipo)->get();
+
+    }
+
+    public function GetModeloPorMarca($id_marca_modelo){
+
+        // return Modelo::find($id_marca_modelo)->modelos;
+        return Modelo::where('id_marca_modelo', $id_marca_modelo)->get();
+
     }
 }

@@ -3,11 +3,11 @@
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Listado de Clientes</h3>
+        <h3 class="text-themecolor">Listado de Equipos</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Clientes</li>
+            <li class="breadcrumb-item active">Equipos</li>
         </ol>
     </div>
 </div>
@@ -34,17 +34,11 @@
                             @foreach ($equipos as $equipo)
                             <tr>
                                 <td>
-                                    <script>
-                                        function(){
-                                            var region = $(this).val();
-                                            $.get({{config('url')}}'/admin/modeloPorEquipo/'+equipo, function(data){
-                                                var region = data[i] = nombre_region;
-                                            });
-                                        });
-                                        document.write();
-                                    </script>
+                                    {{ $equipo->modelo->marca->nombre_marca}}
                                 </td>
-                                <td></td>
+                                <td>
+                                    {{ $equipo->modelo->nombre_modelo}}
+                                </td>
                                 <td>
                                     {{$equipo->num_serie_equipo}}
                                 </td>

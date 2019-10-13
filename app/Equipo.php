@@ -16,6 +16,11 @@ class Equipo extends Model
         return $this->belongsTo('App\Cliente');
     }
 
+    public function modelo()
+    {
+        return $this->belongsTo('App\Modelo', 'id_modelo_equipo');
+    }
+
     public function mantenimientos()
     {
         return $this->hasMany('App\Mantenimiento');
