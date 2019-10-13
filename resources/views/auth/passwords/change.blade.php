@@ -39,6 +39,14 @@
                 <strong>{{ $message }}</strong>
             </span>
             @enderror
+
+            <small data-toggle="tooltip"
+                class="form-text text-muted text-right"
+                data-placement="right"
+                title="Debe contener a lo menos un carácter en minúscula, uno en mayúscula, un numero, un carácter especial y el largo debe ser mayor o igual a 8">
+                Formato
+                <i class="fa fa-question-circle"></i>
+            </small>
         </div>
     </div>
     <div class="form-group">
