@@ -156,4 +156,12 @@ class ClientsController extends Controller
         }
 
     }
+
+    public function getCliente($id_cliente){
+        return Cliente::find($id_cliente);
+    }
+
+    public function getSucursalesPorCliente($id_cliente){
+        return Cliente::where('id', $id_cliente)->where('id_sucursal','<>', 0)->where('id_seccion', 0)->get();
+    }
 }

@@ -30,7 +30,13 @@ class SeccionesController extends Controller
      */
     public function create()
     {
-        //
+        $clientes = Cliente::where('id_sucursal', 0)->where('id_seccion', 0)->get();
+
+        // $cliente = Cliente::find($id);
+        // $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
+        $regiones = Region::all();
+
+        return view('admin.secciones.create', compact('clientes','sucursal', 'regiones'));
     }
 
     /**
@@ -41,7 +47,31 @@ class SeccionesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // validar formulario
+        $data = $request->validate([
+            'id' => ['required'],
+            'id_sucursal' => ['required'],
+            'nombre_cliente' => ['required', 'string', 'max:255'],
+            'rut_cliente' => ['required', 'cl_rut'],
+            'descripcion_cliente' => 'string',
+            'direccion_cliente' => ['required', 'string', 'max:255'],
+            'id_comuna' => 'required'
+        ]);
+
+        $id_cliente = $data['id'];
+        $id_sucursal = $data['id_sucursal'];
+
+        $ultimoRegistro = DB::table('clientes')->where('id', $id_cliente )->where('id_sucursal', $id_sucursal)->latest('id_seccion')->first();
+
+        $data['id_seccion'] = $ultimoRegistro->id_seccion + 1;
+
+        $seccion = Cliente::create($data);
+
+
+        $seccion->save();
+
+        return redirect()->route('admin.sucursales.show', ['cliente'=>$id_cliente,'sucursal'=>$id_sucursal])->withFlash('La seccion ha sido creada');
     }
 
     /**
@@ -69,6 +99,7 @@ class SeccionesController extends Controller
         $comuna = Comuna::find($seccion->id_comuna);
         $provincia = Provincia::find($comuna->id_provincia);
         $region = Region::find($provincia->id_region);
+
 
         $regiones = Region::all();
 
@@ -120,10 +151,11 @@ class SeccionesController extends Controller
      */
     public function destroy($id, $id_sucursal, $id_seccion)
     {
+        $cliente = Cliente::find($id);
         $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
         $deleteSeccion = DB::delete('DELETE from `clientes` WHERE `id`=? AND `id_sucursal`=? AND id_seccion= ?',[$id, $id_sucursal, $id_seccion]);
         if($deleteSeccion){
-            return redirect()->route('admin.sucursales.index', $sucursal)->withFlash('La sección ha sido eliminada');
+            return redirect()->route('admin.sucursales.show', ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal])->withFlash('La seccion ha sido eliminada');
         }
     }
 }
