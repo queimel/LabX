@@ -2,42 +2,57 @@
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Crear Sucursal</h3>
+        <h3 class="text-themecolor">Crear Seccion Sucursal</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.clientes.index')}}">Clientes</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.clientes.show', $cliente)}}">{{$cliente->nombre_cliente}}</a></li>
-            <li class="breadcrumb-item active">Crear sucursal</li>
+            <li class="breadcrumb-item active">Crear sección</li>
         </ol>
     </div>
 </div>
 @endpush
 @section('content')
 <!-- Row -->
-<form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.store', $cliente)}}">
+<form class="form p-t-20" method="POST" action="{{ route('admin.secciones.store')}}">
         @csrf
         <div class="row">
             <div class="col-6">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Ingresa los datos de la nueva Sucursal</h4>
-                        <hr>
-                        <input type="hidden" id="id" name="id" value="{{$cliente->id}}">
+                        <div class="form-group">
+                            <label for="">Cliente</label>
+                            <select class="custom-select" id="id_cliente" name="id" required>
+                                <option selected>Cliente</option>
+                                @foreach ($clientes as $cliente)
+                                <option value="{{$cliente->id}}">{{$cliente->nombre_cliente}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <input type="hidden" id="rut_cliente" name="rut_cliente" value="{{ old('rut_cliente')}}">
+
+                        <div class="form-group">
+                            <label for="">Sucursal</label>
+                            <select class="custom-select" id="sucursal" name="id_sucursal" disabled required>
+
+                            </select>
+                        </div>
                         <div class="form-group  @error('nombre_cliente') has-danger @enderror">
-                            <label>Nombre de Sucursal</label>
-                            <input type="text" class="form-control  @error('nombre_cliente') form-control-danger @enderror" id="nombre_cliente" name="nombre_cliente" value="{{ old('nombre_cliente')}}">
+                            <label>Nombre de Sección</label>
+                            <input type="text" class="form-control  @error('nombre_cliente') form-control-danger @enderror" id="nombre_cliente" name="nombre_cliente" value="{{ old('nombre_cliente') }}">
                             @error('nombre_cliente')
                             <small class="form-control-feedback">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <input type="hidden" id="rut_cliente" name="rut_cliente" value="{{$cliente->rut_cliente}}">
+
+
 
                         <div class="form-group  @error('descripcion_cliente') has-danger @enderror">
                             <label>Descripcion</label>
                             <textarea class="form-control  @error('descripcion_cliente') form-control-danger @enderror" id="descripcion_cliente" name="descripcion_cliente" >
-                                    {{ old('descripcion_cliente')}}
+                                {{ old('descripcion_cliente')}}
                             </textarea>
                             @error('descripcion')
                             <small class="form-control-feedback">{{ $message }}</small>
@@ -78,7 +93,7 @@
                         </div>
 
                         <div class="form-group d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Sucursal</button>
+                            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Seccion</button>
                             <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                         </div>
                     </div>
@@ -113,6 +128,25 @@
                     comunas_select+='<option value="'+data[i].id+'">'+data[i].nombre_comuna+'</option>';
 
                     $("#comuna").html(comunas_select).removeAttr('disabled');
+            });
+        });
+
+        $("#id_cliente").change(function(){
+            var cliente = $(this).val();
+
+            // get sucursales
+            $.get({{config('url')}}'/admin/sucursales_cliente/'+cliente, function(data){
+                var sucursales_select = '<option value="">Seleccione Sucursal</option>'
+                    for (var i=0; i<data.length;i++)
+                    sucursales_select+='<option value="'+data[i].id+'">'+data[i].nombre_cliente+'</option>';
+
+                    $("#sucursal").html(sucursales_select).removeAttr('disabled');
+            });
+
+            // get rut cliente
+            $.get({{config('url')}}'/admin/rut_cliente/'+cliente, function(data){
+                var rut = data.rut_cliente;
+                $("#rut_cliente").val(rut);
             });
         });
     });

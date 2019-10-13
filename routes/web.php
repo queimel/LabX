@@ -39,17 +39,27 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 // SUCURSALES
                 Route::get('sucursales/create/{cliente}','Admin\SucursalesController@create')->name('admin.sucursales.create');
+                Route::post('sucursales/create/{cliente}','Admin\SucursalesController@store')->name('admin.sucursales.store');
                 Route::get('sucursales/{cliente}/edit/{sucursal}','Admin\SucursalesController@edit')->name('admin.sucursales.edit');
                 Route::put('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@update')->name('admin.sucursales.update');
                 Route::delete('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@destroy')->name('admin.sucursales.destroy');
                 Route::get('sucursales/{cliente}/{sucursal}','Admin\SucursalesController@show')->name('admin.sucursales.show');
 
                 // SECCIONES
-                Route::get('secciones/create/{cliente}/{sucursal}','Admin\SeccionesController@create')->name('admin.secciones.create');
+                // Route::get('secciones/create/{cliente}/{sucursal}','Admin\SeccionesController@create')->name('admin.secciones.create');
+                // Route::post('secciones/{cliente}/{sucursal}','Admin\SeccionesController@store')->name('admin.secciones.store');
+                // Route::get('secciones/{cliente}/{sucursal}/{seccion}/edit','Admin\SeccionesController@edit')->name('admin.secciones.edit');
+                // Route::put('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@update')->name('admin.secciones.update');
+                // Route::delete('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@destroy')->name('admin.secciones.destroy');
+                // Route::get('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@show')->name('admin.secciones.show');
+
                 Route::get('secciones/{cliente}/{sucursal}/{seccion}/edit','Admin\SeccionesController@edit')->name('admin.secciones.edit');
                 Route::put('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@update')->name('admin.secciones.update');
                 Route::delete('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@destroy')->name('admin.secciones.destroy');
-                Route::get('secciones/{cliente}/{sucursal}/{seccion}','Admin\SeccionesController@show')->name('admin.secciones.show');
+                Route::resource('secciones', 'Admin\SeccionesController', ['as' => 'admin', 'except' => ['edit', 'update', 'destroy']]);
+
+                Route::get('sucursales_cliente/{id}', 'Admin\ClientsController@getSucursalesPorCliente');
+                Route::get('rut_cliente/{id}', 'Admin\ClientsController@getCliente');
 
                 // COMBOBOX REGIONES Y PROVINCIAS
                 Route::get('provinciasPorRegion/{id}', 'Admin\RegionsController@GetProvinciasPorRegiones');
