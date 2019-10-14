@@ -17,6 +17,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <a class="btn btn-primary" href="{{route('admin.equipos.create')}}"> <i class="fa fa-plus"></i> Nuevo Equipo</a>
+                    </div>
+                </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
@@ -24,13 +29,13 @@
                                 <th>Marca</th>
                                 <th>Modelo</th>
                                 <th>Número de serie</th>
+                                <th>Cliente</th>
                                 <th>Test</th>
                                 <th>Fecha mantención</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-
                             @foreach ($equipos as $equipo)
                             <tr>
                                 <td>
@@ -42,6 +47,7 @@
                                 <td>
                                     {{$equipo->num_serie_equipo}}
                                 </td>
+                                <td>{{ $equipo->cliente->nombre_cliente}}</td>
                                 <td>
                                     {{$equipo->test_equipo}}
                                 </td>
@@ -49,16 +55,15 @@
                                     {{$equipo->fecha_ultima_mantencion_equipo}}
                                 </td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.show', $equipo)}}">
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.equipos.show', $equipo)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.edit', $equipo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$equipo->id}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$equipo->id}})">
                                         <i class="fa fa-trash"></i>
-                                    </button> -->
-
+                                    </button>
                                 </td>
                             </tr>
                             @endforeach
@@ -70,6 +75,33 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Estas Seguro de querer eliminar este equipo?</h5>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="" class="d-inline" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -100,6 +132,19 @@
                 }
             });
         });
+
+        function deleteData(id)
+        {
+            var id = id;
+            var url = '{{ route("admin.equipos.destroy", ":id") }}';
+            url = url.replace(':id', id);
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
 
     </script>
 

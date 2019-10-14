@@ -48,7 +48,7 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{ route('admin.equipos.index')}}">Listado equipos</a></li>
                                 <li><a href="{{ route('admin.equipos.create')}}">Crear equipo</a></li>
-                                <li><a href="{{ route('admin.equipos.marcas.index')}}">Marcas Equipos</a></li>
+                                <li><a href="{{ route('admin.marcas.index')}}">Marcas Equipos</a></li>
                             </ul>
                         </li>
                     </ul>

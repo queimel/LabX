@@ -28,7 +28,7 @@ class ModelosController extends Controller
     {
         $marcas = Marca::all();
 
-        return view('admin.equipos.modelos.create', compact('marcas'));
+        return view('admin.modelos.create', compact('marcas'));
     }
 
     /**
@@ -53,7 +53,7 @@ class ModelosController extends Controller
 
         $marca = Marca::find($data['id_marca_modelo']);
 
-        return redirect()->route('admin.equipos.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido creado con exito.");
+        return redirect()->route('admin.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido creado con exito.");
     }
 
     /**
@@ -78,7 +78,7 @@ class ModelosController extends Controller
         $modelo = Modelo::find($id);
         $marcas = Marca::all();
 
-        return view('admin.equipos.modelos.edit', compact('modelo', 'marcas'));
+        return view('admin.modelos.edit', compact('modelo', 'marcas'));
 
     }
 
@@ -103,7 +103,7 @@ class ModelosController extends Controller
 
         $modelo->update($data);
 
-        return redirect()->route('admin.equipos.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido editado");
+        return redirect()->route('admin.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido editado");
     }
 
     /**
@@ -118,6 +118,6 @@ class ModelosController extends Controller
 
         $modelo->delete();
 
-        return redirect()->route('admin.equipos.marcas.show', $modelo->marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido eliminado");
+        return redirect()->route('admin.marcas.show', $modelo->marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido eliminado");
     }
 }

@@ -14,47 +14,64 @@
 @endpush
 @section('content')
 <!-- Row -->
-<form class="form p-t-20" method="POST" action="{{ route('admin.equipos.store')}}">
+<form class="form p-t-20" method="POST" action="{{ route('admin.equipos.update', $equipo)}}">
     @csrf
+    @method('PUT')
     <div class="row">
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="">Marca equipo</label>
-                        <select class="custom-select" id="marca" name="marca_equipo" required>
-                            <option selected>Marca</option>
+                        {{ $equipo->modelo->marca->id}}
+                        <select class="custom-select @error('marca_equipo') form-control-danger @enderror" id="marca" name="marca_equipo" required>
+                            <option>Marca</option>
                                 @foreach ($marcas as $marca)
-                                <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
+                                <option
+                                    value="{{$marca->id}}"
+                                    {{ old('marca_equipo') == $marca->id ? 'selected' : '' }}
+                                    {{ $marca->id === $equipo->modelo->marca->id ? 'selected' : ''}}
+                                >{{$marca->nombre_marca}}</option>
                                 @endforeach
                         </select>
-{{--
-                        <select class="custom-select" id="region" name="region_cliente" required>
-                                <option selected>Region</option>
-                                @foreach ($regiones as $regionsel)
-                                <option value="{{$regionsel->id}}"
-                                    {{ $region->id == $regionsel->id ? 'selected' : ''}}
-                                    >{{$regionsel->nombre_region}}</option>
-                                @endforeach
-                            </select> --}}
+                        @error('marca_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="">Modelo equipo</label>
-                        <select class="custom-select" id="id_modelo_equipo" name="id_modelo_equipo" disabled required>
-
+                        <select class="custom-select @error('id_modelo_equipo') form-control-danger @enderror" id="id_modelo_equipo" name="id_modelo_equipo"  required>
+                            @foreach ($modelosMarca as $modelo)
+                                <option
+                                    value="{{$modelo->id}}"
+                                    {{ old('id_modelo_equipo') == $marca->id ? 'selected' : '' }}
+                                >
+                                    {{$modelo->nombre_modelo}}
+                                </option>
+                            @endforeach
                         </select>
+                        @error('id_modelo_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="form-group  @error('num_serie') has-danger @enderror">
                         <label>Número de serie equipo</label>
-                        <input type="text" class="form-control" id="num_serie_equipo" name="num_serie_equipo" value="{{ old('num_serie_equipo', optional($equipo)->num_serie_equipo) }}">
+                        <input type="text" class="form-control @error('num_serie_equipo') form-control-danger @enderror" id="num_serie_equipo" name="num_serie_equipo" value="{{ old('num_serie_equipo', optional($equipo)->num_serie_equipo) }}">
 
+                        @error('num_serie_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>Fecha fabricación</label>
-                        <input type="date" class="form-control" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="2019-10-09" min="2000-01-01" max="{{ Carbon::now()}}">
+                        <input type="date" class="form-control @error('fecha_fabricacion_equipo') has-danger @enderror" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="{{ old('fecha_fabricacion_equipo', optional($equipo)->fecha_fabricacion_equipo) }}" min="2000-01-01" max="">
+
+                        @error('fecha_fabricacion_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="form-group d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear equipo</button>
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Editar equipo</button>
                         <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
                     </div>
                 </div>

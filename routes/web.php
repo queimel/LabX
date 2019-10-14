@@ -52,15 +52,18 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
 
                 // EQUIPOS
-                Route::get('modeloPorMarca/{id_marca_modelo}', 'Admin\EquiposController@GetModeloPorMarca');
                 Route::resource('equipos', 'Admin\EquiposController', ['as' => 'admin']);
-                Route::get('modeloPorEquipo/{id}', 'Admin\EquiposController@GetProvinciasPorRegiones');
+
 
                 // MARCAS
-                Route::resource('equipos/marcas', 'Admin\MarcasController', ['as' => 'admin.equipos']);
+                Route::resource('marcas', 'Admin\MarcasController', ['as' => 'admin']);
 
                 // MODELOS
-                Route::resource('equipos/modelos', 'Admin\ModelosController', ['as' => 'admin.equipos']);
+                Route::resource('modelos', 'Admin\ModelosController', ['as' => 'admin']);
+
+
+                Route::get('modeloPorMarca/{id_marca_modelo}', 'Admin\EquiposController@GetModeloPorMarca');
+                Route::get('modeloPorEquipo/{id}', 'Admin\EquiposController@GetProvinciasPorRegiones');
             });
 
             Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');

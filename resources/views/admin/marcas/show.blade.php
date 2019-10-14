@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.equipos.marcas.index')}}">Marcas</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.marcas.index')}}">Marcas</a></li>
             <li class="breadcrumb-item active">{{$marca->nombre_marca}}</li>
         </ol>
     </div>
@@ -35,7 +35,7 @@
                 <hr>
             </div>
             <div class="card-body">
-                <a href="{{ route('admin.equipos.marcas.edit', $marca)}}" class="button btn btn-primary btn-block">Editar</a>
+                <a href="{{ route('admin.marcas.edit', $marca)}}" class="button btn btn-primary btn-block">Editar</a>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
                         <h4 class="card-title m-t-10">Modelos {{$marca->nombre_marca}}</h4>
                     </div>
                     <div>
-                    <a href="{{route('admin.equipos.modelos.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo modelo</a>
+                    <a href="{{route('admin.modelos.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo modelo</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
@@ -70,7 +70,7 @@
                                 <td>{{$modelo->frecuencia_modelo}}</td>
                                 <td>
 
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.modelos.edit', $modelo)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.modelos.edit', $modelo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 

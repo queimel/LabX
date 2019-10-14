@@ -22,29 +22,45 @@
                 <div class="card-body">
                     <h4 class="card-title">Ingresa los datos del nuevo equipo</h4>
                     <hr>
-                    <div class="form-group">
+                    <div class="form-group @error('marca_equipo') has-danger @enderror">
                         <label for="">Marca equipo</label>
-                        <select class="custom-select" id="marca" name="marca_equipo" required>
+                        <select class="custom-select @error('marca_equipo') form-control-danger @enderror" id="marca" name="marca_equipo" required>
                             <option selected>Marca</option>
                                 @foreach ($marcas as $marca)
-                                <option value="{{$marca->id}}">{{$marca->nombre_marca}}</option>
+                                <option
+                                    value="{{$marca->id}}"
+                                    {{ old('marca_equipo') == $marca->id ? 'selected' : '' }}
+                                >
+                                {{$marca->nombre_marca}}
+                                </option>
                                 @endforeach
                         </select>
+                        @error('marca_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="form-group">
+                    <div class="form-group @error('id_modelo_equipo') has-danger @enderror">
                         <label for="">Modelo equipo</label>
-                        <select class="custom-select" id="id_modelo_equipo" name="id_modelo_equipo" disabled required>
+                        <select class="custom-select @error('id_modelo_equipo') form-control-danger @enderror" id="id_modelo_equipo" name="id_modelo_equipo"  disabled required>
 
                         </select>
+                        @error('id_modelo_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="form-group  @error('num_serie') has-danger @enderror">
+                    <div class="form-group  @error('num_serie_equipo') has-danger @enderror">
                         <label>Número de serie equipo</label>
-                        <input type="text" class="form-control" id="num_serie_equipo" name="num_serie_equipo" value="">
-
+                        <input type="text" class="form-control @error('num_serie_equipo') form-control-danger @enderror" id="num_serie_equipo" name="num_serie_equipo" value="{{ old('num_serie_equipo')}}">
+                        @error('num_serie_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <div class="form-group">
+                    <div class="form-group @error('fecha_fabricacion_equipo') has-danger @enderror">
                         <label>Fecha fabricación</label>
-                        <input type="date" class="form-control" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="2019-10-09" min="2000-01-01" max="2019-10-09">
+                        <input type="date" class="form-control" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="{{ old('fecha_fabricacion_equipo')}}" min="2000-01-01" max="">
+                        @error('fecha_fabricacion_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear equipo</button>

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Modelo;
 use App\Marca;
 use App\Equipo;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class EquiposController extends Controller
 {
@@ -32,10 +32,8 @@ class EquiposController extends Controller
      */
     public function create()
     {
-
          $marcas = Marca::all();
          return view('admin.equipos.create', compact('marcas'));
-
     }
 
     /**
@@ -49,22 +47,18 @@ class EquiposController extends Controller
         // validar formulario
         $data = $request->validate([
             'id_modelo_equipo' => 'required',
-            'num_serie_equipo' => 'required',
+            'num_serie_equipo' => ['required', 'unique:equipos'],
             'fecha_fabricacion_equipo' => ['required', 'date'],
         ]);
 
-        $data['id_cliente'] = 10;
-        $data['id_sucursal'] = 1;
-        $data['id_seccion'] = 1;
+
         $data['test_equipo'] = 0;
         $data['fecha_ultima_mantencion_equipo'] = Carbon::now();
         $data['fecha_fabricacion_equipo'] = Carbon::parse($data['fecha_fabricacion_equipo']);
-        //dd($data);
 
         $equipo = Equipo::create($data);
 
-
-       $equipo->save();
+        $equipo->save();
 
         return redirect()->route('admin.equipos.index')->withFlash('El equipo ha sido creado e ingresado a bodega');
     }
@@ -77,7 +71,9 @@ class EquiposController extends Controller
      */
     public function show($id)
     {
-        //
+        $equipo = Equipo::find($id);
+
+        return view('admin.equipos.show', compact('equipo'));
     }
 
     /**
@@ -90,8 +86,8 @@ class EquiposController extends Controller
     {
         $marcas = Marca::all();
         $equipo = Equipo::find($id);
-        dd($equipo->marca);
-        return view('admin.equipos.create', compact('marcas', 'equipo'));
+        $modelosMarca = Modelo::where('id_marca_modelo', $equipo->modelo->marca->id)->get();
+        return view('admin.equipos.edit', compact('marcas', 'equipo', 'modelosMarca'));
     }
 
     /**
@@ -103,7 +99,22 @@ class EquiposController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $equipo = Equipo::find($id);
+        // validar formulario
+        $data = $request->validate([
+            'id_modelo_equipo' => 'required',
+            'num_serie_equipo' => ['required', 'unique:equipos'],
+            'fecha_fabricacion_equipo' => ['required', 'date'],
+        ]);
+
+
+        $data['test_equipo'] = 0;
+        $data['fecha_ultima_mantencion_equipo'] = Carbon::now();
+        $data['fecha_fabricacion_equipo'] = Carbon::parse($data['fecha_fabricacion_equipo']);
+
+        $equipo->update($data);
+
+        return redirect()->route('admin.equipos.index')->withFlash("El equipo {$equipo->nombre_equipo} ha sido modificado.");
     }
 
     /**
@@ -114,7 +125,10 @@ class EquiposController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $equipo = Equipo::find($id);
+        $equipo->delete();
+        return redirect()->route('admin.equipos.index')->withFlash("El equipo {$equipo->nombre_equipo} ha sido eliminado.");
+
     }
 
     public function GetModeloPorEquipo($id_equipo){
