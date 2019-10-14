@@ -19,4 +19,9 @@ class Modelo extends Model
     {
         return $this->hasMany('App\Repuesto');
     }
+
+    public function equipos()
+    {
+        return $this->hasMany('App\Equipo', 'id_modelo_equipo');
+    }
 }

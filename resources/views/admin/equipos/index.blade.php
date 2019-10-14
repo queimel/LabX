@@ -1,84 +1,69 @@
 @extends('layouts.app')
+
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Ver Marca</h3>
+        <h3 class="text-themecolor">Listado de Equipos</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.equipos.marcas.index')}}">Marcas</a></li>
-            <li class="breadcrumb-item active">{{$marca->nombre_marca}}</li>
+            <li class="breadcrumb-item active">Equipos</li>
         </ol>
     </div>
 </div>
 @endpush
 @section('content')
-<!-- ============================================================== -->
-<!-- Start Page Content -->
-<!-- ============================================================== -->
-<!-- Row -->
 <div class="row">
-    <!-- Column -->
-    <div class="col-lg-4 col-xlg-3 col-md-5">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h2>{{$marca->nombre_marca}}</h2>
-            </div>
-            <div>
-                <hr>
-            </div>
-            <div class="card-body">
-                <small class="text-muted">Origen </small>
-                <h6>{{$marca->pais->name}}</h6>
-            </div>
-            <div>
-                <hr>
-            </div>
-            <div class="card-body">
-                <a href="{{ route('admin.equipos.marcas.edit', $marca)}}" class="button btn btn-primary btn-block">Editar</a>
-            </div>
-        </div>
-    </div>
-    <!-- Column -->
-
-    <div class="col-lg-8 col-xlg-9 col-md-7">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-end">
                     <div>
-                        <h4 class="card-title m-t-10">Modelos {{$marca->nombre_marca}}</h4>
-                    </div>
-                    <div>
-                    <a href="{{route('admin.equipos.modelos.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo modelo</a>
+                        <a class="btn btn-primary" href="{{route('admin.equipos.create')}}"> <i class="fa fa-plus"></i> Nuevo Equipo</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Nombre Modelo</th>
-                                <th>Descripcion</th>
-                                <th>Frecuencia</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Número de serie</th>
+                                <th>Cliente</th>
+                                <th>Test</th>
+                                <th>Fecha mantención</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($modelos as $modelo)
+                            @foreach ($equipos as $equipo)
                             <tr>
-                                <td>{{$modelo->nombre_modelo}}</td>
-                                <td>{{$modelo->descripcion_modelo}}</td>
-                                <td>{{$modelo->frecuencia_modelo}}</td>
                                 <td>
-
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.modelos.edit', $modelo)}}">
+                                    {{ $equipo->modelo->marca->nombre_marca}}
+                                </td>
+                                <td>
+                                    {{ $equipo->modelo->nombre_modelo}}
+                                </td>
+                                <td>
+                                    {{$equipo->num_serie_equipo}}
+                                </td>
+                                <td>{{ $equipo->cliente->nombre_cliente}}</td>
+                                <td>
+                                    {{$equipo->test_equipo}}
+                                </td>
+                                <td>
+                                    {{$equipo->fecha_ultima_mantencion_equipo}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.equipos.show', $equipo)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.edit', $equipo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal"
-                                        onclick="deleteData({{$modelo->id}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$equipo->id}})">
                                         <i class="fa fa-trash"></i>
                                     </button>
-
                                 </td>
                             </tr>
                             @endforeach
@@ -89,29 +74,22 @@
         </div>
     </div>
 </div>
-<!-- Row -->
-<!-- ============================================================== -->
-<!-- End PAge Content -->
-<!-- ============================================================== -->
-
 
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Modelo</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar este modelo?</h5>
+                <h5>¿Estas Seguro de querer eliminar este equipo?</h5>
             </div>
             <div class="modal-footer">
-
-
                 <form method="POST" action="" class="d-inline" id="deleteForm">
                     @csrf
                     @method('DELETE')
@@ -124,7 +102,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -156,12 +133,11 @@
             });
         });
 
-    </script>
-    <script type="text/javascript">
         function deleteData(id)
         {
             var id = id;
-            var url = "/admin/equipos/modelos/"+id;
+            var url = '{{ route("admin.equipos.destroy", ":id") }}';
+            url = url.replace(':id', id);
             $("#deleteForm").attr('action', url);
         }
 
@@ -169,5 +145,15 @@
         {
             $("#deleteForm").submit();
         }
+
+    </script>
+
+    <script>
+        function(){
+            var region = $(this).val();
+            $.get({{config('url')}}'/admin/modeloPorEquipo/'+equipo, function(data){
+                var region = data[i] = nombre_region;
+            });
+        });
     </script>
 @endpush

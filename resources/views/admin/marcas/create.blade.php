@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.equipos.marcas.index')}}">Marcas</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.marcas.index')}}">Marcas</a></li>
             <li class="breadcrumb-item active">Nueva marca</li>
         </ol>
     </div>
@@ -20,7 +20,7 @@
 
     <div class="row">
         <div class="col-md-6 col-xs-12">
-            <form class="form p-t-20" method="POST" action="{{ route('admin.equipos.marcas.store')}}">
+            <form class="form p-t-20" method="POST" action="{{ route('admin.marcas.store')}}">
                 @csrf
                 <div class="card">
                     <div class="card-body">

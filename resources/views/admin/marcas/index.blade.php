@@ -18,6 +18,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <a class="btn btn-primary" href="{{route('admin.marcas.create')}}"> <i class="fa fa-plus"></i> Nueva Marca</a>
+                    </div>
+                </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
@@ -33,10 +38,10 @@
                                 <td>{{$marca->nombre_marca}}</td>
                                 <td>{{$marca->pais->name}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.marcas.show', $marca)}}">
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.marcas.show', $marca)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.marcas.edit', $marca)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.marcas.edit', $marca)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
@@ -120,7 +125,7 @@
         function deleteData(id)
         {
             var id = id;
-            var url = '{{ route("admin.equipos.marcas.destroy", ":id") }}';
+            var url = '{{ route("admin.marcas.destroy", ":id") }}';
             url = url.replace(':id', id);
             $("#deleteForm").attr('action', url);
         }

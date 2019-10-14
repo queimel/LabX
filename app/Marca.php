@@ -21,4 +21,9 @@ class Marca extends Model
     {
         return $this->belongsTo('App\Country', 'origen_marca');
     }
+
+    public function equipos()
+    {
+        return $this->hasManyThrough('App\Equipo', 'App\Modelo');
+    }
 }

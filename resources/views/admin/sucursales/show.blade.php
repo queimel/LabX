@@ -83,7 +83,7 @@
                                 <td>{{$seccion->direccion_cliente}}</td>
                                 <td>Nombre de encargado</td>
                                 <td>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.secciones.edit', $seccion)}}">
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.secciones.edit', $seccion)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 

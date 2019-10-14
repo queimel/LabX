@@ -20,7 +20,7 @@ class MarcasController extends Controller
         // select a todas las marcas
         $marcas = Marca::all();
         // redirecciona a la vista index de marcas, pasando las marcas para que puedan ser impresas en la vista
-        return view('admin.equipos.marcas.index', compact('marcas'));
+        return view('admin.marcas.index', compact('marcas'));
     }
 
     /**
@@ -34,7 +34,7 @@ class MarcasController extends Controller
         // select a todos los paises
         $paises = Country::all();
         // redirecciona a la vista con el formulario pasandole los paises para que puedan ser impresos en la vista
-        return view('admin.equipos.marcas.create', compact('paises'));
+        return view('admin.marcas.create', compact('paises'));
     }
 
     /**
@@ -59,7 +59,7 @@ class MarcasController extends Controller
         $marca->save();
 
         // Si todo sale bien redirecciona al index de marcas con un mensaje de exito
-        return redirect()->route('admin.equipos.marcas.index')->withFlash('La marca ha sido creada');
+        return redirect()->route('admin.marcas.index')->withFlash('La marca ha sido creada');
     }
 
     /**
@@ -75,7 +75,7 @@ class MarcasController extends Controller
         $modelos = $marca->modelos;
 
         // redirecciona a la vista con el detalle de la marca, pasandole la marca y los modelos de esta, para que puedan ser impresos en la vista
-        return view('admin.equipos.marcas.show', compact('marca', 'modelos'));
+        return view('admin.marcas.show', compact('marca', 'modelos'));
     }
 
     /**
@@ -93,7 +93,7 @@ class MarcasController extends Controller
         $paises = Country::all();
 
         // redirecciona a la vista con el formulario, pasandole los paises y la marca que corresponda, para que puedan ser impresos en la vista
-        return view('admin.equipos.marcas.edit', compact('marca', 'paises'));
+        return view('admin.marcas.edit', compact('marca', 'paises'));
     }
 
     /**
@@ -118,11 +118,11 @@ class MarcasController extends Controller
         $marca->update($data);
 
         // Si todo sale bien redirecciona al index de marcas con un mensaje de exito
-        return redirect()->route('admin.equipos.marcas.index')->withFlash("La marca {$marca->nombre_marca} ha sido editada");
+        return redirect()->route('admin.marcas.index')->withFlash("La marca {$marca->nombre_marca} ha sido editada");
     }
 
     /**
-     * RUTA: admin.equipos.marcas.destroy
+     * RUTA: admin.marcas.destroy
      * Elimina una marca de la BBDD.
      *
      * @param  int  $id
@@ -139,6 +139,6 @@ class MarcasController extends Controller
         $marca->delete();
 
         // Si todo sale bien redirecciona al index de marcas con un mensaje de exito
-        return redirect()->route('admin.equipos.marcas.index')->withFlash("La marca {$marca->nombre_marca} ha sido eliminada");
+        return redirect()->route('admin.marcas.index')->withFlash("La marca {$marca->nombre_marca} ha sido eliminada");
     }
 }
