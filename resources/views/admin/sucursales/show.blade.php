@@ -22,7 +22,7 @@
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title m-t-10">{{$cliente->nombre_cliente}} </h4>
+                <h4 class="card-title m-t-10">{{$sucursal->parent->nombre_cliente}} </h4>
             </div>
             <div>
                 <hr>
@@ -40,14 +40,14 @@
             <div class="card-body">
                 <small class="text-muted">Descripcion </small>
                 <h6>
-                        {{$sucursal->descripcion}}
+                    {{$sucursal->descripcion}}
                 </h6>
             </div>
             <div>
                 <hr>
             </div>
             <div class="card-body">
-                <a href="{{ route('admin.sucursales.edit', ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}" class="button btn btn-primary btn-block">Editar</a>
+                <a href="{{ route('admin.sucursales.edit', $sucursal)}}" class="button btn btn-primary btn-block">Editar</a>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
                         <h4 class="card-title m-t-10">Secciones {{$sucursal->nombre_cliente}}</h4>
                     </div>
                     <div>
-                    <a href="{{route('admin.secciones.create',  ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sección</a>
+                        <button data-toggle="modal" data-target="#createModal" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva sección</button>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
@@ -69,28 +69,25 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nombre Sucursal</th>
+                                <th>Nombre Sección</th>
                                 <th>Direccion</th>
+                                <th>Encargado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($secciones as $seccion)
+                            @foreach ($sucursal->children as $seccion)
                             <tr>
-                                <td>{{$seccion->id_seccion}}</td>
+                                <td>{{$seccion->id}}</td>
                                 <td>{{$seccion->nombre_cliente}}</td>
                                 <td>{{$seccion->direccion_cliente}}</td>
+                                <td>Nombre de encargado</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.secciones.show',
-                                    ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal, 'seccion'=>$seccion->id_seccion]
-                                    )}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.secciones.edit', ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal, 'seccion'=>$seccion->id_seccion])}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.secciones.edit', $seccion)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$cliente->id}}, {{$sucursal->id_sucursal}} , {{$seccion->id_seccion}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$seccion->id}})">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -111,12 +108,12 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sección</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Sección</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -137,6 +134,120 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Sección</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Estas Seguro de querer eliminar esta seccion?</h5>
+            </div>
+            <div class="modal-footer">
+
+
+                <form method="POST" action="" class="d-inline" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form class="form p-t-20" method="POST" action="{{ route('admin.secciones.store')}}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Crear nueva sección</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="parent_id" name="parent_id" value="{{$sucursal->id}}">
+                    <div class="form-group  @error('nombre_cliente') has-danger @enderror">
+                        <label>Nombre de Sección</label>
+                        <input type="text"
+                            class="form-control  @error('nombre_cliente') form-control-danger @enderror"
+                            id="nombre_cliente" name="nombre_cliente"
+                            value="{{ old('nombre_cliente')}}">
+                        @error('nombre_cliente')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <input type="hidden" id="rut_cliente" name="rut_cliente"
+                        value="{{$sucursal->rut_cliente}}">
+
+                    <div class="form-group  @error('descripcion_cliente') has-danger @enderror">
+                        <label>Descripcion</label>
+                        <textarea
+                            class="form-control  @error('descripcion_cliente') form-control-danger @enderror"
+                            id="descripcion_cliente" name="descripcion_cliente">
+                                        {{ old('descripcion_cliente')}}
+                                </textarea>
+                        @error('descripcion')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="form-group  @error('direccion_cliente') has-danger @enderror">
+                        <label>Dirección</label>
+                        <input type="text"
+                            class="form-control  @error('direccion_cliente') form-control-danger @enderror"
+                            id="direccion_cliente" name="direccion_cliente"
+                            value="{{ old('direccion_cliente')}}">
+                        @error('direccion_cliente')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Region</label>
+                        <select class="custom-select" id="region" name="region_cliente" required>
+                            <option selected>Region</option>
+                            @foreach ($regiones as $region)
+                            <option value="{{$region->id}}">{{$region->nombre_region}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Provincia</label>
+                        <select class="custom-select" id="provincia" name="provincia_cliente" disabled
+                            required>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Comuna</label>
+                        <select class="custom-select" id="comuna" name="id_comuna" disabled required>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit"
+                        class="btn btn-success waves-effect waves-light m-r-10">Crear
+                        Sucursal</button>
+                    <a class="btn btn-inverse waves-effect waves-light"
+                        href="{{ URL::previous() }}">Cancelar</a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -173,11 +284,10 @@
 
     </script>
     <script type="text/javascript">
-        function deleteData(id, id_sucursal, id_seccion)
+        function deleteData(id)
         {
             var id = id;
-            var url = "/admin/secciones/"+id+"/"+id_sucursal+"/"+id_seccion;
-            console.log(url);
+            var url = "/admin/secciones/"+id;
             $("#deleteForm").attr('action', url);
         }
 
@@ -185,5 +295,30 @@
         {
             $("#deleteForm").submit();
         }
+    </script>
+<script>
+        $(document).ready(function(){
+            $("#region").change(function(){
+                var region = $(this).val();
+                $.get({{config('url')}}'/admin/provinciasPorRegion/'+region, function(data){
+                    var provincias_select = '<option value="">Seleccione Provincia</option>'
+                        for (var i=0; i<data.length;i++)
+                        provincias_select+='<option value="'+data[i].id+'">'+data[i].nombre_provincia+'</option>';
+
+                        $("#provincia").html(provincias_select).removeAttr('disabled');
+                });
+            });
+
+            $("#provincia").change(function(){
+                var provincia = $(this).val();
+                $.get({{config('url')}}'/admin/comunasPorProvincia/'+provincia, function(data){
+                    var comunas_select = '<option value="">Seleccione Comuna</option>'
+                        for (var i=0; i<data.length;i++)
+                        comunas_select+='<option value="'+data[i].id+'">'+data[i].nombre_comuna+'</option>';
+
+                        $("#comuna").html(comunas_select).removeAttr('disabled');
+                });
+            });
+        });
     </script>
 @endpush

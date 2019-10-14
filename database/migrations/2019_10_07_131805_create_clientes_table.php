@@ -40,15 +40,14 @@ class CreateClientesTable extends Migration
 
 
         Schema::create('clientes', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
-            $table->unsignedBigInteger('id_sucursal');
-            $table->unsignedBigInteger('id_seccion');
-            $table->primary(['id', 'id_sucursal', 'id_seccion']);
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('rut_cliente');
             $table->string('nombre_cliente');
             $table->text('descripcion_cliente')->nullable();
             $table->text('direccion_cliente');
             $table->unsignedBigInteger('id_comuna');
+            $table->foreign('parent_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->foreign('id_comuna')->references('id')->on('comunas');
             $table->timestamps();
         });

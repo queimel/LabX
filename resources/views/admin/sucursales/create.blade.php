@@ -15,7 +15,7 @@
 @endpush
 @section('content')
 <!-- Row -->
-<form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.store', $cliente)}}">
+    <form class="form p-t-20" method="POST" action="{{ route('admin.sucursales.store')}}">
         @csrf
         <div class="row">
             <div class="col-6">
@@ -23,7 +23,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Ingresa los datos de la nueva Sucursal</h4>
                         <hr>
-                        <input type="hidden" id="id" name="id" value="{{$cliente->id}}">
+                        <input type="hidden" id="parent_id" name="id" value="{{$cliente->id}}">
                         <div class="form-group  @error('nombre_cliente') has-danger @enderror">
                             <label>Nombre de Sucursal</label>
                             <input type="text" class="form-control  @error('nombre_cliente') form-control-danger @enderror" id="nombre_cliente" name="nombre_cliente" value="{{ old('nombre_cliente')}}">
@@ -50,12 +50,7 @@
                             <small class="form-control-feedback">{{ $message }}</small>
                             @enderror
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-body">
+
                         <div class="form-group">
                             <label for="">Region</label>
                             <select class="custom-select" id="region" name="region_cliente" required>
@@ -81,6 +76,13 @@
                             <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear Sucursal</button>
                             <a class="btn btn-inverse waves-effect waves-light" href="{{ URL::previous() }}">Cancelar</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+
                     </div>
                 </div>
             </div>

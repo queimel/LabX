@@ -8,12 +8,12 @@ class Cliente extends Model
 {
 
     protected $fillable = [
-        'id', 'id_sucursal', 'id_seccion', 'nombre_cliente', 'rut_cliente', 'descripcion_cliente', 'direccion_cliente', 'id_comuna'
+        'id', 'parent_id', 'nombre_cliente', 'rut_cliente', 'descripcion_cliente', 'direccion_cliente', 'id_comuna'
     ];
 
     public function comuna()
     {
-        return $this->belongsTo('App\Comuna');
+        return $this->belongsTo('App\Comuna', 'id_comuna');
     }
 
     public function equipos()
@@ -24,5 +24,15 @@ class Cliente extends Model
     public function encargados()
     {
         return $this->hasMany('App\Encargado');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Cliente::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Cliente::class, 'parent_id');
     }
 }
