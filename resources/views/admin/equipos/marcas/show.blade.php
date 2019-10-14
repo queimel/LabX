@@ -49,7 +49,7 @@
                         <h4 class="card-title m-t-10">Modelos {{$marca->nombre_marca}}</h4>
                     </div>
                     <div>
-                    {{-- <a href="{{route('admin.secciones.create',  ['cliente'=>$cliente,'sucursal'=>$sucursal->id_sucursal])}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nueva seccion</a> --}}
+                    <a href="{{route('admin.equipos.modelos.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo modelo</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
@@ -69,10 +69,8 @@
                                 <td>{{$modelo->descripcion_modelo}}</td>
                                 <td>{{$modelo->frecuencia_modelo}}</td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.equipos.marcas.show', $modelo)}}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.marcas.edit', $modelo)}}">
+
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.modelos.edit', $modelo)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
@@ -98,18 +96,18 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Sección</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Modelo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar esta seccion?</h5>
+                <h5>¿Estas Seguro de querer eliminar este modelo?</h5>
             </div>
             <div class="modal-footer">
 
@@ -160,11 +158,10 @@
 
     </script>
     <script type="text/javascript">
-        function deleteData(id, id_sucursal, id_seccion)
+        function deleteData(id)
         {
             var id = id;
-            var url = "/admin/secciones/"+id+"/"+id_sucursal+"/"+id_seccion;
-            console.log(url);
+            var url = "/admin/equipos/modelos/"+id;
             $("#deleteForm").attr('action', url);
         }
 

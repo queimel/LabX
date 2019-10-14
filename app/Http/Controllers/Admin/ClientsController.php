@@ -54,7 +54,7 @@ class ClientsController extends Controller
             ]);
 
            // $data['direccion_cliente'] = $data['direccion_cliente'].$data['comuna_cliente'];
-           $ultimoRegistro = DB::table('clientes')->latest()->first();
+           $ultimoRegistro = DB::table('clientes')->latest('id')->first();
 
            $data['id'] = $ultimoRegistro->id + 1;
            $data['id_sucursal'] = 0;
@@ -155,5 +155,13 @@ class ClientsController extends Controller
             return redirect()->route('admin.clientes.index')->withFlash('Cliente eliminado');
         }
 
+    }
+
+    public function getCliente($id_cliente){
+        return Cliente::find($id_cliente);
+    }
+
+    public function getSucursalesPorCliente($id_cliente){
+        return Cliente::where('id', $id_cliente)->where('id_sucursal','<>', 0)->where('id_seccion', 0)->get();
     }
 }
