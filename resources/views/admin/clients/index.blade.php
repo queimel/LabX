@@ -39,7 +39,7 @@
                                     {{$cliente->direccion_cliente}}
                                 </td>
                                 <td>
-                                    <a class="btn btn-default btn-xs" href="{{ route('admin.clientes.show', $cliente)}}">
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.clientes.show', $cliente)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle cliente">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a class="btn btn-primary btn-xs" href="{{ route('admin.clientes.edit', $cliente)}}">

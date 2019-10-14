@@ -30,13 +30,7 @@ class SeccionesController extends Controller
      */
     public function create()
     {
-        $clientes = Cliente::where('id_sucursal', 0)->where('id_seccion', 0)->get();
 
-        // $cliente = Cliente::find($id);
-        // $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
-        $regiones = Region::all();
-
-        return view('admin.secciones.create', compact('clientes','sucursal', 'regiones'));
     }
 
     /**
@@ -47,11 +41,9 @@ class SeccionesController extends Controller
      */
     public function store(Request $request)
     {
-
         // validar formulario
         $data = $request->validate([
-            'id' => ['required'],
-            'id_sucursal' => ['required'],
+            'parent_id' => ['required'],
             'nombre_cliente' => ['required', 'string', 'max:255'],
             'rut_cliente' => ['required', 'cl_rut'],
             'descripcion_cliente' => 'string',
@@ -59,19 +51,11 @@ class SeccionesController extends Controller
             'id_comuna' => 'required'
         ]);
 
-        $id_cliente = $data['id'];
-        $id_sucursal = $data['id_sucursal'];
-
-        $ultimoRegistro = DB::table('clientes')->where('id', $id_cliente )->where('id_sucursal', $id_sucursal)->latest('id_seccion')->first();
-
-        $data['id_seccion'] = $ultimoRegistro->id_seccion + 1;
-
         $seccion = Cliente::create($data);
-
 
         $seccion->save();
 
-        return redirect()->route('admin.sucursales.show', ['cliente'=>$id_cliente,'sucursal'=>$id_sucursal])->withFlash('La seccion ha sido creada');
+        return redirect()->route('admin.sucursales.show', $seccion->parent)->withFlash("La sección {$seccion->nombre_cliente} ha sido creada");
     }
 
     /**
@@ -91,22 +75,17 @@ class SeccionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $id_sucursal, $id_seccion)
+    public function edit($id)
     {
-        $cliente = Cliente::find($id);
-        $seccion = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', $id_seccion)->first();
-        $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
-        $comuna = Comuna::find($seccion->id_comuna);
-        $provincia = Provincia::find($comuna->id_provincia);
-        $region = Region::find($provincia->id_region);
-
-
+        $seccion = Cliente::find($id);
+        $provincia = Provincia::find($seccion->comuna->id_provincia);
         $regiones = Region::all();
 
-        $provinciasSeleccionadas = Provincia::where('id_region', $region->id)->get();
-        $comunasSeleccionadas = Comuna::where('id_provincia', $provincia->id)->get();
+        $provinciasdeRegion = Provincia::where('id_region', $provincia->region->id)->get();
 
-        return view('admin.secciones.edit', compact('cliente','sucursal', 'seccion', 'regiones', 'region', 'provinciasSeleccionadas', 'comuna', 'provincia', 'comunasSeleccionadas'));
+        $comunasdeProvincia = Comuna::where('id_provincia', $provincia->id)->get();
+
+        return view('admin.secciones.edit', compact('seccion', 'regiones', 'provinciasdeRegion', 'provincia', 'comunasdeProvincia'));
     }
 
     /**
@@ -116,12 +95,11 @@ class SeccionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, $id_sucursal, $id_seccion)
+    public function update(Request $request, $id)
     {
-        $cliente = Cliente::find($id);
-        $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
+        $seccion = Cliente::find($id);
+
         $data = $request->validate([
-            'id' => ['required'],
             'nombre_cliente' => ['required', 'string', 'max:255'],
             'rut_cliente' => ['required', 'cl_rut'],
             'descripcion_cliente' => 'string',
@@ -129,18 +107,8 @@ class SeccionesController extends Controller
             'id_comuna' => 'required'
         ]);
 
-        $nombre_cliente = $data['nombre_cliente'];
-        $descripcion_cliente = $data['descripcion_cliente'];
-        $direccion_cliente = $data['direccion_cliente'];
-        $id_comuna = $data['id_comuna'];
-
-        $updateSucursal = DB::update('UPDATE `clientes` SET `nombre_cliente` = ?, `descripcion_cliente`=  ?, `direccion_cliente`= ?, `id_comuna` = ? WHERE `id`= ? AND id_sucursal= ? AND id_seccion= ?' , [$nombre_cliente,  $descripcion_cliente,$direccion_cliente, $id_comuna, $id, $id_sucursal, $id_seccion ]);
-
-        if($updateSucursal){
-            return redirect()->route('admin.sucursales.show', ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal])->withFlash('La seccion ha sido modificada');
-        }else {
-            echo 'falla la wea';
-        }
+        $seccion->update($data);
+        return redirect()->route('admin.sucursales.show', $seccion->parent )->withFlash("la seccion {$seccion->nombre_cliente} ha sido modificada con éxito.");
     }
 
     /**
@@ -149,13 +117,10 @@ class SeccionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, $id_sucursal, $id_seccion)
+    public function destroy($id)
     {
-        $cliente = Cliente::find($id);
-        $sucursal = Cliente::where('id', $id)->where('id_sucursal', $id_sucursal)->where('id_seccion', 0)->first();
-        $deleteSeccion = DB::delete('DELETE from `clientes` WHERE `id`=? AND `id_sucursal`=? AND id_seccion= ?',[$id, $id_sucursal, $id_seccion]);
-        if($deleteSeccion){
-            return redirect()->route('admin.sucursales.show', ['cliente'=>$cliente->id,'sucursal'=>$sucursal->id_sucursal])->withFlash('La seccion ha sido eliminada');
-        }
+        $seccion = Cliente::find($id);
+        $seccion->delete();
+        return redirect()->route('admin.sucursales.show', $seccion->parent)->withFlash('Sección eliminada con exito');
     }
 }

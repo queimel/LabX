@@ -19,7 +19,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::where('id_sucursal', 0)->where('id_seccion', 0)->get();
+        $clientes = Cliente::where('parent_id', NULL)->get();
         return view('admin.clients.index', compact('clientes'));
     }
 
@@ -42,30 +42,22 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
+        // validar formulario
+        $data = $request->validate([
+            'nombre_cliente' => ['required', 'string', 'max:255'],
+            'rut_cliente' => ['required', 'cl_rut'],
+            'descripcion_cliente' => 'string',
+            'direccion_cliente' => ['required', 'string', 'max:255'],
+            'id_comuna' => 'required'
+        ]);
 
+        // Genera una nueva instancia de la clase cliente, pasandole los datos validados
+        $cliente = Cliente::create($data);
 
-            // validar formulario
-            $data = $request->validate([
-                'nombre_cliente' => ['required', 'string', 'max:255'],
-                'rut_cliente' => ['required', 'cl_rut'],
-                'descripcion_cliente' => 'string',
-                'direccion_cliente' => ['required', 'string', 'max:255'],
-                'id_comuna' => 'required'
-            ]);
+        // INSERT en tabla cliente, com parent_id NULL
+        $cliente->save();
 
-           // $data['direccion_cliente'] = $data['direccion_cliente'].$data['comuna_cliente'];
-           $ultimoRegistro = DB::table('clientes')->latest('id')->first();
-
-           $data['id'] = $ultimoRegistro->id + 1;
-           $data['id_sucursal'] = 0;
-           $data['id_seccion'] = 0;
-
-           $cliente = Cliente::create($data);
-
-
-           $cliente->save();
-
-            return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido creado');
+        return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido creado');
     }
 
     /**
@@ -77,9 +69,8 @@ class ClientsController extends Controller
     public function show($id)
     {
         $cliente = Cliente::find($id);
-        $sucursales = Cliente::where('id', $id)->where('id_sucursal','<>', 0)->where('id_seccion', 0)->get();
-
-        return view('admin.clients.show', compact('cliente', 'sucursales'));
+        $regiones = Region::all();
+        return view('admin.clients.show', compact('cliente', 'regiones'));
     }
 
     /**
@@ -91,18 +82,14 @@ class ClientsController extends Controller
     public function edit($id)
     {
         $cliente = Cliente::find($id);
-        $comuna = Comuna::find($cliente->id_comuna);
-        $provincia = Provincia::find($comuna->id_provincia);
-        $region = Region::find($provincia->id_region);
-
+        $provincia = Provincia::find($cliente->comuna->id_provincia);
         $regiones = Region::all();
 
-        $provinciasSeleccionadas = Provincia::where('id_region', $region->id)->get();
-        $comunasSeleccionadas = Comuna::where('id', $provincia->id)->get();
+        $provinciasdeRegion = Provincia::where('id_region', $provincia->region->id)->get();
 
+        $comunasdeProvincia = Comuna::where('id_provincia', $provincia->id)->get();
 
-
-        return view('admin.clients.edit', compact('cliente', 'regiones', 'region', 'provinciasSeleccionadas', 'comuna', 'provincia', 'comunasSeleccionadas'));
+        return view('admin.clients.edit', compact('cliente', 'regiones', 'provinciasdeRegion', 'comuna', 'provincia', 'comunasdeProvincia'));
     }
 
     /**
@@ -114,6 +101,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $cliente = Cliente::find($id);
 
         $data = $request->validate([
             'nombre_cliente' => ['required', 'string', 'max:255'],
@@ -123,21 +111,8 @@ class ClientsController extends Controller
             'id_comuna' => 'required'
         ]);
 
-        $nombre_cliente = $data['nombre_cliente'];
-        $rut_cliente = $data['rut_cliente'];
-        $descripcion_cliente = $data['descripcion_cliente'];
-        $direccion_cliente = $data['direccion_cliente'];
-        $id_comuna = $data['id_comuna'];
-
-        $updateCliente = DB::update('UPDATE `clientes` SET `nombre_cliente` = ?, `rut_cliente` = ?, `descripcion_cliente`=  ?, `direccion_cliente`= ?, `id_comuna` = ? WHERE `id`= ? AND id_sucursal= 0 AND id_seccion= 0' , [$nombre_cliente, $rut_cliente, $descripcion_cliente,$direccion_cliente, $id_comuna, $id ]);
-
-        if($updateCliente){
-            return redirect()->route('admin.clientes.index')->withFlash('El cliente ha sido modificado');
-        }else {
-            echo 'falla la wea';
-        }
-
-
+        $cliente->update($data);
+        return redirect()->route('admin.clientes.index')->withFlash("El cliente {$cliente->nombre_cliente} ha sido modificado con éxito.");
     }
 
     /**
@@ -148,12 +123,9 @@ class ClientsController extends Controller
      */
     public function destroy($id)
     {
-        // buscar todos los clientes (clientes sucursales y secciones) con el $id cliente y eliminarlos
-        //$clientes = Cliente::where('id',$id)->delete();
-        $deleteCliente = DB::delete('DELETE from `clientes` WHERE `id`=?',[$id]);
-        if($deleteCliente){
-            return redirect()->route('admin.clientes.index')->withFlash('Cliente eliminado');
-        }
+        $cliente = Cliente::find($id);
+        $cliente->delete();
+        return redirect()->route('admin.clientes.index')->withFlash('Cliente eliminado');
 
     }
 
