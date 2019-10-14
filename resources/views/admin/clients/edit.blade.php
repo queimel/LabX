@@ -66,7 +66,7 @@
                             <option selected>Region</option>
                             @foreach ($regiones as $regionsel)
                             <option value="{{$regionsel->id}}"
-                                {{ $region->id == $regionsel->id ? 'selected' : ''}}
+                                {{ $provincia->region->id == $regionsel->id ? 'selected' : ''}}
                                 >{{$regionsel->nombre_region}}</option>
                             @endforeach
                         </select>
@@ -74,21 +74,21 @@
                     <div class="form-group">
                         <label for="">Provincia</label>
                         <select class="custom-select" id="provincia" name="provincia_cliente"  required>
-                            @foreach ($provinciasSeleccionadas as $provinciasel)
-                                <option value="{{$provincia->id}}"
-                                {{ $provincia->id == $provinciasel->id ? 'selected' : ''}}
-                                >{{$provinciasel->nombre_provincia}}</option>
+                            @foreach ($provinciasdeRegion as $provinciaRegion)
+                                <option value="{{$provinciaRegion->id}}"
+                                {{ $provincia->id == $provinciaRegion->id ? 'selected' : ''}}
+                                >{{$provinciaRegion->nombre_provincia}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="">Comuna</label>
                         <select class="custom-select" id="comuna" name="id_comuna"  required>
-                            @foreach ($comunasSeleccionadas as $comunasel)
-                            <option value="{{$provincia->id}}"
-                                {{ $comuna->id == $comunasel->id ? 'selected' : ''}}
+                            @foreach ($comunasdeProvincia as $comunaProvincia)
+                            <option value="{{$comunaProvincia->id}}"
+                                {{ $cliente->comuna->id == $comunaProvincia->id ? 'selected' : ''}}
                                 >
-                                {{$comunasel->nombre_comuna}}
+                                {{$comunaProvincia->nombre_comuna}}
                             </option>
                             @endforeach
                         </select>

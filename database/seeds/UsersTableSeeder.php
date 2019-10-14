@@ -97,5 +97,31 @@ class UsersTableSeeder extends Seeder
 
         $operativo->registroEstados()->save($operativoState);
 
+        $barrita1 = new User;
+        $barrita1->name = "José Barra Briones";
+        $barrita1->email = "jose.barra@correoaiep.cl";
+        $barrita1->password = 'xcRORTuK';
+        $barrita1->active = true;
+        $barrita1->password_changed_at = Carbon::now();
+        $barrita1->save();
+        $barrita1->assignRole($adminRole);
+        $barrita1State = new RegistroEstado;
+        $barrita1State->fecha_estado = Carbon::now();
+        $barrita1State->estado = true;
+        $barrita1->registroEstados()->save($adminState);
+
+        $barrita2 = new User;
+        $barrita2->name = "Profesor José Barra";
+        $barrita2->email = "jobebarra@gmail.com";
+        $barrita2->password = 'SZRHCmb2';
+        $barrita2->active = true;
+        $barrita2->password_changed_at = Carbon::now();
+        $barrita2->save();
+        $barrita2->assignRole($adminRole);
+        $barrita2State = new RegistroEstado;
+        $barrita2State->fecha_estado = Carbon::now();
+        $barrita2State->estado = true;
+        $barrita2->registroEstados()->save($adminState);
+
     }
 }
