@@ -61,6 +61,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 // MODELOS
                 Route::resource('modelos', 'Admin\ModelosController', ['as' => 'admin']);
 
+                // TECNICOS
+                Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);
+
 
                 Route::get('modeloPorMarca/{id_marca_modelo}', 'Admin\EquiposController@GetModeloPorMarca');
                 Route::get('modeloPorEquipo/{id}', 'Admin\EquiposController@GetProvinciasPorRegiones');
