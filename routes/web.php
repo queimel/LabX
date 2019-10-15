@@ -62,6 +62,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 // MODELOS
                 Route::resource('modelos', 'Admin\ModelosController', ['as' => 'admin']);
 
+                // TECNICOS
+                Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);
+
                 //REPUESTOS
                 Route::resource('repuestos', 'Admin\RepuestosController', ['as' => 'admin']);
 
