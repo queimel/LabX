@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CountriesSeeder::class);
         $this->call(MarcasSeeder::class);
         $this->call(ModelosSeeder::class);
+        $this->call(RepuestosSeeder::class);
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 
