@@ -10,9 +10,9 @@ class Tecnico extends Model
         'supervisor_id', 'nombre_tecnico', 'apellido_tecnico', 'run_tecnico'
     ];
 
-    public function Telefonos()
+    public function telefonos()
     {
-        return $this->belongsToMany('App\Telefono');
+        return $this->belongsToMany('App\Telefono', 'tecnico_telefono', 'id_telefono');
     }
 
     public function Mantenimientos()

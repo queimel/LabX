@@ -39,21 +39,25 @@ class TecnicosController extends Controller
      */
     public function store(Request $request)
     {
+
         // validar formulario
-        $data = $request->validate([
-            'nombre_tecnico' => ['required', 'string', 'max:255'],
-            'apellido_tecnico' => ['required', 'string', 'max:255'],
-            'run_tecnico' => ['required', 'cl_rut', 'unique:tecnicos']
-        ],
-        [
-            'run_tecnico.required' => 'Debes ingresar un RUN',
-            'run_tecnico.unique' => 'Este RUN ya ha sido ingresado para otro técnico',
-            'run_tecnico.cl_rut' => 'RUN no válido'
-        ]
-    );
+        $data = $request->validate(
+            [
+                'nombre_tecnico' => ['required', 'string', 'max:255'],
+                'apellido_tecnico' => ['required', 'string', 'max:255'],
+                'run_tecnico' => ['required', 'cl_rut', 'unique:tecnicos'],
+                'telefono_tecnico' => 'required'
+            ],
+            [
+                'run_tecnico.required' => 'Debes ingresar un RUN',
+                'run_tecnico.unique' => 'Este RUN ya ha sido ingresado para otro técnico',
+                'run_tecnico.cl_rut' => 'RUN no válido'
+            ]
+        );
 
         $tecnico = Tecnico::create($data);
         $tecnico->save();
+        $tecnico->telefonos()->attach($data['telefono_tecnico']);
 
         return redirect()->route('admin.tecnicos.index')->withFlash("El técnico {$tecnico->nombre_tecnico} {$tecnico->apellido_tecnico} ha sido creado.");
     }
@@ -67,7 +71,7 @@ class TecnicosController extends Controller
     public function show($id)
     {
         $tecnico = Tecnico::find($id);
-        return view('admin.tecnicos.create', compact('tecnico'));
+        return view('admin.tecnicos.show', compact('tecnico'));
     }
 
     /**
@@ -97,8 +101,14 @@ class TecnicosController extends Controller
         $data = $request->validate([
             'nombre_tecnico' => ['required', 'string', 'max:255'],
             'apellido_tecnico' => ['required', 'string', 'max:255'],
-            'run_tecnico' => ['required', 'cl_rut', 'unique']
-        ]);
+            'run_tecnico' => ['required', 'cl_rut', 'unique:tecnicos']
+        ],
+        [
+            'run_tecnico.required' => 'Debes ingresar un RUN',
+            'run_tecnico.unique' => 'Este RUN ya ha sido ingresado para otro técnico',
+            'run_tecnico.cl_rut' => 'RUN no válido'
+        ]
+    );
         $tecnico->update($data);
         return redirect()->route('admin.tecnicos.index')->withFlash("El técnico {$tecnico->nombre_tecnico} {$tecnico->apellido_tecnico} ha sido editado.");
     }
@@ -111,6 +121,8 @@ class TecnicosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tecnico = Tecnico::find($id);
+        $tecnico->delete();
+        return redirect()->route('admin.tecnicos.index')->withFlash("El técnico {$tecnico->nombre_tecnico} {$tecnico->apellido_tecnico} ha sido eliminado.");
     }
 }

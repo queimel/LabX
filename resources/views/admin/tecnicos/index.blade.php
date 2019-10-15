@@ -73,13 +73,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Eliminar Cliente</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Técnico</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar este equipo?</h5>
+                <h5>¿Estas Seguro de querer eliminar este técnico?</h5>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="" class="d-inline" id="deleteForm">
@@ -128,7 +128,7 @@
         function deleteData(id)
         {
             var id = id;
-            var url = '{{ route("admin.equipos.destroy", ":id") }}';
+            var url = '{{ route("admin.tecnicos.destroy", ":id") }}';
             url = url.replace(':id', id);
             $("#deleteForm").attr('action', url);
         }

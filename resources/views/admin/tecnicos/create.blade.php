@@ -43,6 +43,7 @@
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
+
                     <div class="form-group @error('supervisor_id') has-danger @enderror">
                         <label for="">Supervisor</label>
                         <select class="custom-select @error('supervisor_id') form-control-danger @enderror" id="marca" name="supervisor_id">
