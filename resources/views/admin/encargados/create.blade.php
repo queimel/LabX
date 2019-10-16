@@ -43,7 +43,7 @@
                     <!-- sucursales -->
                     <div class="form-group">
                         <label for="">Sucursal</label>
-                        <select class="custom-select" id="sucursal" name="id_cliente_encargado" disabled required>
+                        <select class="custom-select" id="sucursal" name="sucursal" disabled required>
                         </select>
                         <small id="mensaje_sucursal" hidden></small>
                     </div>
@@ -52,7 +52,7 @@
                     <!-- secciones -->
                     <div class="form-group">
                         <label for="">Sección</label>
-                        <select class="custom-select" id="seccion" name="id_" disabled required>
+                        <select class="custom-select" id="seccion" name="id_cliente_encargado" disabled required>
                         </select>
                         <small id="mensaje_seccion" hidden></small>
                     </div>

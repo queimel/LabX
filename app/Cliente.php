@@ -23,7 +23,7 @@ class Cliente extends Model
 
     public function encargados()
     {
-        return $this->hasMany('App\Encargado');
+        return $this->hasMany('App\Encargado', 'id_cliente_encargado');
     }
 
     public function parent()

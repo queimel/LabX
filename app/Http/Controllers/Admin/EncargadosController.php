@@ -18,7 +18,9 @@ class EncargadosController extends Controller
      */
     public function index()
     {
-        //
+        $cliente = Cliente::All();
+        $encargados = Encargado::All();
+        return view('admin.encargados.index', compact('encargados','cliente'));
     }
 
     /**
@@ -29,8 +31,7 @@ class EncargadosController extends Controller
     public function create()
     {
         $clientes = Cliente::where('parent_id', NULL)->get();
-        $clientes_link = Cliente::All();
-        return view('admin.encargados.create', compact('clientes','clientes_link'));
+        return view('admin.encargados.create', compact('clientes'));
     }
 
     /**
@@ -51,7 +52,7 @@ class EncargadosController extends Controller
 
         $encargados->save();
 
-        return redirect()->route('admin.encargados.create')->withFlash('El encargado ha sido creado y asignado exitosamente');
+        return redirect()->route('admin.encargados.index')->withFlash('El encargado ha sido creado y asignado exitosamente');
     }
 
     /**
@@ -73,7 +74,9 @@ class EncargadosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $clientes = Cliente::where('parent_id', NULL)->get();
+        $encargado = Encargado::Find($id);
+        return view('admin.encargados.edit', compact('encargado','clientes'));
     }
 
     /**
@@ -85,7 +88,16 @@ class EncargadosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $encargado = Encargado::find($id);
+        // validar formulario
+        $data = $request->validate([
+            'nombre_encargado' => ['required', 'string', 'max:191'],
+            'apellidos_encargado' => ['required', 'string', 'max:191'],
+        ]);
+
+        $encargado->update($data);
+
+        return redirect()->route('admin.encargados.index')->withFlash("El encargado {$encargado->nombre_encargado} {$encargado->apellidos_encargado} ha sido modificado.");
     }
 
     /**

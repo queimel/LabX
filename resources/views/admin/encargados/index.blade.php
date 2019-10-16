@@ -3,11 +3,11 @@
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Listado de Técnicos</h3>
+        <h3 class="text-themecolor">Listado de Encargados</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Técnicos</li>
+            <li class="breadcrumb-item active">Encargados</li>
         </ol>
     </div>
 </div>
@@ -19,41 +19,38 @@
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <div>
-                        <a class="btn btn-primary" href="{{route('admin.tecnicos.create')}}"> <i class="fa fa-plus"></i> Nuevo Técnico</a>
+                        <a class="btn btn-primary" href="{{route('admin.encargados.create')}}"> <i class="fa fa-plus"></i> Nuevo Encargado</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Telefonos</th>
-                                <th>RUN</th>
+                                <th>Cliente</th>
+                                <th>Sucursal</th>
+                                <th>Seccion</th>
+                                <th>Encargado</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($tecnicos as $tecnico)
+                            @foreach ($encargados as $encargado)
                             <tr>
                                 <td>
-                                    {{ $tecnico->nombre_tecnico}}
+                                    {{$encargado->cliente->parent->parent->nombre_cliente}}
                                 </td>
                                 <td>
-                                    {{ $tecnico->apellido_tecnico}}
+                                    {{$encargado->cliente->parent->nombre_cliente}}
                                 </td>
                                 <td>
-                                    -
+                                    {{$encargado->cliente->nombre_cliente}}
                                 </td>
-                                <td>{{ $tecnico->run_tecnico}}</td>
+                                <td>{{$encargado->nombre_encargado}} {{ $encargado->apellidos_encargado}}</td>
                                 </td>
                                 <td>
-                                    <a class="btn btn-info btn-xs" href="{{ route('admin.tecnicos.show', $tecnico)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.tecnicos.edit', $tecnico)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.encargados.edit', $encargado)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$tecnico->id}})">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$encargado->id}})">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -73,13 +70,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Eliminar Técnico</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Eliminar Encargado</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar este técnico?</h5>
+                <h5>¿Estas Seguro de querer eliminar este encargado?</h5>
             </div>
             <div class="modal-footer">
                 <form method="POST" action="" class="d-inline" id="deleteForm">
@@ -128,7 +125,7 @@
         function deleteData(id)
         {
             var id = id;
-            var url = '{{ route("admin.tecnicos.destroy", ":id") }}';
+            var url = '{{ route("admin.encargados.destroy", ":id") }}';
             url = url.replace(':id', id);
             $("#deleteForm").attr('action', url);
         }
@@ -138,14 +135,5 @@
             $("#deleteForm").submit();
         }
 
-    </script>
-
-    <script>
-        function(){
-            var region = $(this).val();
-            $.get({{config('url')}}'/admin/modeloPorEquipo/'+equipo, function(data){
-                var region = data[i] = nombre_region;
-            });
-        });
     </script>
 @endpush
