@@ -54,6 +54,9 @@
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
+
+
+
                     <div class="form-group  @error('num_serie') has-danger @enderror">
                         <label>Número de serie equipo</label>
                         <input type="text" class="form-control @error('num_serie_equipo') form-control-danger @enderror" id="num_serie_equipo" name="num_serie_equipo" value="{{ old('num_serie_equipo', optional($equipo)->num_serie_equipo) }}">
@@ -70,9 +73,28 @@
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="">Asignado a</label>
+                        <select class="custom-select @error('id_cliente_equipo') form-control-danger @enderror" id="id_cliente_equipo" name="id_cliente_equipo"  required>
+                            @foreach ($clientes as $cliente)
+                                <option
+                                    value="{{$cliente->id}}"
+                                    {{ old('id_cliente_equipo') == $cliente->id ? 'selected' : '' }}
+                                    {{ $cliente->id === $equipo->cliente->id ? 'selected' : ''}}
+                                >
+                                    {{$cliente->nombre_cliente}}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_cliente_equipo')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <input type="hidden" name="test_equipo" value="{{ old('test_equipo', optional($equipo)->test_equipo) }}">
+                    <input type="hidden" name="fecha_ultima_mantencion_equipo" value="{{ old('test_equipo', optional($equipo)->fecha_ultima_mantencion_equipo) }}">
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Editar equipo</button>
-                        <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                        <a class="btn btn-inverse waves-effect waves-light" href="{{ URL::previous() }}">Cancelar</a>
                     </div>
                 </div>
             </div>

@@ -44,7 +44,7 @@ class ModelosController extends Controller
             'id_marca_modelo' => 'required',
             'nombre_modelo' => ['required', 'string', 'max:255'],
             'descripcion_modelo' => ['required', 'string', 'max:255'],
-            'frecuencia_modelo' => ['required', 'numeric']
+            'frecuencia_modelo' => ['required', 'integer', 'min:0']
         ]);
 
         $modelo = Modelo::create($data);
@@ -98,7 +98,7 @@ class ModelosController extends Controller
             'id_marca_modelo' => 'required',
             'nombre_modelo' => ['required', 'string', 'max:255'],
             'descripcion_modelo' => ['required', 'string', 'max:255'],
-            'frecuencia_modelo' => ['required', 'numeric']
+            'frecuencia_modelo' => ['required', 'integer', 'min:0']
         ]);
 
         $modelo->update($data);
