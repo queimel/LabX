@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Encargado extends Model
 {
+    protected $fillable = [
+        'id', 'id_cliente_encargado', 'nombre_encargado', 'apellidos_encargado'
+    ];
+
     public function cliente()
     {
-        return $this->belongsTo('App\Cliente');
+        return $this->belongsTo('App\Cliente', 'id_cliente_encargado');
     }
 
     public function cargos()

@@ -65,6 +65,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 // TECNICOS
                 Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);
 
+                // ENCARGADOS
+                Route::resource('encargados', 'Admin\EncargadosController', ['as' => 'admin']);
+                Route::get('clienteSucursalEncargado/{id}', 'Admin\EncargadosController@GetSucursalCliente');
+                Route::get('clienteSeccionEncargado/{id}', 'Admin\EncargadosController@GetSeccionCliente');
+
                 //REPUESTOS
                 Route::resource('repuestos', 'Admin\RepuestosController', ['as' => 'admin']);
 
