@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group  @error('frecuencia_modelo') has-danger @enderror">
                                 <label for="frecuencia_modelo">Frecuencia de mantención modelo</label>
-                                <input type="number" class="form-control  @error('frecuencia_modelo') form-control-danger @enderror" id="frecuencia_modelo" name="frecuencia_modelo" value="{{ old('frecuencia_modelo')}}">
+                                <input type="number" class="form-control  @error('frecuencia_modelo') form-control-danger @enderror" id="frecuencia_modelo" name="frecuencia_modelo" value="{{ old('frecuencia_modelo')}}" min="0">
                                 @error('frecuencia_modelo')
                                 <small class="form-control-feedback">{{ $message }}</small>
                                 @enderror

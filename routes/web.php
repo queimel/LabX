@@ -53,14 +53,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 // EQUIPOS
                 Route::resource('equipos', 'Admin\EquiposController', ['as' => 'admin']);
-                Route::get('modeloPorMarca/{id_marca_modelo}', 'Admin\EquiposController@GetModeloPorMarca');
-                Route::get('modeloPorEquipo/{id}', 'Admin\EquiposController@GetProvinciasPorRegiones');
 
                 // MARCAS
                 Route::resource('marcas', 'Admin\MarcasController', ['as' => 'admin']);
 
                 // MODELOS
                 Route::resource('modelos', 'Admin\ModelosController', ['as' => 'admin']);
+                Route::get('modeloPorMarca/{id_marca_modelo}', 'Admin\EquiposController@GetModeloPorMarca');
+                Route::get('modeloPorEquipo/{id}', 'Admin\EquiposController@GetProvinciasPorRegiones');
+
 
                 // TECNICOS
                 Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);

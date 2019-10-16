@@ -57,14 +57,14 @@
                     </div>
                     <div class="form-group @error('fecha_fabricacion_equipo') has-danger @enderror">
                         <label>Fecha fabricación</label>
-                        <input type="date" class="form-control" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="{{ old('fecha_fabricacion_equipo')}}" min="2000-01-01" max="">
+                        <input type="date" class="form-control" id="fecha_fabricacion_equipo" name="fecha_fabricacion_equipo" value="{{ old('fecha_fabricacion_equipo')}}" min="2000-01-01" max="{{ Carbon\Carbon::now()}}">
                         @error('fecha_fabricacion_equipo')
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="form-group d-flex justify-content-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Crear equipo</button>
-                        <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                        <a class="btn btn-inverse waves-effect waves-light" href="{{ URL::previous() }}">Cancelar</a>
                     </div>
                 </div>
             </div>
