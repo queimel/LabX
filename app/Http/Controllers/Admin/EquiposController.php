@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cliente;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Modelo;
@@ -46,6 +47,7 @@ class EquiposController extends Controller
     {
         // validar formulario
         $data = $request->validate([
+            'marca_equipo' => 'required',
             'id_modelo_equipo' => 'required',
             'num_serie_equipo' => ['required', 'unique:equipos'],
             'fecha_fabricacion_equipo' => ['required', 'date'],
@@ -86,8 +88,9 @@ class EquiposController extends Controller
     {
         $marcas = Marca::all();
         $equipo = Equipo::find($id);
+        $clientes = Cliente::all();
         $modelosMarca = Modelo::where('id_marca_modelo', $equipo->modelo->marca->id)->get();
-        return view('admin.equipos.edit', compact('marcas', 'equipo', 'modelosMarca'));
+        return view('admin.equipos.edit', compact('clientes','marcas', 'equipo', 'modelosMarca'));
     }
 
     /**
@@ -101,16 +104,14 @@ class EquiposController extends Controller
     {
         $equipo = Equipo::find($id);
         // validar formulario
+
         $data = $request->validate([
+            'marca_equipo' => 'required',
             'id_modelo_equipo' => 'required',
-            'num_serie_equipo' => ['required', 'unique:equipos'],
+            'num_serie_equipo' => ['required'],
             'fecha_fabricacion_equipo' => ['required', 'date'],
+            'id_cliente_equipo' => 'required'
         ]);
-
-
-        $data['test_equipo'] = 0;
-        $data['fecha_ultima_mantencion_equipo'] = Carbon::now();
-        $data['fecha_fabricacion_equipo'] = Carbon::parse($data['fecha_fabricacion_equipo']);
 
         $equipo->update($data);
 

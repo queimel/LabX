@@ -184,25 +184,25 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  @error('id_comuna') has-danger @enderror">
                         <label for="">Region</label>
-                        <select class="custom-select" id="region" name="region_cliente" required>
+                        <select class="custom-select @error('id_comuna') form-control-danger @enderror" id="region" name="region_cliente" required>
                             <option selected>Region</option>
                             @foreach ($regiones as $region)
                             <option value="{{$region->id}}">{{$region->nombre_region}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group @error('id_comuna') has-danger @enderror">
                         <label for="">Provincia</label>
-                        <select class="custom-select" id="provincia" name="provincia_cliente" disabled
+                        <select class="custom-select @error('id_comuna') form-control-danger @enderror" id="provincia" name="provincia_cliente" disabled
                             required>
 
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group @error('id_comuna') has-danger @enderror">
                         <label for="">Comuna</label>
-                        <select class="custom-select" id="comuna" name="id_comuna" disabled required>
+                        <select class="custom-select @error('id_comuna') form-control-danger @enderror" id="comuna" name="id_comuna" disabled required>
                         </select>
                     </div>
                 </div>
@@ -226,6 +226,7 @@
     <script src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js')}}" defer></script>
     <script>
         $(document).ready(function() {
+
             $('#usersTable').DataTable({
                 language: {
                     decimal:        "",
@@ -264,6 +265,15 @@
             $("#deleteForm").submit();
         }
     </script>
+
+
+    @if (count($errors) > 0)
+    <script>
+        $( document ).ready(function() {
+            $('#createModal').modal('show');
+        });
+    </script>
+    @endif
 
 <script>
         $(document).ready(function(){
