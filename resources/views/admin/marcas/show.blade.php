@@ -49,7 +49,7 @@
                         <h4 class="card-title m-t-10">Modelos {{$marca->nombre_marca}}</h4>
                     </div>
                     <div>
-                    <a href="{{route('admin.modelos.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo modelo</a>
+                    <a href="{{route('admin.modelos.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Nuevo modelo {{$marca->nombre_marca}}</a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">

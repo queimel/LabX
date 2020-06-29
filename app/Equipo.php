@@ -8,7 +8,7 @@ class Equipo extends Model
 {
 
     protected $fillable = [
-        'id_modelo_equipo', 'id_cliente', 'id_sucursal', 'id_seccion', 'num_serie_equipo', 'fecha_fabricacion_equipo', 'test_equipo', 'fecha_ultima_mantencion_equipo'
+        'id_modelo_equipo', 'id_cliente_equipo', 'num_serie_equipo', 'fecha_fabricacion_equipo', 'test_equipo', 'fecha_ultima_mantencion_equipo'
     ];
 
     public function cliente()

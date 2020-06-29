@@ -89,7 +89,7 @@ class ClientsController extends Controller
 
         $comunasdeProvincia = Comuna::where('id_provincia', $provincia->id)->get();
 
-        return view('admin.clients.edit', compact('cliente', 'regiones', 'provinciasdeRegion', 'comuna', 'provincia', 'comunasdeProvincia'));
+        return view('admin.clients.edit', compact('cliente', 'regiones', 'provinciasdeRegion', 'provincia', 'comunasdeProvincia'));
     }
 
     /**
@@ -134,6 +134,6 @@ class ClientsController extends Controller
     }
 
     public function getSucursalesPorCliente($id_cliente){
-        return Cliente::where('id', $id_cliente)->where('id_sucursal','<>', 0)->where('id_seccion', 0)->get();
+        return Cliente::with('children')->where('parent_id',$id_cliente)->get();
     }
 }

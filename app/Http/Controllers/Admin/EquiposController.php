@@ -9,6 +9,7 @@ use App\Modelo;
 use App\Marca;
 use App\Equipo;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class EquiposController extends Controller
 {
@@ -88,9 +89,23 @@ class EquiposController extends Controller
     {
         $marcas = Marca::all();
         $equipo = Equipo::find($id);
-        $clientes = Cliente::all();
+        
         $modelosMarca = Modelo::where('id_marca_modelo', $equipo->modelo->marca->id)->get();
-        return view('admin.equipos.edit', compact('clientes','marcas', 'equipo', 'modelosMarca'));
+        
+
+        // obtener todos los clientes (casas matrices) para impresion en vista
+        $clientes = Cliente::where('parent_id', NULL)->get();
+
+        // obtener la sucursal del equipo para obtener su parent
+        $sucursal_equipo = $equipo->cliente;
+
+        // obtener el parent especifico de la sucursal 
+        $cliente_parent = $equipo->cliente->parent;
+
+        // obtener todas las sucursales del parent especifico para impresion en vista
+        $sucursales = Cliente::where('parent_id', $cliente_parent->id)->get();
+
+        return view('admin.equipos.edit', compact('clientes','marcas', 'equipo', 'modelosMarca', 'sucursales', 'sucursal_equipo', 'cliente_parent'));
     }
 
     /**
@@ -112,8 +127,9 @@ class EquiposController extends Controller
             'fecha_fabricacion_equipo' => ['required', 'date'],
             'id_cliente_equipo' => 'required'
         ]);
-
+        // DB::enableQueryLog();
         $equipo->update($data);
+        //dd(DB::getQueryLog());
 
         return redirect()->route('admin.equipos.index')->withFlash("El equipo {$equipo->nombre_equipo} ha sido modificado.");
     }

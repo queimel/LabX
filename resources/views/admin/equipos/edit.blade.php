@@ -75,16 +75,35 @@
                     </div>
                     <div class="form-group">
                         <label for="">Asignado a</label>
-                        <select class="custom-select @error('id_cliente_equipo') form-control-danger @enderror" id="id_cliente_equipo" name="id_cliente_equipo"  required>
+                        <select class="custom-select @error('cliente_equipo_parent') form-control-danger @enderror" id="cliente_equipo_parent" name="cliente_equipo_parent"  required>
                             @foreach ($clientes as $cliente)
                                 <option
                                     value="{{$cliente->id}}"
-                                    {{ old('id_cliente_equipo') == $cliente->id ? 'selected' : '' }}
-                                    {{ $cliente->id === $equipo->cliente->id ? 'selected' : ''}}
+                                    {{ old('cliente_equipo_parent') == $cliente_parent->id ? 'selected' : '' }}
+                                    {{ $cliente->id === $cliente_parent->id ? 'selected' : ''}}
                                 >
                                     {{$cliente->nombre_cliente}}
                                 </option>
                             @endforeach
+                        </select>
+                        @error('cliente_equipo_parent')
+                        <small class="form-control-feedback">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="form-group @error('sucursal_equipo') has-danger @enderror">
+                        <label for="">Sucursal</label>
+                 
+                        <select class="custom-select @error('id_cliente_equipo') form-control-danger @enderror" id="id_cliente_equipo" name="id_cliente_equipo" required>
+                            @foreach ($sucursales as $sucursal)
+                                <option
+                                    value="{{$sucursal->id}}"
+                                    {{ old('id_cliente_equipo') == $equipo->cliente->id ? 'selected' : '' }}
+                                    {{ $sucursal->id === $equipo->cliente->id ? 'selected' : ''}}
+                                >
+                                    {{$sucursal->nombre_cliente}}
+                                </option>
+                            @endforeach
+                        </option>
                         </select>
                         @error('id_cliente_equipo')
                         <small class="form-control-feedback">{{ $message }}</small>
@@ -109,13 +128,13 @@
 <script src="{{ asset('js/plugins/jquery/jquery.min.js')}}"></script>
 <script>
     $(document).ready(function(){
-        $("#marca").change(function(){
-            var marca = $(this).val();
-            $.get({{config('url')}}'/admin/modeloPorMarca/'+marca, function(data){
-                var modelos_select = '<option value="">Seleccione Modelo</option>'
+        $("#id_cliente_equipo").change(function(){
+            var cliente = $(this).val();
+            $.get({{config('url')}}'/admin/sucursales_cliente/'+cliente, function(data){
+                var sucursales_select = '<option value="">Seleccione Sucursal</option>'
                     for (var i=0; i<data.length;i++)
-                    modelos_select+='<option value="'+data[i].id+'">'+data[i].nombre_modelo+'</option>';
-                    $("#id_modelo_equipo").html(modelos_select).removeAttr('disabled');
+                    sucursales_select+='<option value="'+data[i].id+'">'+data[i].nombre_cliente+'</option>';
+                    $("#sucursal_equipo").html(sucursales_select).removeAttr('disabled');
             });
         });
     });

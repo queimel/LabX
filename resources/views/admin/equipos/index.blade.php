@@ -30,7 +30,7 @@
                                 <th>Modelo</th>
                                 <th>Número de serie</th>
                                 <th>Cliente</th>
-                                <th>Test</th>
+                                <th>Sucursal</th>
                                 <th>Fecha mantención</th>
                                 <th>Acciones</th>
                             </tr>
@@ -47,9 +47,9 @@
                                 <td>
                                     {{$equipo->num_serie_equipo}}
                                 </td>
-                                <td>{{ $equipo->cliente->nombre_cliente}}</td>
+                                <td>{{ $equipo->cliente->parent->nombre_cliente}}</td>
                                 <td>
-                                    {{$equipo->test_equipo}}
+                                    {{$equipo->cliente->nombre_cliente}}
                                 </td>
                                 <td>
                                     {{$equipo->fecha_ultima_mantencion_equipo}}
