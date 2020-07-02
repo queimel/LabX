@@ -42,7 +42,11 @@
                                     {{ $tecnico->apellido_tecnico}}
                                 </td>
                                 <td>
-                                    -
+                                    <ul>
+                                        @foreach ($tecnico->telefonos as $telefono)
+                                        <li>{{ $telefono->numero_telefono}}</li>
+                                        @endforeach
+                                    </ul>
                                 </td>
                                 <td>{{ $tecnico->run_tecnico}}</td>
                                 </td>

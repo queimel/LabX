@@ -9,6 +9,6 @@ class UserActiveFilter extends Controller
 {
     public function blocked()
     {
-        return view('auth.passwords.notAuthorized', compact('expired'));
+        return view('auth.passwords.notAuthorized');
     }
 }
