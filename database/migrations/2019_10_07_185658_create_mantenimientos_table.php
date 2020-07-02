@@ -36,6 +36,7 @@ class CreateMantenimientosTable extends Migration
             $table->unsignedBigInteger('id_tecnico_mantenimiento');
             $table->foreign('id_equipo_mantenimiento')->references('id')->on('equipos');
             $table->foreign('id_tecnico_mantenimiento')->references('id')->on('tecnicos');
+            $table->timestamp('fecha_mantenimiento');
             $table->timestamps();
         });
     }

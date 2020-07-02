@@ -75,26 +75,36 @@
                     </div>
                     <div class="form-group">
                         <label for="">Asignado a</label>
-                        <select class="custom-select @error('cliente_equipo_parent') form-control-danger @enderror" id="cliente_equipo_parent" name="cliente_equipo_parent"  required>
-                            @foreach ($clientes as $cliente)
-                                <option
-                                    value="{{$cliente->id}}"
-                                    {{ old('cliente_equipo_parent') == $cliente_parent->id ? 'selected' : '' }}
-                                    {{ $cliente->id === $cliente_parent->id ? 'selected' : ''}}
-                                >
-                                    {{$cliente->nombre_cliente}}
-                                </option>
+                        <select class="custom-select @error('id_cliente_equipo') form-control-danger @enderror" id="id_cliente_equipo" name="id_cliente_equipo"  required>
+                            @foreach ($casas_matrices as $casa_matriz)
+                                @if ($casa_matriz->children)
+                                    <optgroup label="{{$casa_matriz->nombre_cliente}}">
+                                        @foreach ( $casa_matriz->children as $sucursal )
+                                            <option value="{{$sucursal->id}}"
+                                                {{ old('id_cliente_equipo') == $equipo->cliente->id ? 'selected' : '' }}
+                                                {{ $sucursal->id === $equipo->cliente->id ? 'selected' : ''}}
+                                                >
+                                                {{$casa_matriz->nombre_cliente}} - {{Illuminate\Support\Str::lower($sucursal->nombre_cliente)}}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                @else
+                                    <optgroup label="{{$casa_matriz->nombre_cliente}}">
+                                        <option value="{{$casa_matriz->id}}"> Casa Matriz</option>
+                                    </optgroup> 
+                                @endif
                             @endforeach
                         </select>
-                        @error('cliente_equipo_parent')
+                        @error('id_cliente_equipo')
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group @error('sucursal_equipo') has-danger @enderror">
+
+                    {{-- <div class="form-group @error('sucursal_equipo') has-danger @enderror">
                         <label for="">Sucursal</label>
                  
-                        <select class="custom-select @error('id_cliente_equipo') form-control-danger @enderror" id="id_cliente_equipo" name="id_cliente_equipo" required>
-                            @foreach ($sucursales as $sucursal)
+                        <select class="custom-select @error('id_cliente_equipo') form-control-danger @enderror" id="id_cliente_equipo" name="id_cliente_equipo" required  @if (!$equipo->cliente->parent) disabled @endif>
+                            @foreach ($sucursales as $sucursal) 
                                 <option
                                     value="{{$sucursal->id}}"
                                     {{ old('id_cliente_equipo') == $equipo->cliente->id ? 'selected' : '' }}
@@ -108,7 +118,8 @@
                         @error('id_cliente_equipo')
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
-                    </div>
+                    </div> --}}
+                   
                     <input type="hidden" name="test_equipo" value="{{ old('test_equipo', optional($equipo)->test_equipo) }}">
                     <input type="hidden" name="fecha_ultima_mantencion_equipo" value="{{ old('test_equipo', optional($equipo)->fecha_ultima_mantencion_equipo) }}">
                     <div class="form-group d-flex justify-content-end">
@@ -122,9 +133,12 @@
 </form>
 <!-- Row -->
 
+
+
 @endsection
 
 @push('scripts')
+{{-- @javascript('hasParent', $equipo->cliente->parent)
 <script src="{{ asset('js/plugins/jquery/jquery.min.js')}}"></script>
 <script>
     $(document).ready(function(){
@@ -138,5 +152,6 @@
             });
         });
     });
-</script>
+</script> --}}
+
 @endpush

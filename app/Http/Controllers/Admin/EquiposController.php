@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Modelo;
 use App\Marca;
 use App\Equipo;
+use App\Tecnico;
+use App\Mantenimiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -47,7 +49,7 @@ class EquiposController extends Controller
     public function store(Request $request)
     {
         // validar formulario
-        $data = $request->validate([
+        $data_equipo = $request->validate([
             'marca_equipo' => 'required',
             'id_modelo_equipo' => 'required',
             'num_serie_equipo' => ['required', 'unique:equipos'],
@@ -55,13 +57,28 @@ class EquiposController extends Controller
         ]);
 
 
-        $data['test_equipo'] = 0;
-        $data['fecha_ultima_mantencion_equipo'] = Carbon::now();
-        $data['fecha_fabricacion_equipo'] = Carbon::parse($data['fecha_fabricacion_equipo']);
+        $data_equipo['test_equipo'] = 0;
+        $data_equipo['fecha_ultima_mantencion_equipo'] = Carbon::now();
+        $data_equipo['fecha_fabricacion_equipo'] = Carbon::parse($data_equipo['fecha_fabricacion_equipo']);
 
-        $equipo = Equipo::create($data);
-
+        $equipo = Equipo::create($data_equipo);
         $equipo->save();
+
+        // Obtener modelo equipo y la frecuencia de mantencion equipo
+        $modelo_equipo = Modelo::find($data_equipo['id_modelo_equipo']);
+
+        // Obtener un tecnico random
+        $tecnico = Tecnico::inRandomOrder()->first();
+        
+        // Calcular la fecha de mantenimiento
+        $fecha_mantenimiento = $data_equipo['fecha_ultima_mantencion_equipo']->addDays($modelo_equipo->frecuencia_modelo / 24);
+       
+        // crear registro en tabla mantenciones
+        $mantenimiento = Mantenimiento::create([
+            'id_equipo_mantenimiento' =>$equipo->id, 
+            'id_tecnico_mantenimiento' => $tecnico->id, 
+            'fecha_mantenimiento' => $fecha_mantenimiento
+        ]);
 
         return redirect()->route('admin.equipos.index')->withFlash('El equipo ha sido creado e ingresado a bodega');
     }
@@ -74,9 +91,17 @@ class EquiposController extends Controller
      */
     public function show($id)
     {
+        // buscar equipo especifico
         $equipo = Equipo::find($id);
 
-        return view('admin.equipos.show', compact('equipo'));
+        // Buscar todos los mantenimientos futuros de equipo
+        $mantenimientos = Mantenimiento::where('id_equipo_mantenimiento', $equipo->id)->get();
+
+        //Obtener fecha primer mantenimiento para setear inicio calendario
+        $primer_mantenimiento = Mantenimiento::where('id_equipo_mantenimiento', $equipo->id)->first();
+        $fecha_primer_mantenimiento = Carbon::parse($primer_mantenimiento->fecha_mantenimiento)->format('Y-m-d');
+
+        return view('admin.equipos.show', compact('equipo', 'mantenimientos', 'fecha_primer_mantenimiento'));
     }
 
     /**
@@ -94,18 +119,9 @@ class EquiposController extends Controller
         
 
         // obtener todos los clientes (casas matrices) para impresion en vista
-        $clientes = Cliente::where('parent_id', NULL)->get();
+        $casas_matrices = Cliente::whereNull('parent_id')->get();
 
-        // obtener la sucursal del equipo para obtener su parent
-        $sucursal_equipo = $equipo->cliente;
-
-        // obtener el parent especifico de la sucursal 
-        $cliente_parent = $equipo->cliente->parent;
-
-        // obtener todas las sucursales del parent especifico para impresion en vista
-        $sucursales = Cliente::where('parent_id', $cliente_parent->id)->get();
-
-        return view('admin.equipos.edit', compact('clientes','marcas', 'equipo', 'modelosMarca', 'sucursales', 'sucursal_equipo', 'cliente_parent'));
+        return view('admin.equipos.edit', compact('marcas', 'equipo', 'modelosMarca', 'casas_matrices'));
     }
 
     /**
@@ -127,9 +143,8 @@ class EquiposController extends Controller
             'fecha_fabricacion_equipo' => ['required', 'date'],
             'id_cliente_equipo' => 'required'
         ]);
-        // DB::enableQueryLog();
+
         $equipo->update($data);
-        //dd(DB::getQueryLog());
 
         return redirect()->route('admin.equipos.index')->withFlash("El equipo {$equipo->nombre_equipo} ha sido modificado.");
     }

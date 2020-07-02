@@ -47,7 +47,13 @@
                                 <td>
                                     {{$equipo->num_serie_equipo}}
                                 </td>
-                                <td>{{ $equipo->cliente->parent->nombre_cliente}}</td>
+                                <td>
+                                    @if ($equipo->cliente->parent)
+                                    {{ $equipo->cliente->parent->nombre_cliente}}
+                                    @else
+                                    {{$equipo->cliente->nombre_cliente}}
+                                    @endif
+                                </td>
                                 <td>
                                     {{$equipo->cliente->nombre_cliente}}
                                 </td>
