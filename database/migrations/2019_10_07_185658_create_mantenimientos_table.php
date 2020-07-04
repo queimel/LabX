@@ -13,13 +13,6 @@ class CreateMantenimientosTable extends Migration
      */
     public function up()
     {
-
-        Schema::create('telefonos', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('numero_telefono');
-            $table->timestamps();
-        });
-
         Schema::create('tecnicos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('supervisor_id')->nullable();
@@ -29,6 +22,16 @@ class CreateMantenimientosTable extends Migration
             $table->foreign('supervisor_id')->references('id')->on('tecnicos')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('telefonos', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('numero_telefono');
+            $table->unsignedBigInteger('id_tecnico');
+            $table->foreign('id_tecnico')->references('id')->on('tecnicos')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+
 
         Schema::create('mantenimientos', function (Blueprint $table) {
             $table->bigIncrements('id');

@@ -32,30 +32,31 @@ class TecnicosSeeder extends Seeder
 
 
         $telefonos = [
-            ['+56984784132'],
-            ['+56957105136'],
-            ['+56941532321'],
-            ['+56938019703'],
-            ['+56941809650']
+            ['+56984784132', 1],
+            ['+56957105136', 2],
+            ['+56941532321', 3],
+            ['+56938019703', 4],
+            ['+56941809650', 5]
         ];
 
         $telefonos = array_map(function($telefonos) use($now){
             return [
-                'numero_telefono' => $telefonos[0]
+                'numero_telefono' => $telefonos[0],
+                'id_tecnico' => $telefonos[1]
             ];
         }, $telefonos);
         \DB::table('telefonos')->insert($telefonos);
 
-        // Get all the roles attaching up to 3 random roles to each user
-        $telefonos = App\Telefono::all();
+        // // Get all the roles attaching up to 3 random roles to each user
+        // $telefonos = App\Telefono::all();
 
-        // Populate the pivot table
-        App\Tecnico::all()->each(function ($tecnico) use ($telefonos) {
-            $tecnico->telefonos()->attach(
-                $telefonos->random(rand(1, 2))->pluck('id')->toArray()
-            );
-            //$tecnico->telefonos()->saveMany($telefonos);
-        });
+        // // Populate the pivot table
+        // App\Tecnico::all()->each(function ($tecnico) use ($telefonos) {
+        //     $tecnico->telefonos()->attach(
+        //         $telefonos->random(rand(1, 2))->pluck('id')->toArray()
+        //     );
+        //     //$tecnico->telefonos()->saveMany($telefonos);
+        // });
 
     }
 }

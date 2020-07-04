@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Telefono extends Model
 {
     protected $fillable = [
-        'numero_telefono'
+        'numero_telefono', 'id_tecnico'
     ];
-    public function tecnicos()
+    public function tecnico()
     {
-        return $this->belongsToMany('App\Tecnico', 'tecnico_telefono', 'id_telefono', 'id_tecnico' );
+        return $this->belongsTo('App\Tecnico', 'id_tecnico');
     }
 }

@@ -117,11 +117,13 @@ class EquiposController extends Controller
         
         $modelosMarca = Modelo::where('id_marca_modelo', $equipo->modelo->marca->id)->get();
         
-
         // obtener todos los clientes (casas matrices) para impresion en vista
         $casas_matrices = Cliente::whereNull('parent_id')->get();
 
-        return view('admin.equipos.edit', compact('marcas', 'equipo', 'modelosMarca', 'casas_matrices'));
+        // seccion real que tiene asignada equipo
+        $seccion = $equipo->cliente;
+
+        return view('admin.equipos.edit', compact('marcas', 'equipo', 'modelosMarca', 'casas_matrices', 'seccion'));
     }
 
     /**
@@ -165,15 +167,24 @@ class EquiposController extends Controller
 
     public function GetModeloPorEquipo($id_equipo){
 
-        // return Modelo::find($id_marca_modelo)->modelos;
         return Equipo::where('id', $id_equipo)->get();
 
     }
 
     public function GetModeloPorMarca($id_marca_modelo){
 
-        // return Modelo::find($id_marca_modelo)->modelos;
         return Modelo::where('id_marca_modelo', $id_marca_modelo)->get();
+
+    }
+
+    public function GetEquiposPorCLiente($id_cliente){
+
+        $equipos = Equipo::where('id_cliente_equipo', $id_cliente)->get();
+
+        $modelos = $equipos->each(function ($equipo, $key) {
+            return [$equipo->modelo, $equipo->modelo->marca];
+        });
+        return $modelos;
 
     }
 }

@@ -35,7 +35,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 Route::get('/', 'Admin\AdminController@index')->name('dashboard');
                 Route::resource('roles', 'Admin\RolesController', ['as' => 'admin']);
                 Route::resource('usuarios', 'Admin\UsersController', ['as' => 'admin']);
+
+                //CLIENTES
                 Route::resource('clientes', 'Admin\ClientsController', ['as' => 'admin']);
+                
+
 
                 // SUCURSALES
                 Route::resource('sucursales', 'Admin\SucursalesController', ['as' => 'admin']);
@@ -53,6 +57,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 // EQUIPOS
                 Route::resource('equipos', 'Admin\EquiposController', ['as' => 'admin']);
+                Route::get('sucursales_cliente/{id}', 'Admin\ClientsController@getSucursalesPorCliente');
+                Route::get('equipos_cliente/{id}', 'Admin\EquiposController@GetEquiposPorCliente');
 
                 // MARCAS
                 Route::resource('marcas', 'Admin\MarcasController', ['as' => 'admin']);
@@ -65,6 +71,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 // TECNICOS
                 Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);
+                // TELEFONOS
+                Route::delete('telefono/{id_telefono}', 'Admin\TecnicosController@DeleteTelefonoTecnico');
 
                 // ENCARGADOS
                 Route::resource('encargados', 'Admin\EncargadosController', ['as' => 'admin']);
@@ -73,6 +81,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
                 //REPUESTOS
                 Route::resource('repuestos', 'Admin\RepuestosController', ['as' => 'admin']);
+
+                //MANTENIMIENTOS
+                Route::resource('mantenimientos', 'Admin\MantenimientosController', ['as' => 'admin']);                
 
             });
 

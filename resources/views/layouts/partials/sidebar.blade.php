@@ -57,6 +57,12 @@
                                 <li><a href="{{ route('admin.tecnicos.create')}}">Crear técnico</a></li>
                             </ul>
                         </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Mantenimientos</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{ route('admin.mantenimientos.index')}}">Listado Mantenimientos</a></li>
+                                <li><a href="{{ route('admin.mantenimientos.create')}}">Crear mantenimientos</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>

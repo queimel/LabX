@@ -29,8 +29,10 @@
                 <hr>
             </div>
             <div class="card-body">
-                <small class="text-muted">Asignado a: </small>
-                <h6>{{$equipo->cliente->nombre_cliente}}</h6>
+                <small class="text-muted">Cliente: </small>
+                <h6>{{$equipo->cliente->parent->parent->nombre_cliente}}</h6>
+                <h6>Sucursal: {{$equipo->cliente->parent->nombre_cliente}}</h6>
+                <h6>Sección: {{$equipo->cliente->nombre_cliente}}</h6>
             </div>
             <div class="card-body">
                 <small class="text-muted">Número de serie </small>

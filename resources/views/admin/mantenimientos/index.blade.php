@@ -3,11 +3,11 @@
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Listado de Equipos</h3>
+        <h3 class="text-themecolor">Listado de Mantenimientos</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Equipos</li>
+            <li class="breadcrumb-item active">Mantenimientos</li>
         </ol>
     </div>
 </div>
@@ -17,53 +17,40 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-end">
-                    <div>
-                        <a class="btn btn-primary" href="{{route('admin.equipos.create')}}"> <i class="fa fa-plus"></i> Nuevo Equipo</a>
-                    </div>
-                </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Número de serie</th>
-                                <th>Cliente</th>
-                                <th>Fecha mantención</th>
-                                <th>Acciones</th>
+                                <th>Nombre Cliente</th>
+                                <th>Marca Equipo</th>
+                                <th>Modelo Equipo</th>
+                                <th>Tecnico encargado</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($equipos as $equipo)
+
+                            @foreach ($mantenimientos as $mantenimiento)
                             <tr>
+                                <td>{{$mantenimiento->equipo->cliente->parent->parent->nombre_cliente}}</td>
                                 <td>
-                                    {{ $equipo->modelo->marca->nombre_marca}}
+                                    {{$mantenimiento->equipo->modelo->marca->nombre_marca}}
                                 </td>
                                 <td>
-                                    {{ $equipo->modelo->nombre_modelo}}
+                                    {{$mantenimiento->equipo->modelo->nombre_modelo}}
                                 </td>
                                 <td>
-                                    {{$equipo->num_serie_equipo}}
+                                    {{$mantenimiento->tecnico->nombre_tecnico}}  {{$mantenimiento->tecnico->apellido_tecnico}}
                                 </td>
                                 <td>
-                                    @if ($equipo->cliente->parent->parent)
-                                    {{ $equipo->cliente->parent->parent->nombre_cliente}}
-                                    @else
-                                    {{$equipo->cliente->parent->nombre_cliente}}
-                                    @endif
-                                </td>
-                                <td>
-                                    {{$equipo->fecha_ultima_mantencion_equipo}}
-                                </td>
-                                <td>
-                                    <a class="btn btn-info btn-xs" href="{{ route('admin.equipos.show', $equipo)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.mantenimientos.show', $mantenimiento)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle mantenimiento">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.edit', $equipo)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.mantenimientos.edit', $mantenimiento)}}">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$equipo->id}})">
+
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$mantenimiento->id}})">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -78,20 +65,21 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Eliminar Cliente</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Mantenimiento</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>¿Estas Seguro de querer eliminar este equipo?</h5>
+                <h5>¿Estas Seguro de querer eliminar este mantenimiento?</h5>
             </div>
             <div class="modal-footer">
+
                 <form method="POST" action="" class="d-inline" id="deleteForm">
                     @csrf
                     @method('DELETE')
@@ -135,10 +123,12 @@
             });
         });
 
+    </script>
+      <script type="text/javascript">
         function deleteData(id)
         {
             var id = id;
-            var url = '{{ route("admin.equipos.destroy", ":id") }}';
+            var url = '{{ route("admin.mantenimientos.destroy", ":id") }}';
             url = url.replace(':id', id);
             $("#deleteForm").attr('action', url);
         }
@@ -147,6 +137,5 @@
         {
             $("#deleteForm").submit();
         }
-
-    </script>
+     </script>
 @endpush

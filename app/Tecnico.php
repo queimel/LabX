@@ -12,7 +12,7 @@ class Tecnico extends Model
 
     public function telefonos()
     {
-        return $this->belongsToMany('App\Telefono', 'tecnico_telefono', 'id_tecnico', 'id_telefono');
+        return $this->hasMany('App\Telefono', 'id_tecnico');
     }
 
     public function Mantenimientos()
