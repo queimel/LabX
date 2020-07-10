@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Validation\ValidationException;
 
+use App\Telefono;
+
 class UsersController extends Controller
 {
     /**
@@ -139,6 +141,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $this->authorize('update', $user);
 
+
         $data = $request->validated();
         $data['active'] = $data['active'] == 'true' ? 1 : 0;
 
@@ -157,6 +160,28 @@ class UsersController extends Controller
         }
 
         $user->update($data);
+
+        // Si user es tecnico
+        if($user->esTecnico()){
+            // update tecnico
+            $user->profile->update(['run_tecnico' => $data['run_tecnico']]);
+
+            // update telefonos tecnico
+            $telefonosRequest = collect($data['telefonos_tecnico']);
+            $telefonosRequestId = $data['telefonos_tecnico_id'];
+    
+            $telefonos = $telefonosRequest->map(function ($telefono, $key) use($telefonosRequestId){
+                return ['id' => $telefonosRequestId[$key], 'telefono' => $telefono];
+            });
+    
+            foreach ($telefonos as $telefono){
+                $telefonoUp = Telefono::updateOrCreate(
+                    ['id' => $telefono['id']],
+                    ['id_tecnico' => $user->profile->id, 'numero_telefono' => $telefono['telefono']]
+                );
+            }
+        }
+
         $user->syncRoles($request->roles);
 
 

@@ -33,6 +33,18 @@
                             <small class="form-control-feedback">{{ $message }}</small>
                             @enderror
                         </div>
+                        @if ($user->esTecnico())
+                        <div class="form-group @error('run_tecnico') has-danger @enderror">
+                            <label for="exampleInputEmail1">RUN</label>
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="ti-id-badge"></i></div>
+                                <input type="text" class="form-control @error('email') form-control-danger @enderror" id="run_tecnico" name="run_tecnico" value="{{ old('run_tecnico', optional($user)->profile->run_tecnico) }}">
+                            </div>
+                            @error('email')
+                            <small class="form-control-feedback d-block">{{ $message }}</small>
+                            @enderror
+                        </div>                            
+                        @endif
                         <div class="form-group @error('email') has-danger @enderror">
                             <label for="exampleInputEmail1">Email</label>
                             <div class="input-group">
@@ -43,6 +55,45 @@
                             <small class="form-control-feedback d-block">{{ $message }}</small>
                             @enderror
                         </div>
+
+                        @if ($user->esTecnico())
+                        <label>Teléfonos</label>
+                        <div id="telefonos">
+                        @foreach ($user->profile->telefonos as $telefono)
+                            <div class="form-group  @error('telefono_tecnico_{{$loop->index}}') has-danger @enderror">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="ti-mobile"></i></div>
+                                    <input 
+                                        type="text" 
+                                        class="form-control @error('telefonos_tecnico_{{$loop->index}}') form-control-danger @enderror" 
+                                        id="telefonos_tecnico_{{$loop->index}}" 
+                                        name="telefonos_tecnico[]" 
+                                        value="{{ old('telefonos_tecnico_$loop->index', optional($user->profile)->telefonos[$loop->index]->numero_telefono)}}"
+                                    >
+                                    @if (!$loop->first)
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-danger removePhone" type="button" data-toggle="modal" data-target="#exampleModal" onclick="deleteData({{$telefono->id}})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </span>
+                                    @endif
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info addPhone" type="button">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </span>
+                                    
+                                </div>
+                                @error('telefonos_tecnico_{{$loop->index}}')
+                                <small class="form-control-feedback">{{ $message }}</small>
+                                @enderror
+                                <input type="hidden"  id="telefonos_tecnico_id_{{$loop->index}}"  name="telefonos_tecnico_id[]" value="{{ $telefono->id}}">
+                            </div>
+                        @endforeach
+                        </div> 
+                        @endif
+
+
                         <div class="form-group @error('password') has-danger @enderror">
                             <label for="pwd1">Contraseña</label>
                             <div class="input-group">
@@ -53,7 +104,6 @@
                             @error('password')
                             <small class="form-control-feedback d-block">{{ $message }}</small>
                             @enderror
-
                             <div class="d-flex justify-content-between">
                                 <small class="help-block d-block">Dejar en blanco si no quieres cambiar la contraseña</small>
                                 <small data-toggle="tooltip" class="form-text text-muted text-right" data-placement="right"
@@ -123,4 +173,97 @@
     </div>
 </form>
 <!-- Row -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Telefono de Tecnico</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>¿Estas Seguro de querer eliminar este telefono?</h5>
+            </div>
+            <div class="modal-footer">
+
+
+                <form method="POST" action="" class="d-inline" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger" type="submit" onclick="formSubmit()">
+                        Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/plugins/jquery/jquery.min.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        
+        $('#telefonos').on('click', '.addPhone', function(){
+            console.log('click');
+            var size =  $('#telefonos').children().length;
+            var input = `
+                <div class="form-group  @error('telefono_tecnico_${size}') has-danger @enderror">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="ti-mobile"></i></div>
+                        <input 
+                            type="text" 
+                            class="form-control @error('telefonos_tecnico_${size}') form-control-danger @enderror" 
+                            id="telefonos_tecnico_${size}" 
+                            name="telefonos_tecnico[]" 
+                            value=""
+                        >
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger removeNewPhone" type="button">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info addPhone" type="button">+</button>
+                        </span>
+                        
+                    </div>
+                    @error('telefonos_tecnico_${size}')
+                    <small class="form-control-feedback">{{ $message }}</small>
+                    @enderror
+                    <input type="hidden"  id="telefonos_tecnico_id_${size}"  name="telefonos_tecnico_id[]" value="">
+                </div>
+            `
+
+            $('#telefonos').append(input);
+        });
+
+        $('#telefonos').on('click', '.removeNewPhone', function(){
+            console.log(this);
+            $(this).parent().parent().parent().remove();
+        });
+
+
+
+    });
+
+    function deleteData(id)
+        {
+            var id = id;
+            var url =  {{config('url')}}'/admin/telefono/'+id;
+            $("#deleteForm").attr('action', url);
+        }
+
+        function formSubmit()
+        {
+            $("#deleteForm").submit();
+        }
+</script>
+@endpush

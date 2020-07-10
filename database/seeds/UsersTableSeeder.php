@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
 
         $adminRole = Role::create(['name' => 'Admin']);
         $supervisorRole = Role::create(['name' => 'Supervisor']);
-        $operativeRole = Role::create(['name' => 'Operative']);
+        $tecnicoRole = Role::create(['name' => 'Tecnico']);
 
         $viewUsersPermission = Permission::create(['name'=>'View users']);
         $createUsersPermission = Permission::create(['name' => 'Create users']);
@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
 
         $adminRole->givePermissionTo('View users', 'Create users', 'Update users', 'Delete users');
         $supervisorRole->givePermissionTo('View users', 'Create users', 'Update users');
-        $operativeRole->givePermissionTo('View users');
+        $tecnicoRole->givePermissionTo('View users');
 
         $admin = new User;
         $admin->name = "Usuario Admin";
@@ -51,22 +51,6 @@ class UsersTableSeeder extends Seeder
         $admin->registroEstados()->save($adminState);
 
 
-        $adm1 = new User;
-        $adm1->name = "Usuario Adm1";
-        $adm1->email = "jtorrealbat@gmail.com";
-        $adm1->password = 'Huerfanos.770';
-        $adm1->active = true;
-        $adm1->password_changed_at = Carbon::create('2019-10-1');
-        $adm1->save();
-
-        $adm1->assignRole($adminRole);
-
-        $adminState1 = new RegistroEstado;
-        $adminState1->fecha_estado = Carbon::now();
-        $adminState1->estado = true;
-
-        $adm1->registroEstados()->save($adminState1);
-
         $supervisor = new User;
         $supervisor->name = "Usuario Supervisor";
         $supervisor->email = "supervisor@labx.cl";
@@ -82,46 +66,46 @@ class UsersTableSeeder extends Seeder
 
         $supervisor->registroEstados()->save($supervisorState);
 
-        $operativo = new User;
-        $operativo->name = "Usuario Operativo";
-        $operativo->email = "operativo@labx.cl";
-        $operativo->password = '12345678';
-        $operativo->active = false;
-        $operativo->save();
+        // $operativo = new User;
+        // $operativo->name = "Usuario Operativo";
+        // $operativo->email = "operativo@labx.cl";
+        // $operativo->password = '12345678';
+        // $operativo->active = false;
+        // $operativo->save();
 
-        $operativo->assignRole($operativeRole);
+        // $operativo->assignRole($operativeRole);
 
-        $operativoState = new RegistroEstado;
-        $operativoState->fecha_estado = Carbon::now();
-        $operativoState->estado = false;
+        // $operativoState = new RegistroEstado;
+        // $operativoState->fecha_estado = Carbon::now();
+        // $operativoState->estado = false;
 
-        $operativo->registroEstados()->save($operativoState);
+        // $operativo->registroEstados()->save($operativoState);
 
-        $barrita1 = new User;
-        $barrita1->name = "José Barra Briones";
-        $barrita1->email = "jose.barra@correoaiep.cl";
-        $barrita1->password = 'xcRORTuK';
-        $barrita1->active = true;
-        $barrita1->password_changed_at = Carbon::now();
-        $barrita1->save();
-        $barrita1->assignRole($adminRole);
-        $barrita1State = new RegistroEstado;
-        $barrita1State->fecha_estado = Carbon::now();
-        $barrita1State->estado = true;
-        $barrita1->registroEstados()->save($adminState);
+        // $barrita1 = new User;
+        // $barrita1->name = "José Barra Briones";
+        // $barrita1->email = "jose.barra@correoaiep.cl";
+        // $barrita1->password = 'xcRORTuK';
+        // $barrita1->active = true;
+        // $barrita1->password_changed_at = Carbon::now();
+        // $barrita1->save();
+        // $barrita1->assignRole($adminRole);
+        // $barrita1State = new RegistroEstado;
+        // $barrita1State->fecha_estado = Carbon::now();
+        // $barrita1State->estado = true;
+        // $barrita1->registroEstados()->save($adminState);
 
-        $barrita2 = new User;
-        $barrita2->name = "Profesor José Barra";
-        $barrita2->email = "jobebarra@gmail.com";
-        $barrita2->password = 'SZRHCmb2';
-        $barrita2->active = true;
-        $barrita2->password_changed_at = Carbon::now();
-        $barrita2->save();
-        $barrita2->assignRole($adminRole);
-        $barrita2State = new RegistroEstado;
-        $barrita2State->fecha_estado = Carbon::now();
-        $barrita2State->estado = true;
-        $barrita2->registroEstados()->save($adminState);
+        // $barrita2 = new User;
+        // $barrita2->name = "Profesor José Barra";
+        // $barrita2->email = "jobebarra@gmail.com";
+        // $barrita2->password = 'SZRHCmb2';
+        // $barrita2->active = true;
+        // $barrita2->password_changed_at = Carbon::now();
+        // $barrita2->save();
+        // $barrita2->assignRole($adminRole);
+        // $barrita2State = new RegistroEstado;
+        // $barrita2State->fecha_estado = Carbon::now();
+        // $barrita2State->estado = true;
+        // $barrita2->registroEstados()->save($adminState);
 
     }
 }

@@ -16,8 +16,6 @@ class CreateMantenimientosTable extends Migration
         Schema::create('tecnicos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('supervisor_id')->nullable();
-            $table->string('nombre_tecnico');
-            $table->string('apellido_tecnico');
             $table->string('run_tecnico')->unique();
             $table->foreign('supervisor_id')->references('id')->on('tecnicos')->onDelete('cascade');
             $table->timestamps();
