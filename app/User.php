@@ -47,6 +47,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $with = ['profile'];
+ 
+    public function profile()
+    {
+      return $this->morphTo();
+    }
+
+    public function esTecnico()
+    {
+        return $this->profile_type == 'App\Tecnico';
+    }
+
     public function scopeAllowed($query)
     {
         if( auth()->user()->can('view', $this))

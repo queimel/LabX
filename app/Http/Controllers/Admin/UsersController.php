@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Validation\ValidationException;
 
+use App\Telefono;
+use App\Tecnico;
+
 class UsersController extends Controller
 {
     /**
@@ -54,13 +57,35 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $this->authorize('create', new User);
         // validar formulario
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'roles' => 'required'
-        ]);
+
+
+        if (!empty($request->input('run_tecnico'))) {
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'roles' => 'required',
+                'telefonos_tecnico.*' => array(
+                    'required',
+                    'regex:/^(\+?56)?(\s?)(0?9)(\s?)[9876543]\d{7}$/'
+                ),
+                'run_tecnico' => 'required|cl_rut'
+            ]);
+
+        }else{
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'roles' => 'required'
+            ]);
+        }
+
+        
+
+
 
         // Generar una contraseña
 
@@ -73,11 +98,25 @@ class UsersController extends Controller
         // Crear el usuario
 
         $user = User::create($data);
-
+       
         // Asignar roles
         $user->assignRole($request->roles);
+
+
+        // si es tecnico, crear row de tecnico
+        if (!empty($request->input('run_tecnico'))) {
+            $tecnico = Tecnico::create(['supervisor_id' => NULL, 'run_tecnico' => $data['run_tecnico']]);
+            $tecnico->user()->save($user);
+
+            $telefonos = $data['telefonos_tecnico'];
+ 
+            foreach ($telefonos as $telefono){
+                $tecnico->telefonos()->create(['numero_telefono'=> $telefono, 'id_tecnico' => $tecnico->id]);
+            }
+        }
+
         // Enviar email
-        UsuarioCreado::dispatch($user, $data['password'] );
+        // UsuarioCreado::dispatch($user, $data['password'] );
 
         // registrar Activacion
         $activationData = [
@@ -139,6 +178,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $this->authorize('update', $user);
 
+
         $data = $request->validated();
         $data['active'] = $data['active'] == 'true' ? 1 : 0;
 
@@ -157,6 +197,28 @@ class UsersController extends Controller
         }
 
         $user->update($data);
+
+        // Si user es tecnico
+        if($user->esTecnico()){
+            // update tecnico
+            $user->profile->update(['run_tecnico' => $data['run_tecnico']]);
+
+            // update telefonos tecnico
+            $telefonosRequest = collect($data['telefonos_tecnico']);
+            $telefonosRequestId = $data['telefonos_tecnico_id'];
+    
+            $telefonos = $telefonosRequest->map(function ($telefono, $key) use($telefonosRequestId){
+                return ['id' => $telefonosRequestId[$key], 'telefono' => $telefono];
+            });
+    
+            foreach ($telefonos as $telefono){
+                $telefonoUp = Telefono::updateOrCreate(
+                    ['id' => $telefono['id']],
+                    ['id_tecnico' => $user->profile->id, 'numero_telefono' => $telefono['telefono']]
+                );
+            }
+        }
+
         $user->syncRoles($request->roles);
 
 
@@ -196,6 +258,12 @@ class UsersController extends Controller
         $this->authorize('delete', $user);
         $user->registroEstados()->where('user_id', $id)->delete();
         $user->historicoContrasena()->where('user_id', $id)->delete();
+
+        if($user->esTecnico()){
+            $user->profile->telefonos()->delete();
+            $user->profile->delete();
+        }
+
         $user->delete();
 
         return redirect()->route('admin.usuarios.index')->withFlash('Usuario eliminado');

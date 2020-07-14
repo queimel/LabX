@@ -10,6 +10,11 @@ class Tecnico extends Model
         'supervisor_id', 'nombre_tecnico', 'apellido_tecnico', 'run_tecnico'
     ];
 
+    public function user() 
+    { 
+      return $this->morphOne('App\User', 'profile');
+    }
+
     public function telefonos()
     {
         return $this->hasMany('App\Telefono', 'id_tecnico');
