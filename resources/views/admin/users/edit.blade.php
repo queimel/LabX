@@ -246,7 +246,6 @@
         });
 
         $('#telefonos').on('click', '.removeNewPhone', function(){
-            console.log(this);
             $(this).parent().parent().parent().remove();
         });
 

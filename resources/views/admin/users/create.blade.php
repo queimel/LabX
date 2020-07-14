@@ -33,6 +33,19 @@
                             <small class="form-control-feedback">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div id="run_tecnico" style="display:none;">
+                            <div class="form-group @error('run_tecnico') has-danger @enderror">
+                                <label for="exampleInputEmail1">RUN</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="ti-id-badge"></i></div>
+                                    <input type="text" class="form-control @error('email') form-control-danger @enderror" id="run_tecnico" name="run_tecnico" value="">
+                                </div>
+                                @error('run_tecnico')
+                                <small class="form-control-feedback d-block">{{ $message }}</small>
+                                @enderror
+                            </div>  
+                        </div>
+
                         <div class="form-group @error('email') has-danger @enderror">
                             <label for="exampleInputEmail1">Email</label>
                             <div class="input-group">
@@ -43,6 +56,37 @@
                             <small class="form-control-feedback d-block">{{ $message }}</small>
                             @enderror
                         </div>
+
+
+                        <div id="telefonos_tecnico" style="display:none;">
+                            <label>Teléfonos</label>
+                            <div id="telefonos">
+    
+                                <div class="form-group  @error('telefono_tecnico') has-danger @enderror">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="ti-mobile"></i></div>
+                                        <input 
+                                            type="text" 
+                                            class="form-control @error('telefonos_tecnico_1') form-control-danger @enderror" 
+                                            id="telefonos_tecnico" 
+                                            name="telefonos_tecnico[]" 
+                                            value=""
+                                        >
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info addPhone" type="button">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
+                                        
+                                    </div>
+                                    @error('telefonos_tecnico_1')
+                                    <small class="form-control-feedback">{{ $message }}</small>
+                                    @enderror
+                                    <input type="hidden"  id="telefonos_tecnico_id_1"  name="telefonos_tecnico_id[]" value="">
+                                </div>
+                            </div> 
+                        </div>
+
                         <div class="form-group">
                             <small>La contraseña se generará de forma automatica</small>
                         </div>
@@ -60,14 +104,17 @@
                         <div class="d-flex justify-content-between">
                             @foreach ($roles as $rol)
                                 <div>
-                                    <input
-                                        type="checkbox"
-                                        id="basic_checkbox_{{$rol->id}}"
-                                        class="filled-in"
-                                        value="{{$rol->id}}"
-                                        name="roles[]"
-                                    >
-                                    <label for="basic_checkbox_{{$rol->id}}">{{$rol->name}}</label>
+
+                                    <input 
+                                        name="roles[]" 
+                                        class="roles_check" 
+                                        type="radio" 
+                                        value="{{$rol->name}}" 
+                                        id="role_{{$rol->id}}" 
+                                        @if ($loop->first) checked="checked" @endif 
+                                        data-role="{{$rol->name}}"
+                                        >
+                                    <label for="role_{{$rol->id}}">{{$rol->name}}</label>
                                 </div>
                             @endforeach
                         </div>
@@ -88,3 +135,62 @@
 <!-- Row -->
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/plugins/jquery/jquery.min.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        
+
+        $('body').on('click', '.roles_check', function(){
+            if($(this).data('role') === 'Tecnico'){
+                $('#telefonos_tecnico').show(); 
+                $('#run_tecnico').show();                                  
+            }else{
+                $('#telefonos_tecnico').hide();
+                $('#run_tecnico').hide();
+            }
+        });
+
+
+        $('#telefonos').on('click', '.addPhone', function(){
+            console.log('click');
+            var size =  $('#telefonos').children().length;
+            var input = `
+                <div class="form-group  @error('telefono_tecnico_${size}') has-danger @enderror">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="ti-mobile"></i></div>
+                        <input 
+                            type="text" 
+                            class="form-control @error('telefonos_tecnico_${size}') form-control-danger @enderror" 
+                            id="telefonos_tecnico_${size}" 
+                            name="telefonos_tecnico[]" 
+                            value=""
+                        >
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger removeNewPhone" type="button">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info addPhone" type="button">+</button>
+                        </span>
+                        
+                    </div>
+                    @error('telefonos_tecnico_${size}')
+                    <small class="form-control-feedback">{{ $message }}</small>
+                    @enderror
+                    <input type="hidden"  id="telefonos_tecnico_id_${size}"  name="telefonos_tecnico_id[]" value="">
+                </div>
+            `
+
+            $('#telefonos').append(input);
+        });
+
+        $('#telefonos').on('click', '.removeNewPhone', function(){
+            $(this).parent().parent().parent().remove();
+        });
+
+    });
+</script>
+@endpush
