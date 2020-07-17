@@ -70,9 +70,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
 
                 // TECNICOS
-                Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);
-                // TELEFONOS
-                Route::delete('telefono/{id_telefono}', 'Admin\TecnicosController@DeleteTelefonoTecnico');
+                // Route::resource('tecnicos', 'Admin\TecnicosController', ['as' => 'admin']);
+                // // TELEFONOS
+                // Route::delete('telefono/{id_telefono}', 'Admin\TecnicosController@DeleteTelefonoTecnico');
 
                 // ENCARGADOS
                 Route::resource('encargados', 'Admin\EncargadosController', ['as' => 'admin']);

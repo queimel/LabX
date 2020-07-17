@@ -48,9 +48,9 @@
                                 </td>
                                 <td>
                                     @if ($equipo->cliente->parent->parent)
-                                    {{ $equipo->cliente->parent->parent->nombre_cliente}}
+                                        {{ $equipo->cliente->parent->parent->nombre_cliente}}
                                     @else
-                                    {{$equipo->cliente->parent->nombre_cliente}}
+                                        {{$equipo->cliente->parent->nombre_cliente}}
                                     @endif
                                 </td>
                                 <td>

@@ -91,7 +91,7 @@
                         <select class="custom-select @error('id_tecnico_mantenimiento') form-control-danger @enderror" id="id_tecnico_mantenimiento" name="id_tecnico_mantenimiento" required >
                             @foreach ($tecnicos as $tecnico) 
                                 <option value = {{ $tecnico->id}}>
-                                    {{$tecnico->nombre_tecnico}} {{$tecnico->apellido_tecnico}}
+                                    {{$tecnico->user->name}}
                                 </option>
                             @endforeach
                         </option>

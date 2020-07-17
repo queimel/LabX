@@ -54,7 +54,7 @@
             <div class="card-body">
                 <small class="text-muted">Tecnico a cargo </small>
                 <h6>
-                    {{$mantenimiento->tecnico->nombre_tecnico}}  {{$mantenimiento->tecnico->apellido_tecnico}}
+                    {{$mantenimiento->tecnico->user->name}}
                 </h6>
                 <small class="text-muted">Telefono(s) </small>
 

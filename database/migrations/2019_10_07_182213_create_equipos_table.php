@@ -40,7 +40,7 @@ class CreateEquiposTable extends Migration
         Schema::create('equipos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_modelo_equipo');
-            $table->unsignedBigInteger('id_cliente_equipo')->default(10);
+            $table->unsignedBigInteger('id_cliente_equipo')->default(49);
             $table->string('num_serie_equipo')->unique();
             $table->date('fecha_fabricacion_equipo');
             $table->integer('test_equipo')->default(0);

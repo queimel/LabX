@@ -93,7 +93,7 @@
                                     {{ old('id_tecnico_mantenimiento') == $mantenimiento->tecnico->id ? 'selected' : '' }}
                                     {{ $tecnico->id === $mantenimiento->tecnico->id ? 'selected' : ''}}
                                 >
-                                    {{$tecnico->nombre_tecnico}} {{$tecnico->apellido_tecnico}}
+                                    {{$tecnico->user->name}}
                                 </option>
                             @endforeach
                         </option>
