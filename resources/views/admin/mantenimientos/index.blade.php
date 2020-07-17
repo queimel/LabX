@@ -32,7 +32,15 @@
 
                             @foreach ($mantenimientos as $mantenimiento)
                             <tr>
-                                <td>{{$mantenimiento->equipo->cliente->parent->parent->nombre_cliente}}</td>
+                                <td>
+                                    @if ($mantenimiento->equipo->cliente->parent->parent)
+                                        {{$mantenimiento->equipo->cliente->parent->parent->nombre_cliente}}
+                                    @else
+                                        {{$mantenimiento->equipo->cliente->parent->nombre_cliente}}
+                                    @endif
+                                    {{-- {{ $mantenimiento->equipo->cliente }} --}}
+                                    
+                                </td>
                                 <td>
                                     {{$mantenimiento->equipo->modelo->marca->nombre_marca}}
                                 </td>
@@ -40,7 +48,7 @@
                                     {{$mantenimiento->equipo->modelo->nombre_modelo}}
                                 </td>
                                 <td>
-                                    {{$mantenimiento->tecnico->nombre_tecnico}}  {{$mantenimiento->tecnico->apellido_tecnico}}
+                                    {{$mantenimiento->tecnico->user->name}}
                                 </td>
                                 <td>
                                     <a class="btn btn-info btn-xs" href="{{ route('admin.mantenimientos.show', $mantenimiento)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle mantenimiento">
