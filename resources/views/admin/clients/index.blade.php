@@ -17,6 +17,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <a class="btn btn-primary" href="{{route('admin.clientes.create')}}"> <i class="fa fa-plus"></i> Nuevo Cliente</a>
+                    </div>
+                </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>

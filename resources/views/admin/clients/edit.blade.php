@@ -56,8 +56,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
@@ -102,6 +100,77 @@
                 </div>
             </div>
         </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Sucursales y secciones del cliente</h4>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nombre</th>
+                                <th>Direccion</th>
+                                <th class="text-nowrap"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($cliente->children as $sucursal)
+                                <tr>
+                                    <td>
+                                        <a data-toggle="collapse" data-target="#toggle_{{$loop->index}}" href="#" class="accordion-toggle btn btn-secondary btn-circle btn-sm"  >
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$sucursal->nombre_cliente}}</td>
+                                    <td >
+                                        {{$sucursal->direccion_cliente}}
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <a href="#" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                        <a href="#" data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td colspan="4" class="hiddenRow">
+                                        <div class="accordian-body collapse" id="toggle_{{$loop->index}}">
+
+
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nombre Sección</th>
+                                                        <th>Dirección</th>
+                                                        <th>Encargado</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($sucursal->children as $seccion)
+                                                    <tr>
+                                                        <td>{{$loop->index}}</td>
+                                                        <td>{{$seccion->nombre_cliente}}</td>
+                                                        <td>{{$seccion->direccion_cliente}}</td>
+                                                        <td></td>
+                                                        <td class="text-nowrap">
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div> 
+                                    </td>
+                                </tr>                                
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 <!-- Row -->
@@ -133,6 +202,27 @@
                     $("#comuna").html(comunas_select).removeAttr('disabled');
             });
         });
+
+        $('.accordian-body').on('show.bs.collapse', function () {
+            console.log(this);
+            $(this).closest("table")
+                .find(".collapse.in")
+                .not(this)
+                //.collapse('toggle')
+        })
     });
 </script>
+@endpush
+
+@push('styles')
+    <style>
+        .table tr {
+            cursor: pointer;
+        }
+        .hiddenRow {
+            padding: 0 4px !important;
+            background-color: #eeeeee;
+            font-size: 13px;
+        }
+    </style>
 @endpush
