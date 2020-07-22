@@ -5,8 +5,12 @@
  */
 
 require('./bootstrap');
+require('jquery-ujs');
+require('./remote');
 
 window.Vue = require('vue');
+
+
 
 /**
  * The following block of code may be used to automatically register your

@@ -47,7 +47,7 @@
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group  @error('direccion_cliente') has-danger @enderror">
+                    <div class="form-group  @error('direccion_sucursal') has-danger @enderror">
                         <label>Dirección</label>
                         <input type="text" class="form-control  @error('direccion_cliente') form-control-danger @enderror" id="direccion_cliente" name="direccion_cliente" value="{{ old('direccion_cliente',  optional($cliente)->direccion_cliente)}}">
                         @error('direccion_cliente')
@@ -127,7 +127,9 @@
                                         {{$sucursal->direccion_cliente}}
                                     </td>
                                     <td class="text-nowrap">
-                                        <a href="#" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                        <a  href="{{ route('admin.sucursales.edit', $sucursal)}}" data-remote="true"> 
+                                            <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                        </a>
                                         <a href="#" data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
                                     </td>
                                 </tr>
@@ -174,7 +176,6 @@
     </div>
 </form>
 <!-- Row -->
-
 @endsection
 
 @push('scripts')
@@ -203,14 +204,39 @@
             });
         });
 
+
+        $("body").on('change', '#region-sucursal',function(){
+            console.log('change');
+            var region = $(this).val();
+            $.get({{config('url')}}'/admin/provinciasPorRegion/'+region, function(data){
+                var provincias_select = '<option value="">Seleccione Provincia</option>'
+                    for (var i=0; i<data.length;i++)
+                    provincias_select+='<option value="'+data[i].id+'">'+data[i].nombre_provincia+'</option>';
+
+                    $("#provincia").html(provincias_select).removeAttr('disabled');
+            });
+        });
+
+        $("body").on('change', '#provincia-sucursal', function(){
+            var provincia = $(this).val();
+            $.get({{config('url')}}'/admin/comunasPorProvincia/'+provincia, function(data){
+                var comunas_select = '<option value="">Seleccione Comuna</option>'
+                    for (var i=0; i<data.length;i++)
+                    comunas_select+='<option value="'+data[i].id+'">'+data[i].nombre_comuna+'</option>';
+
+                    $("#comuna").html(comunas_select).removeAttr('disabled');
+            });
+        });
+
         $('.accordian-body').on('show.bs.collapse', function () {
-            console.log(this);
             $(this).closest("table")
                 .find(".collapse.in")
                 .not(this)
                 //.collapse('toggle')
         })
     });
+
+
 </script>
 @endpush
 

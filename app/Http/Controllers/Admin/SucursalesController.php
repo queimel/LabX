@@ -10,6 +10,8 @@ use App\Provincia;
 use App\Region;
 use Illuminate\Support\Facades\DB;
 
+use App\Http\Requests\SucursalesRequest;
+
 class SucursalesController extends Controller
 {
     /**
@@ -89,7 +91,11 @@ class SucursalesController extends Controller
 
         $comunasdeProvincia = Comuna::where('id_provincia', $provincia->id)->get();
 
+
+
         return view('admin.sucursales.edit', compact('sucursal', 'regiones', 'provinciasdeRegion', 'provincia', 'comunasdeProvincia'));
+
+        
     }
 
     /**
@@ -99,20 +105,14 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SucursalesRequest $request, $id)
     {
         $sucursal = Cliente::find($id);
 
-        $data = $request->validate([
-            'nombre_cliente' => ['required', 'string', 'max:255'],
-            'rut_cliente' => ['required', 'cl_rut'],
-            'descripcion_cliente' => 'string',
-            'direccion_cliente' => ['required', 'string', 'max:255'],
-            'id_comuna' => 'required'
-        ]);
+        $data = $request->validated();
 
         $sucursal->update($data);
-        return redirect()->route('admin.clientes.show', $sucursal->parent )->withFlash("la sucursal {$sucursal->nombre_cliente} ha sido modificada con éxito.");
+        return redirect()->route('admin.clientes.edit', $sucursal->parent )->withFlash("la sucursal {$sucursal->nombre_cliente} ha sido modificada con éxito.");
 
     }
 
