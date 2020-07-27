@@ -18,7 +18,7 @@
     @csrf
     @method('PUT')
     <div class="row">
-        <div class="col-6">
+        <div class="col-5">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Modifica los datos del cliente</h4>
@@ -47,7 +47,7 @@
                         <small class="form-control-feedback">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group  @error('direccion_cliente') has-danger @enderror">
+                    <div class="form-group  @error('direccion_sucursal') has-danger @enderror">
                         <label>Dirección</label>
                         <input type="text" class="form-control  @error('direccion_cliente') form-control-danger @enderror" id="direccion_cliente" name="direccion_cliente" value="{{ old('direccion_cliente',  optional($cliente)->direccion_cliente)}}">
                         @error('direccion_cliente')
@@ -56,8 +56,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
@@ -102,10 +100,99 @@
                 </div>
             </div>
         </div>
+        <div class="col-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Sucursales y secciones del cliente</h4>
+                        <div>
+                            <a href="{{ route('admin.sucursales.create', $cliente)}}" class="btn btn-primary btn-sm" data-remote="true">
+                                <i class="fa fa-plus"></i> Nueva Sucursal
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nombre</th>
+                                <th>Direccion</th>
+                                <th class="text-nowrap"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($cliente->children as $sucursal)
+                                <tr>
+                                    <td>
+                                        <a data-toggle="collapse" data-target="#toggle_{{$loop->index}}" href="#" class="accordion-toggle btn btn-secondary btn-circle btn-sm">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$sucursal->nombre_cliente}}</td>
+                                    <td >
+                                        {{$sucursal->direccion_cliente}}
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <a  href="{{ route('admin.sucursales.edit', $sucursal)}}" data-remote="true"> 
+                                            <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                        </a>
+                                        <a href="{{ route('admin.sucursales.show', $sucursal) }}" data-remote="true" 
+                                        data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td colspan="4" class="hiddenRow">
+                                        <div class="accordian-body collapse" id="toggle_{{$loop->index}}">
+                                            <div class="d-flex justify-content-between p-2">
+                                                <h5>Secciones de {{$sucursal->nombre_cliente}} </h5>
+                                                <div>
+                                                    <a href="{{ route('admin.secciones.create', $sucursal)}}" class="btn btn-secondary btn-sm" data-remote="true">
+                                                        <i class="fa fa-plus"></i> Nueva Seccion
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nombre Sección</th>
+                                                        <th>Dirección</th>
+                                                        <th>Encargado</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($sucursal->children as $seccion)
+                                                    <tr>
+                                                        <td>{{$loop->index}}</td>
+                                                        <td>{{$seccion->nombre_cliente}}</td>
+                                                        <td>{{$seccion->direccion_cliente}}</td>
+                                                        <td></td>
+                                                        <td class="text-nowrap">
+                                                            <a  href="{{ route('admin.secciones.edit', $seccion)}}" data-remote="true"> 
+                                                                <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                                            </a>
+                                                            <a href="{{ route('admin.secciones.show', $seccion) }}" data-remote="true" 
+                                                            data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div> 
+                                    </td>
+                                </tr>                                
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 <!-- Row -->
-
 @endsection
 
 @push('scripts')
@@ -133,6 +220,29 @@
                     $("#comuna").html(comunas_select).removeAttr('disabled');
             });
         });
+
+
+        $('.accordian-body').on('show.bs.collapse', function () {
+            $(this).closest("table")
+                .find(".collapse.in")
+                .not(this)
+                //.collapse('toggle')
+        })
     });
+
+
 </script>
+@endpush
+
+@push('styles')
+    <style>
+        .table tr {
+            cursor: pointer;
+        }
+        .hiddenRow {
+            padding: 0 4px !important;
+            background-color: #eeeeee;
+            font-size: 13px;
+        }
+    </style>
 @endpush

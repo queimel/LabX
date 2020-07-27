@@ -42,10 +42,17 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
 
 
                 // SUCURSALES
-                Route::resource('sucursales', 'Admin\SucursalesController', ['as' => 'admin']);
+                Route::resource('sucursales', 'Admin\SucursalesController', ['as' => 'admin'])->except([
+                    'create'
+                ]);
+
+                Route::get('sucursales/{cliente}/create','Admin\SucursalesController@create', ['as' => 'admin'])->name('admin.sucursales.create');
 
                 // SECCIONES
-                Route::resource('secciones', 'Admin\SeccionesController', ['as' => 'admin']);
+                Route::resource('secciones', 'Admin\SeccionesController', ['as' => 'admin'])->except([
+                    'create'
+                ]);
+                Route::get('secciones/{sucursal}/create','Admin\SeccionesController@create', ['as' => 'admin'])->name('admin.secciones.create');
 
                 Route::get('sucursales_cliente/{id}', 'Admin\ClientsController@getSucursalesPorCliente');
                 Route::get('rut_cliente/{id}', 'Admin\ClientsController@getCliente');

@@ -10,6 +10,8 @@ use App\Provincia;
 use App\Region;
 use Illuminate\Support\Facades\DB;
 
+use App\Http\Requests\SucursalesRequest;
+
 class SucursalesController extends Controller
 {
     /**
@@ -61,7 +63,7 @@ class SucursalesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * METODO USADO PARA MOSTRAR DETALLE DE ELIMINACION.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -69,8 +71,7 @@ class SucursalesController extends Controller
     public function show($id)
     {
         $sucursal = Cliente::find($id);
-        $regiones = Region::all();
-        return view('admin.sucursales.show', compact('sucursal', 'regiones'));
+        return view('admin.sucursales.destroy', compact('sucursal'));
     }
 
     /**
@@ -89,7 +90,11 @@ class SucursalesController extends Controller
 
         $comunasdeProvincia = Comuna::where('id_provincia', $provincia->id)->get();
 
+
+
         return view('admin.sucursales.edit', compact('sucursal', 'regiones', 'provinciasdeRegion', 'provincia', 'comunasdeProvincia'));
+
+        
     }
 
     /**
@@ -99,20 +104,14 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SucursalesRequest $request, $id)
     {
         $sucursal = Cliente::find($id);
 
-        $data = $request->validate([
-            'nombre_cliente' => ['required', 'string', 'max:255'],
-            'rut_cliente' => ['required', 'cl_rut'],
-            'descripcion_cliente' => 'string',
-            'direccion_cliente' => ['required', 'string', 'max:255'],
-            'id_comuna' => 'required'
-        ]);
+        $data = $request->validated();
 
         $sucursal->update($data);
-        return redirect()->route('admin.clientes.show', $sucursal->parent )->withFlash("la sucursal {$sucursal->nombre_cliente} ha sido modificada con éxito.");
+        return redirect()->route('admin.clientes.edit', $sucursal->parent )->withFlash("la sucursal {$sucursal->nombre_cliente} ha sido modificada con éxito.");
 
     }
 
@@ -122,10 +121,13 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $sucursal)
     {
-        $sucursal = Cliente::find($id);
+        $sucursal = Cliente::find($sucursal);
+      
         $sucursal->delete();
-        return redirect()->route('admin.clientes.show', $sucursal->parent)->withFlash('Sucursal eliminada con exito');
+        return redirect()->route('admin.clientes.edit', $sucursal->parent)->withFlash('Sucursal eliminada con exito');
+    
+        
     }
 }
