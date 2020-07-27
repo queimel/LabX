@@ -63,7 +63,7 @@ class SucursalesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * METODO USADO PARA MOSTRAR DETALLE DE ELIMINACION.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -71,8 +71,7 @@ class SucursalesController extends Controller
     public function show($id)
     {
         $sucursal = Cliente::find($id);
-        $regiones = Region::all();
-        return view('admin.sucursales.show', compact('sucursal', 'regiones'));
+        return view('admin.sucursales.destroy', compact('sucursal'));
     }
 
     /**
@@ -122,10 +121,13 @@ class SucursalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $sucursal)
     {
-        $sucursal = Cliente::find($id);
+        $sucursal = Cliente::find($sucursal);
+      
         $sucursal->delete();
-        return redirect()->route('admin.clientes.show', $sucursal->parent)->withFlash('Sucursal eliminada con exito');
+        return redirect()->route('admin.clientes.edit', $sucursal->parent)->withFlash('Sucursal eliminada con exito');
+    
+        
     }
 }

@@ -18,7 +18,7 @@
     @csrf
     @method('PUT')
     <div class="row">
-        <div class="col-6">
+        <div class="col-5">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Modifica los datos del cliente</h4>
@@ -100,10 +100,17 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-7">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Sucursales y secciones del cliente</h4>
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Sucursales y secciones del cliente</h4>
+                        <div>
+                            <a href="{{ route('admin.sucursales.create', $cliente)}}" class="btn btn-primary btn-sm" data-remote="true">
+                                <i class="fa fa-plus"></i> Nueva Sucursal
+                            </a>
+                        </div>
+                    </div>
                     <hr>
                     <table class="table">
                         <thead>
@@ -118,7 +125,7 @@
                             @foreach ($cliente->children as $sucursal)
                                 <tr>
                                     <td>
-                                        <a data-toggle="collapse" data-target="#toggle_{{$loop->index}}" href="#" class="accordion-toggle btn btn-secondary btn-circle btn-sm"  >
+                                        <a data-toggle="collapse" data-target="#toggle_{{$loop->index}}" href="#" class="accordion-toggle btn btn-secondary btn-circle btn-sm">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                     </td>
@@ -130,14 +137,21 @@
                                         <a  href="{{ route('admin.sucursales.edit', $sucursal)}}" data-remote="true"> 
                                             <i class="fa fa-pencil text-inverse m-r-10"></i>
                                         </a>
-                                        <a href="#" data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                        <a href="{{ route('admin.sucursales.show', $sucursal) }}" data-remote="true" 
+                                        data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
                                     </td>
                                 </tr>
                                 <tr >
                                     <td colspan="4" class="hiddenRow">
                                         <div class="accordian-body collapse" id="toggle_{{$loop->index}}">
-
-
+                                            <div class="d-flex justify-content-between p-2">
+                                                <h5>Secciones de {{$sucursal->nombre_cliente}} </h5>
+                                                <div>
+                                                    <a href="{{ route('admin.secciones.create', $sucursal)}}" class="btn btn-secondary btn-sm" data-remote="true">
+                                                        <i class="fa fa-plus"></i> Nueva Seccion
+                                                    </a>
+                                                </div>
+                                            </div>
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
@@ -156,8 +170,11 @@
                                                         <td>{{$seccion->direccion_cliente}}</td>
                                                         <td></td>
                                                         <td class="text-nowrap">
-                                                            <a href="#" data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                                            <a href="#" data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                                            <a  href="{{ route('admin.secciones.edit', $seccion)}}" data-remote="true"> 
+                                                                <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                                            </a>
+                                                            <a href="{{ route('admin.secciones.show', $seccion) }}" data-remote="true" 
+                                                            data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -204,29 +221,6 @@
             });
         });
 
-
-        $("body").on('change', '#region-sucursal',function(){
-            console.log('change');
-            var region = $(this).val();
-            $.get({{config('url')}}'/admin/provinciasPorRegion/'+region, function(data){
-                var provincias_select = '<option value="">Seleccione Provincia</option>'
-                    for (var i=0; i<data.length;i++)
-                    provincias_select+='<option value="'+data[i].id+'">'+data[i].nombre_provincia+'</option>';
-
-                    $("#provincia").html(provincias_select).removeAttr('disabled');
-            });
-        });
-
-        $("body").on('change', '#provincia-sucursal', function(){
-            var provincia = $(this).val();
-            $.get({{config('url')}}'/admin/comunasPorProvincia/'+provincia, function(data){
-                var comunas_select = '<option value="">Seleccione Comuna</option>'
-                    for (var i=0; i<data.length;i++)
-                    comunas_select+='<option value="'+data[i].id+'">'+data[i].nombre_comuna+'</option>';
-
-                    $("#comuna").html(comunas_select).removeAttr('disabled');
-            });
-        });
 
         $('.accordian-body').on('show.bs.collapse', function () {
             $(this).closest("table")

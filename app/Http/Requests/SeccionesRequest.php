@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SucursalesRequest extends FormRequest
+use App\Cliente;
+
+class SeccionesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +26,7 @@ class SucursalesRequest extends FormRequest
     public function rules()
     {
         return [
+            'parent_id' => ['required'],
             'nombre_cliente' => ['required', 'string', 'max:255'],
             'rut_cliente' => ['required', 'cl_rut'],
             'descripcion_cliente' => 'string',
@@ -34,12 +37,15 @@ class SucursalesRequest extends FormRequest
 
     protected function getRedirectUrl()
     {
-        $post = $this->route()->parameter('sucursale');
-        
+
+        $post = $this->route()->parameter('seccione');
+
         if($post){
-            return route('admin.sucursales.edit', $post);
+            return route('admin.secciones.edit', $post);
         }else{
-            return route('admin.sucursales.create', $post);
+            $sucursal = Cliente::find($this->request->get('parent_id'));
+            
+            return route('admin.secciones.create', $sucursal);
         }
     }
 }

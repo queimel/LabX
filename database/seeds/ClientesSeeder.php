@@ -66,7 +66,7 @@ class ClientesSeeder extends Seeder
             [46,27,'SEC. HORMONAS','76730590-7','ESTADO 47 ',148,'Sección'],
             [47,29,'SEC. QUIMICA','96673590-2','CALLE ISABEL RIQUELME 446',199,'Sección'],
             // [48,25,'ORINAS','79622060-0L','PATRICIA VINUELA 357',84,'Sección'],
-            [49,25,'BODEGA','79622060-0L','PATRICIA VINUELA 357',84,'Sección'],
+            [49,25,'BODEGA','79622060-0','PATRICIA VINUELA 357',84,'Sección'],
             // [50,25,'QUIMICA','79622060-0L','PATRICIA VINUELA 357',84,'Sección'],
             [51,26,'HEMATOLOGIA','69141102-8','AV. ARTURO PRATS 1675',215,'Sección'],
             [52,26,'ORINAS','69141102-8','AV. ARTURO PRATS 1675',215,'Sección'],

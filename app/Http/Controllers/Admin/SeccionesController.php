@@ -11,6 +11,8 @@ use App\Cliente;
 use App\Comuna;
 use Illuminate\Support\Facades\DB;
 
+use App\Http\Requests\SeccionesRequest;
+
 class SeccionesController extends Controller
 {
     /**
@@ -28,34 +30,29 @@ class SeccionesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-
+        $sucursal = Cliente::find($id);
+        $regiones = Region::all();
+        return view('admin.secciones.create', compact( 'sucursal', 'regiones'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\SucursalesRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SeccionesRequest $request)
     {
         // validar formulario
-        $data = $request->validate([
-            'parent_id' => ['required'],
-            'nombre_cliente' => ['required', 'string', 'max:255'],
-            'rut_cliente' => ['required', 'cl_rut'],
-            'descripcion_cliente' => 'string',
-            'direccion_cliente' => ['required', 'string', 'max:255'],
-            'id_comuna' => 'required'
-        ]);
+        $data = $request->validated();
 
         $seccion = Cliente::create($data);
 
         $seccion->save();
 
-        return redirect()->route('admin.sucursales.show', $seccion->parent)->withFlash("La sección {$seccion->nombre_cliente} ha sido creada");
+        return redirect()->route('admin.clientes.edit', $seccion->parent->parent)->withFlash("La sección {$seccion->nombre_cliente} ha sido creada");
     }
 
     /**
@@ -66,7 +63,8 @@ class SeccionesController extends Controller
      */
     public function show($id)
     {
-        //
+        $seccion = Cliente::find($id);
+        return view('admin.secciones.destroy', compact('seccion'));
     }
 
     /**
@@ -95,20 +93,14 @@ class SeccionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SeccionesRequest $request, $id)
     {
         $seccion = Cliente::find($id);
 
-        $data = $request->validate([
-            'nombre_cliente' => ['required', 'string', 'max:255'],
-            'rut_cliente' => ['required', 'cl_rut'],
-            'descripcion_cliente' => 'string',
-            'direccion_cliente' => ['required', 'string', 'max:255'],
-            'id_comuna' => 'required'
-        ]);
+        $data = $request->validated();
 
         $seccion->update($data);
-        return redirect()->route('admin.sucursales.show', $seccion->parent )->withFlash("la seccion {$seccion->nombre_cliente} ha sido modificada con éxito.");
+        return redirect()->route('admin.clientes.edit', $seccion->parent->parent)->withFlash("La sección {$seccion->nombre_cliente} ha sido editada");
     }
 
     /**
@@ -121,6 +113,6 @@ class SeccionesController extends Controller
     {
         $seccion = Cliente::find($id);
         $seccion->delete();
-        return redirect()->route('admin.sucursales.show', $seccion->parent)->withFlash('Sección eliminada con exito');
+        return redirect()->route('admin.clientes.edit', $seccion->parent->parent)->withFlash('Sección eliminada con exito');
     }
 }
