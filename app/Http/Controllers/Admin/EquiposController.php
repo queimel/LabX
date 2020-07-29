@@ -13,6 +13,8 @@ use App\Mantenimiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+use App\Http\Requests\EquiposRequest;
+
 class EquiposController extends Controller
 {
     /**
@@ -43,19 +45,13 @@ class EquiposController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\EquiposRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EquiposRequest $request)
     {
         // validar formulario
-        $data_equipo = $request->validate([
-            'marca_equipo' => 'required',
-            'id_modelo_equipo' => 'required',
-            'num_serie_equipo' => ['required', 'unique:equipos'],
-            'fecha_fabricacion_equipo' => ['required', 'date'],
-        ]);
-
+        $data_equipo = $request->validated();
 
         $data_equipo['test_equipo'] = 0;
         $data_equipo['fecha_ultima_mantencion_equipo'] = Carbon::now();

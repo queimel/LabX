@@ -19,7 +19,9 @@
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <div>
-                        <a class="btn btn-primary" href="{{route('admin.equipos.create')}}"> <i class="fa fa-plus"></i> Nuevo Equipo</a>
+                        <a class="btn btn-primary" href="{{route('admin.equipos.create')}}" data-remote="true"> 
+                            <i class="fa fa-plus"></i> Nuevo Equipo
+                        </a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
@@ -60,7 +62,7 @@
                                     <a class="btn btn-info btn-xs" href="{{ route('admin.equipos.show', $equipo)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.edit', $equipo)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.equipos.edit', $equipo)}}" data-remote="true">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" onclick="deleteData({{$equipo->id}})">
