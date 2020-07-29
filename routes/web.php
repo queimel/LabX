@@ -71,7 +71,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 Route::resource('marcas', 'Admin\MarcasController', ['as' => 'admin']);
 
                 // MODELOS
-                Route::resource('modelos', 'Admin\ModelosController', ['as' => 'admin']);
+                Route::resource('modelos', 'Admin\ModelosController', ['as' => 'admin'])->except([
+                    'create'
+                ]);
+                Route::get('modelos/{marca}/create','Admin\ModelosController@create', ['as' => 'admin'])->name('admin.modelos.create');
                 Route::get('modeloPorMarca/{id_marca_modelo}', 'Admin\EquiposController@GetModeloPorMarca');
                 Route::get('modeloPorEquipo/{id}', 'Admin\EquiposController@GetProvinciasPorRegiones');
 

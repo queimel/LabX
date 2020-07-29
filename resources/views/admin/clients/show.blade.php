@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @push('head-page')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
@@ -300,4 +300,130 @@
             });
         });
     </script>
+@endpush --}}
+
+
+@extends('layouts.modal')
+@section('title') Detalle Cliente @endsection
+@section('size') modal-xl @endsection
+@section('content')
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title m-t-10">{{$cliente->nombre_cliente}}</h4>
+                    </div>
+                    <div>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <small class="text-muted">Dirección </small>
+                        <h6>{{$cliente->direccion_cliente}}, {{$cliente->comuna->nombre_comuna}}</h6>
+                    </div>
+                    <div class="card-body">
+                        <small class="text-muted">Descripcion </small>
+                        <h6>
+                            {{$cliente->descripcion}}
+                        </h6>
+                    </div>
+                    <div>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ route('admin.clientes.edit', $cliente)}}" class="button btn btn-primary btn-block">Editar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h4 class="card-title">Sucursales y secciones del cliente</h4>
+                        </div>
+                        <hr>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nombre</th>
+                                    <th>Direccion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($cliente->children as $sucursal)
+                                    <tr>
+                                        <td>
+                                            <a data-toggle="collapse" data-target="#toggle_{{$loop->index}}" href="#" class="accordion-toggle btn btn-secondary btn-circle btn-sm">
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                        </td>
+                                        <td>{{$sucursal->nombre_cliente}}</td>
+                                        <td >
+                                            {{$sucursal->direccion_cliente}}
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td colspan="4" class="hiddenRow">
+                                            <div class="accordian-body collapse" id="toggle_{{$loop->index}}">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Nombre Sección</th>
+                                                            <th>Dirección</th>
+                                                            <th>Encargado</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($sucursal->children as $seccion)
+                                                        <tr>
+                                                            <td>{{$loop->index}}</td>
+                                                            <td>{{$seccion->nombre_cliente}}</td>
+                                                            <td>{{$seccion->direccion_cliente}}</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div> 
+                                        </td>
+                                    </tr>                                
+                                @endforeach
+    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('footer')
+    <button class="btn btn-inverse waves-effect waves-light" type="button" data-dismiss="modal">Cerrar</button>
+@endsection
+
+@push('modal-scripts')
+    <script>
+        $('.accordian-body').on('show.bs.collapse', function () {
+            $(this).closest("table")
+                .find(".collapse.in")
+                .not(this)
+                //.collapse('toggle')
+        })
+    </script>
+
+@endpush
+
+@push('styles')
+    <style>
+        .table tr {
+            cursor: pointer;
+        }
+        .hiddenRow {
+            padding: 0 4px !important;
+            background-color: #eeeeee;
+            font-size: 13px;
+        }
+    </style>
 @endpush

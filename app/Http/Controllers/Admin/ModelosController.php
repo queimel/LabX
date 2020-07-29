@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Marca;
 use App\Modelo;
 
+use App\Http\Requests\ModelosRequest;
+
 class ModelosController extends Controller
 {
     /**
@@ -24,11 +26,10 @@ class ModelosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id_marca)
     {
-        $marcas = Marca::all();
-
-        return view('admin.modelos.create', compact('marcas'));
+        $marca = Marca::find($id_marca);
+        return view('admin.modelos.create', compact('marca'));
     }
 
     /**
@@ -37,23 +38,15 @@ class ModelosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ModelosRequest $request)
     {
 
-        $data = $request->validate([
-            'id_marca_modelo' => 'required',
-            'nombre_modelo' => ['required', 'string', 'max:255'],
-            'descripcion_modelo' => ['required', 'string', 'max:255'],
-            'frecuencia_modelo' => ['required', 'integer', 'min:0']
-        ]);
-
+        $data = $request->validated();
         $modelo = Modelo::create($data);
-
         $modelo->save();
-
         $marca = Marca::find($data['id_marca_modelo']);
 
-        return redirect()->route('admin.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido creado con exito.");
+        return redirect()->route('admin.marcas.edit', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido creado con exito.");
     }
 
     /**
@@ -64,7 +57,8 @@ class ModelosController extends Controller
      */
     public function show($id)
     {
-        //
+        $modelo = Modelo::find($id);
+        return view('admin.modelos.destroy', compact('modelo'));
     }
 
     /**
@@ -89,21 +83,16 @@ class ModelosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ModelosRequest $request, $id)
     {
         $modelo = Modelo::find($id);
         $marca = $modelo->marca;
 
-        $data = $request->validate([
-            'id_marca_modelo' => 'required',
-            'nombre_modelo' => ['required', 'string', 'max:255'],
-            'descripcion_modelo' => ['required', 'string', 'max:255'],
-            'frecuencia_modelo' => ['required', 'integer', 'min:0']
-        ]);
+        $data = $request->validated();
 
         $modelo->update($data);
 
-        return redirect()->route('admin.marcas.show', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido editado");
+        return redirect()->route('admin.marcas.edit', $marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido editado");
     }
 
     /**
@@ -118,6 +107,6 @@ class ModelosController extends Controller
 
         $modelo->delete();
 
-        return redirect()->route('admin.marcas.show', $modelo->marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido eliminado");
+        return redirect()->route('admin.marcas.edit', $modelo->marca)->withFlash("El modelo {$modelo->nombre_modelo} ha sido eliminado");
     }
 }

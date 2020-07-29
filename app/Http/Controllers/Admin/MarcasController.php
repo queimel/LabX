@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Marca;
 
+use App\Http\Requests\MarcasRequest;
+
 class MarcasController extends Controller
 {
     /**
@@ -44,13 +46,10 @@ class MarcasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MarcasRequest $request)
     {
         // valida datos del formulario (llega por medio de la variable request)
-        $data = $request->validate([
-            'nombre_marca' => ['required', 'string', 'max:255'],
-            'origen_marca' => 'required'
-        ]);
+        $data = $request->validated();
 
         // crea una instancia del modelo Marca (un nuevo objeto de la clase Marca) con los datos del form
         $marca = Marca::create($data);
