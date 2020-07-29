@@ -19,8 +19,8 @@
 <!-- Row -->
 
     <div class="row">
-        <div class="col-md-6 col-xs-12">
-            <form class="form p-t-20" method="POST" action="{{ route('admin.marcas.update', $marca)}}">
+        <div class="col-md-5 col-xs-12">
+            <form class="form" method="POST" action="{{ route('admin.marcas.update', $marca)}}">
                 @csrf
                 @method('PUT')
                 <div class="card">
@@ -55,6 +55,52 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div class="col-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Modelos {{$marca->nombre_marca}}</h4>
+                        <div>
+                            <a href="{{ route('admin.modelos.create', $marca)}}" class="btn btn-primary btn-sm" data-remote="true">
+                                <i class="fa fa-plus"></i> Nuevo Modelo
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nombre</th>
+                                <th>Frecuencia Mantención</th>
+                                <th class="text-nowrap"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($marca->modelos as $modelo)
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>{{$modelo->nombre_modelo}}</td>
+                                    <td >
+                                        {{$modelo->frecuencia_modelo}}
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <a  href="{{ route('admin.modelos.edit', $modelo)}}" data-remote="true"> 
+                                            <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                        </a>
+                                        <a href="{{ route('admin.modelos.show', $modelo) }}" data-remote="true" 
+                                        data-toggle="tooltip" data-original-title="Eliminar"> <i class="fa fa-close text-danger"></i> </a>
+                                    </td>
+                                </tr>                               
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>

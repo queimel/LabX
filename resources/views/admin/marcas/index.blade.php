@@ -20,7 +20,9 @@
             <div class="card-body">
                 <div class="d-flex justify-content-end">
                     <div>
-                        <a class="btn btn-primary" href="{{route('admin.marcas.create')}}"> <i class="fa fa-plus"></i> Nueva Marca</a>
+                        <a class="btn btn-primary" href="{{route('admin.marcas.create')}}" data-remote="true"> 
+                            <i class="fa fa-plus" ></i> Nueva Marca
+                        </a>
                     </div>
                 </div>
                 <div class="table-responsive m-t-40">
