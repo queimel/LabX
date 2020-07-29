@@ -47,7 +47,6 @@
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-engine"></i><span class="hide-menu">Equipos</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{ route('admin.equipos.index')}}">Listado equipos</a></li>
-                                <li><a href="{{ route('admin.equipos.create')}}">Crear equipo</a></li>
                                 <li><a href="{{ route('admin.marcas.index')}}">Marcas Equipos</a></li>
                             </ul>
                         </li>
