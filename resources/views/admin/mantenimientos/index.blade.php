@@ -17,6 +17,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <a class="btn btn-primary" href="{{route('admin.mantenimientos.create')}}" data-remote="true"> 
+                            <i class="fa fa-plus"></i> Nuevo mantenimiento
+                        </a>
+                    </div>
+                </div>
                 <div class="table-responsive m-t-40">
                     <table id="usersTable" class="table table-bordered table-striped">
                         <thead>
@@ -54,7 +61,7 @@
                                     <a class="btn btn-info btn-xs" href="{{ route('admin.mantenimientos.show', $mantenimiento)}}" data-toggle="tooltip" data-placement="top" title="Ver detalle mantenimiento">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.mantenimientos.edit', $mantenimiento)}}">
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.mantenimientos.edit', $mantenimiento)}}" data-remote="true">
                                         <i class="fa fa-pencil"></i>
                                     </a>
 
