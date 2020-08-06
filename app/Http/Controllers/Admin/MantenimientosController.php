@@ -9,6 +9,8 @@ use App\Cliente;
 use App\Tecnico;
 use Carbon\Carbon;
 
+use App\Http\Requests\MantenimientosRequest;
+
 class MantenimientosController extends Controller
 {
     /**
@@ -43,23 +45,14 @@ class MantenimientosController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\MantenimientosRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MantenimientosRequest $request)
     {
 
             // validar formulario
-        $data = $request->validate([
-                'id_tecnico_mantenimiento' => 'required',
-                'id_equipo_mantenimiento' => 'required',
-                'fecha_mantenimiento' => ['required', 'date']
-            ],
-            [
-                'id_tecnico_mantenimiento.required' => 'Debe seleccionar un tecnico',
-                'fecha_mantenimiento.required' => 'Debe ingresar una fecha'
-            ]
-        );
+        $data = $request->validated();
 
         $mantenimiento = Mantenimiento::create($data);
         $mantenimiento->save();
@@ -114,20 +107,12 @@ class MantenimientosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MantenimientosRequest $request, $id)
     {
         $mantenimiento = Mantenimiento::find($id);
 
-            // validar formulario
-        $data = $request->validate([
-                'id_tecnico_mantenimiento' => 'required',
-                'fecha_mantenimiento' => ['required', 'date']
-            ],
-            [
-                'id_tecnico_mantenimiento.required' => 'Debe seleccionar un tecnico',
-                'fecha_mantenimiento.required' => 'Debe ingresar una fecha'
-            ]
-        );
+        // validar formulario
+        $data = $request->validated();
 
         $mantenimiento->update($data);
 
