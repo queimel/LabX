@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->profile_type == 'App\Tecnico';
     }
 
+    public function esEncargado()
+    {
+        return $this->profile_type == 'App\Encargado';
+    }
+
     public function scopeAllowed($query)
     {
         if( auth()->user()->can('view', $this))

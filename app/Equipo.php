@@ -23,6 +23,6 @@ class Equipo extends Model
 
     public function mantenimientos()
     {
-        return $this->hasMany('App\Mantenimiento');
+        return $this->hasMany('App\Mantenimiento', 'id_equipo_mantenimiento');
     }
 }

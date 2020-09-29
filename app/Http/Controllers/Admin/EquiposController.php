@@ -68,12 +68,43 @@ class EquiposController extends Controller
         
         // Calcular la fecha de mantenimiento
         $fecha_mantenimiento = $data_equipo['fecha_ultima_mantencion_equipo']->addDays($modelo_equipo->frecuencia_modelo / 24);
-       
-        // crear registro en tabla mantenciones
-        $mantenimiento = Mantenimiento::create([
-            'id_equipo_mantenimiento' =>$equipo->id, 
-            'id_tecnico_mantenimiento' => $tecnico->id, 
-            'fecha_mantenimiento' => $fecha_mantenimiento
+        $fecha_mantenimiento2 = Carbon::parse($fecha_mantenimiento)->addDays($modelo_equipo->frecuencia_modelo / 24);
+        $fecha_mantenimiento3 = Carbon::parse($fecha_mantenimiento2)->addDays($modelo_equipo->frecuencia_modelo / 24);
+        $fecha_mantenimiento4 = Carbon::parse($fecha_mantenimiento3)->addDays($modelo_equipo->frecuencia_modelo / 24);
+        $fecha_mantenimiento5 = Carbon::parse($fecha_mantenimiento4)->addDays($modelo_equipo->frecuencia_modelo / 24);
+        $fecha_mantenimiento6 = Carbon::parse($fecha_mantenimiento5)->addDays($modelo_equipo->frecuencia_modelo / 24);
+        // crear registros en tabla mantenciones
+        $equipo->mantenimientos()->createMany([
+            [
+                'id_equipo_mantenimiento' =>$equipo->id, 
+                'id_tecnico_mantenimiento' => $tecnico->id, 
+                'fecha_mantenimiento' => $fecha_mantenimiento
+            ],
+            [
+                'id_equipo_mantenimiento' =>$equipo->id, 
+                'id_tecnico_mantenimiento' => $tecnico->id, 
+                'fecha_mantenimiento' =>$fecha_mantenimiento2
+            ],
+            [
+                'id_equipo_mantenimiento' =>$equipo->id, 
+                'id_tecnico_mantenimiento' => $tecnico->id, 
+                'fecha_mantenimiento' => $fecha_mantenimiento3
+            ],
+            [
+                'id_equipo_mantenimiento' =>$equipo->id, 
+                'id_tecnico_mantenimiento' => $tecnico->id, 
+                'fecha_mantenimiento' => $fecha_mantenimiento4
+            ],
+            [
+                'id_equipo_mantenimiento' =>$equipo->id, 
+                'id_tecnico_mantenimiento' => $tecnico->id, 
+                'fecha_mantenimiento' => $fecha_mantenimiento5
+            ],
+            [
+                'id_equipo_mantenimiento' =>$equipo->id, 
+                'id_tecnico_mantenimiento' => $tecnico->id, 
+                'fecha_mantenimiento' => $fecha_mantenimiento6
+            ],
         ]);
 
         return redirect()->route('admin.equipos.index')->withFlash('El equipo ha sido creado e ingresado a bodega');

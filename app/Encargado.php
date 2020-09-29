@@ -10,13 +10,14 @@ class Encargado extends Model
         'id', 'id_cliente_encargado', 'nombre_encargado', 'apellidos_encargado'
     ];
 
+    public function user() 
+    { 
+      return $this->morphOne('App\User', 'profile');
+    }
+
     public function cliente()
     {
         return $this->belongsTo('App\Cliente', 'id_cliente_encargado');
     }
 
-    public function cargos()
-    {
-        return $this->belongsToMany('App\Cargos');
-    }
 }

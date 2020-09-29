@@ -16,8 +16,6 @@ class CreateEncargadosTable extends Migration
         Schema::create('encargados', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_cliente_encargado');
-            $table->string('nombre_encargado');
-            $table->string('apellidos_encargado');
             $table->foreign('id_cliente_encargado')->references('id')->on('clientes');
             $table->timestamps();
         });
