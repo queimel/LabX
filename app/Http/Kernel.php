@@ -21,6 +21,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
+
+
     /**
      * The application's route middleware groups.
      *
@@ -62,8 +64,12 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'password_change' => \App\Http\Middleware\PasswordChange::class,
         'password_expired' => \App\Http\Middleware\PasswordExpired::class,
-        'user_active' => \App\Http\Middleware\UserActive::class
+        'user_active' => \App\Http\Middleware\UserActive::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class
     ];
+
 
     /**
      * The priority-sorted list of middleware.

@@ -10,6 +10,8 @@ class Mantenimiento extends Model
         'id', 'id_equipo_mantenimiento', 'id_tecnico_mantenimiento', 'fecha_mantenimiento'
     ];
 
+    protected $guarded = [];
+
     public function equipo()
     {
         return $this->belongsTo('App\Equipo', 'id_equipo_mantenimiento');

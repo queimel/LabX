@@ -21,6 +21,8 @@ use Illuminate\Validation\ValidationException;
 
 use App\Telefono;
 use App\Tecnico;
+use App\Cliente;
+use App\Encargado;
 
 class UsersController extends Controller
 {
@@ -46,7 +48,8 @@ class UsersController extends Controller
     {
         $this->authorize('create', new User);
         $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        $clientes = Cliente::with('children')->whereNull('parent_id')->get();
+        return view('admin.users.create', compact('roles', 'clientes'));
     }
 
     /**
@@ -58,11 +61,8 @@ class UsersController extends Controller
     public function store(Request $request)
     {
 
-
         $this->authorize('create', new User);
         // validar formulario
-
-
         if (!empty($request->input('run_tecnico'))) {
             $data = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -75,7 +75,17 @@ class UsersController extends Controller
                 'run_tecnico' => 'required|cl_rut'
             ]);
 
-        }else{
+        }
+        else if($request->input('roles')[0] === 'Encargado'){
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'roles' => 'required',
+                'id_cliente_encargado' => 'required'
+            ]);
+        }
+        
+        else{
             $data = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -115,8 +125,14 @@ class UsersController extends Controller
             }
         }
 
+        // si es encargado, crear row de encargado
+        if ($request->input('roles')[0] === 'Encargado') {
+            $encargado = Encargado::create(['id_cliente_encargado' => $data['id_cliente_encargado']]);
+            $encargado->user()->save($user);
+        }
+
         // Enviar email
-        // UsuarioCreado::dispatch($user, $data['password'] );
+        UsuarioCreado::dispatch($user, $data['password'] );
 
         // registrar Activacion
         $activationData = [
@@ -219,6 +235,12 @@ class UsersController extends Controller
             }
         }
 
+        // Si user es encargado
+        if($user->esEncargado()){
+            // update encargado
+            $user->profile->update(['id_cliente_encargado' => $data['id_cliente_encargado']]);
+        }
+
         $user->syncRoles($request->roles);
 
 
@@ -261,6 +283,10 @@ class UsersController extends Controller
 
         if($user->esTecnico()){
             $user->profile->telefonos()->delete();
+            $user->profile->delete();
+        }
+
+        if($user->esEncargado()){
             $user->profile->delete();
         }
 
