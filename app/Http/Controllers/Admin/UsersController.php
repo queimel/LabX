@@ -179,7 +179,8 @@ class UsersController extends Controller
         $user = User::find($id);
         $this->authorize('update', $user);
         $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
+        $clientes = Cliente::with('children')->whereNull('parent_id')->get();
+        return view('admin.users.edit', compact('user', 'roles', 'clientes'));
     }
 
     /**
