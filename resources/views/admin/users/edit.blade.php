@@ -93,6 +93,73 @@
                         </div> 
                         @endif
 
+                        @if ($user->esEncargado())
+                      
+                        <div id="clientes_encargado">
+                            <!-- select clientes casas matrices -->
+                            <div class="form-group @error('casa_matriz') has-danger @enderror">
+                                <label for="">Cliente</label>
+                        
+                                <select class="custom-select @error('casa_matriz') form-control-danger @enderror" id="casa_matriz" name="casa_matriz">
+                                    <option value="">Seleccionar</option>
+                                    @foreach ($clientes as $cliente) 
+                                        <option 
+                                            value="{{ $cliente->id}}" 
+                                            {{ $user->profile->cliente->parent->parent->id === $cliente->id ? "selected":"" }}
+                                        >
+                                        {{$cliente->nombre_cliente}}
+                                    </option>
+                                    @endforeach
+                                </option>
+                                </select>
+                                @error('casa_matriz')
+                                <small class="form-control-feedback">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                           {{-- {{ $user->profile->cliente->parent->parent->children}} --}}
+
+                            <!-- select clientes sucursales -->
+                            <div class="form-group @error('sucursal_encargado') has-danger @enderror">
+                                <label for="">Sucursal</label>
+                        
+                                <select class="custom-select @error('sucursal_encargado') form-control-danger @enderror" id="sucursal_encargado" name="sucursal_encargado">
+                                    @foreach ($user->profile->cliente->parent->parent->children as $sucursal ) 
+                                        <option 
+                                            value="{{ $sucursal->id}}" 
+                                            {{ $user->profile->cliente->parent->id === $sucursal->id ? "selected":"" }}
+                                        >
+                                        {{$sucursal->nombre_cliente}}
+                                    </option>
+                                    @endforeach                                    
+                                </select>
+                                @error('sucursal_encargado')
+                                <small class="form-control-feedback">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            
+
+                            <!--select clientes secciones sucursales -->
+                            <div class="form-group @error('id_cliente_encargado') has-danger @enderror">
+                                <label for="">Secciones</label>
+                        
+                                <select class="custom-select @error('id_cliente_encargado') form-control-danger @enderror" id="id_cliente_encargado" name="id_cliente_encargado">
+                                    @foreach ($user->profile->cliente->parent->children as $cliente) 
+                                    <option
+                                        value="{{ $cliente->id}}"
+                                    >
+                                        {{$cliente->nombre_cliente}}
+                                    </option>
+
+                                @endforeach
+                                </select>
+                                @error('id_cliente_encargado')
+                                <small class="form-control-feedback">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                        </div> 
+                        @endif         
 
                         <div class="form-group @error('password') has-danger @enderror">
                             <label for="pwd1">Contraseña</label>
@@ -210,6 +277,20 @@
 <script src="{{ asset('js/plugins/jquery/jquery.min.js')}}"></script>
 <script>
     $(document).ready(function() {
+
+        $('body').on('click', '.roles_check', function(){
+            if($(this).data('role') === 'Tecnico'){
+                $('#telefonos_tecnico').show(); 
+                $('#run_tecnico').show(); 
+                $('#clientes_encargado').hide();                                 
+            }else if($(this).data('role') === 'Encargado'){
+                $('#clientes_encargado').show();
+            }else{
+                $('#telefonos_tecnico').hide();
+                $('#run_tecnico').hide();
+                $('#clientes_encargado').hide();
+            }
+        });
         
         $('#telefonos').on('click', '.addPhone', function(){
             console.log('click');
@@ -249,6 +330,18 @@
             $(this).parent().parent().parent().remove();
         });
 
+        $("#casa_matriz").change(function(){
+            var cliente = $(this).val();
+            getSucursales(cliente, '#sucursal_encargado', 'sucursal');
+            $('#id_cliente_encargado').attr('disabled', 'disabled');
+            $('#id_cliente_encargado').html('');
+        });
+
+        $("#sucursal_encargado").change(function(){
+            var cliente = $(this).val();
+            getSucursales(cliente, '#id_cliente_encargado', 'seccion');
+        });
+
 
 
     });
@@ -260,9 +353,27 @@
             $("#deleteForm").attr('action', url);
         }
 
-        function formSubmit()
+    function formSubmit()
         {
             $("#deleteForm").submit();
         }
+
+        function getSucursales(cliente, dropdown, tipo){
+        getClients(cliente, dropdown, tipo)
+    }
+
+    function getSecciones(cliente, dropdown, tipo){
+        getClients(cliente, dropdown, tipo)
+    }
+
+    function getClients(cliente, dropdown, tipo){
+        $.get({{config('url')}}'/admin/sucursales_cliente/'+cliente, function(data){
+            var sucursales_select = `<option value="">Seleccione ${tipo}</option>`;
+            for (var i=0; i<data.length;i++){
+                sucursales_select+='<option value="'+data[i].id+'">'+data[i].nombre_cliente+'</option>'       
+            };
+            $(dropdown).html(sucursales_select).removeAttr('disabled');
+        });
+    }
 </script>
 @endpush

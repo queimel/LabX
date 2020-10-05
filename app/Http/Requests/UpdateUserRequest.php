@@ -45,6 +45,10 @@ class UpdateUserRequest extends FormRequest
             $rules['telefonos_tecnico_id.*'] = 'required';
         }
 
+        if ($this->request->has('id_cliente_encargado')) {
+            $rules['id_cliente_encargado'] = 'required';
+        }
+
         if( $this->filled('password'))
         {
             $rules['password'] = ['required', 'confirmed', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'];
