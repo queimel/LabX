@@ -10,6 +10,7 @@ use App\Marca;
 use App\Equipo;
 use App\Tecnico;
 use App\Mantenimiento;
+use App\LogMantenimiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -78,34 +79,48 @@ class EquiposController extends Controller
             [
                 'id_equipo_mantenimiento' =>$equipo->id, 
                 'id_tecnico_mantenimiento' => $tecnico->id, 
-                'fecha_mantenimiento' => $fecha_mantenimiento
+                'fecha_mantenimiento' => $fecha_mantenimiento,
+                'status' => 1
             ],
             [
                 'id_equipo_mantenimiento' =>$equipo->id, 
                 'id_tecnico_mantenimiento' => $tecnico->id, 
-                'fecha_mantenimiento' =>$fecha_mantenimiento2
+                'fecha_mantenimiento' =>$fecha_mantenimiento2,
+                'status' => 1
             ],
             [
                 'id_equipo_mantenimiento' =>$equipo->id, 
                 'id_tecnico_mantenimiento' => $tecnico->id, 
-                'fecha_mantenimiento' => $fecha_mantenimiento3
+                'fecha_mantenimiento' => $fecha_mantenimiento3,
+                'status' => 1
             ],
             [
                 'id_equipo_mantenimiento' =>$equipo->id, 
                 'id_tecnico_mantenimiento' => $tecnico->id, 
-                'fecha_mantenimiento' => $fecha_mantenimiento4
+                'fecha_mantenimiento' => $fecha_mantenimiento4,
+                'status' => 1
             ],
             [
                 'id_equipo_mantenimiento' =>$equipo->id, 
                 'id_tecnico_mantenimiento' => $tecnico->id, 
-                'fecha_mantenimiento' => $fecha_mantenimiento5
+                'fecha_mantenimiento' => $fecha_mantenimiento5,
+                'status' => 1
             ],
             [
                 'id_equipo_mantenimiento' =>$equipo->id, 
                 'id_tecnico_mantenimiento' => $tecnico->id, 
-                'fecha_mantenimiento' => $fecha_mantenimiento6
+                'fecha_mantenimiento' => $fecha_mantenimiento6,
+                'status' => 1
             ],
         ]);
+
+
+        $mantenimientos = $equipo->mantenimientos()->get();
+
+        $mantenimientos->each(function ($mantenimiento, $key) {
+            $log = LogMantenimiento::create(['id_mantenimiento' => $mantenimiento->id, 'fecha_log'=> Carbon::now(), 'notas' => 'Creación y asignamiento']);
+            $mantenimiento->logs()->save($log);
+        });
 
         return redirect()->route('admin.equipos.index')->withFlash('El equipo ha sido creado e ingresado a bodega');
     }

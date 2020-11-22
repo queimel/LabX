@@ -3,6 +3,7 @@
 @section('content')
 <form id="formEditarEquipo" method="POST" action="{{ route('admin.equipos.update', $equipo)}}" data-remote="true">
      @csrf
+     @method('PUT')
      <div class="form-group">
         <label for="">Marca equipo</label>
         {{ $equipo->modelo->marca->id}}

@@ -29,15 +29,23 @@ class CreateMantenimientosTable extends Migration
             $table->timestamps();
         });
 
-
-
         Schema::create('mantenimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_equipo_mantenimiento');
             $table->unsignedBigInteger('id_tecnico_mantenimiento');
+            $table->boolean('status');
             $table->foreign('id_equipo_mantenimiento')->references('id')->on('equipos');
             $table->foreign('id_tecnico_mantenimiento')->references('id')->on('tecnicos');
             $table->timestamp('fecha_mantenimiento');
+            $table->timestamps();
+        });
+
+        Schema::create('log_mantenimientos', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_mantenimiento');
+            $table->foreign('id_mantenimiento')->references('id')->on('mantenimientos');
+            $table->timestamp('fecha_log');
+            $table->text('notas');
             $table->timestamps();
         });
     }
