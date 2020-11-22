@@ -54,7 +54,7 @@
                             </ul>
                         </li>
                         @endhasanyrole
-                        @hasanyrole('Admin|Supervisor|Tecnico')
+                        @hasanyrole('Admin|Supervisor')
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Mantenimientos</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{ route('admin.mantenimientos.index')}}">Listado Mantenimientos</a></li>
@@ -62,7 +62,22 @@
                             </ul>
                         </li>
                         @endhasanyrole
-                        
+
+                        @role('Encargado')
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Mantenimientos</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{ route('admin.mantenimientos-cliente.index', auth()->user()->profile->cliente->id)}}">Listado Mantenimientos</a></li>
+                            </ul>
+                        </li> 
+                        @endrole
+
+                        @role('Tecnico')
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Mantenimientos</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{ route('admin.mantenimientos-tecnico.index')}}">Listado Mantenimientos</a></li>
+                            </ul>
+                        </li> 
+                        @endrole
                     </ul>
                 </nav>
             </div>

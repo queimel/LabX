@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Mantenimiento extends Model
 {
     protected $fillable = [
-        'id', 'id_equipo_mantenimiento', 'id_tecnico_mantenimiento', 'fecha_mantenimiento'
+        'id', 'id_equipo_mantenimiento', 'id_tecnico_mantenimiento', 'fecha_mantenimiento', 'status'
     ];
 
     protected $guarded = [];
@@ -20,5 +20,10 @@ class Mantenimiento extends Model
     public function tecnico()
     {
         return $this->belongsTo('App\Tecnico', 'id_tecnico_mantenimiento');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany('App\LogMantenimiento', 'id_mantenimiento');
     }
 }

@@ -93,8 +93,16 @@ Route::group(['prefix' => 'admin','middleware' => ['auth']], function () {
                 Route::resource('repuestos', 'Admin\RepuestosController', ['as' => 'admin']);
 
                 //MANTENIMIENTOS
-                Route::resource('mantenimientos', 'Admin\MantenimientosController', ['as' => 'admin']);                
+                Route::resource('mantenimientos', 'Admin\MantenimientosController', ['as' => 'admin']);
+                
+                // MANTENIMIENTOS ENCARGADO
+                Route::resource('mantenimientos-cliente', 'Admin\MantenimientosClienteController', ['as' => 'admin'])->except(['create']);
+                // Route::get('mantenimientos-cliente/{cliente}','Admin\MantenimientosClienteController@index', ['as' => 'admin'])->name('admin.mantenimientos-cliente.index');
 
+                Route::get('mantenimientos-cliente/{cliente}/create','Admin\MantenimientosClienteController@create', ['as' => 'admin'])->name('admin.mantenimientos-cliente.create');
+
+                // MANTENIMIENTOS TECNICO
+                Route::resource('mantenimientos-tecnico', 'Admin\MantenimientosTecnicoController', ['as' => 'admin']);
             });
 
             Route::get('password/expired', 'Auth\ExpiredPasswordController@expired')->name('password.expired');
